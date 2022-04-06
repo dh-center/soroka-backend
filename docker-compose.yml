@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+    db:
+        image: postgres
+        ports:
+            - 6432:5432
+        environment:
+            - POSTGRES_USER=soroka
+            - POSTGRES_PASSWORD=soroka
+            - POSTGRES_DB=soroka
+        volumes:
+            - ./dbs/postgres-data:/var/lib/postgresql
+

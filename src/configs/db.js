@@ -14,8 +14,7 @@ module.exports = {
         database: config.database,
         host: config.host,
         port: config.port,
-        dialect: config.dialect,
-        storage: config.storage
+        dialect: config.dialect
     },
     test: {
         username: config.username,
@@ -23,8 +22,7 @@ module.exports = {
         database: config.database,
         host: config.host,
         port: config.port,
-        dialect: config.dialect,
-        storage: config.storage
+        dialect: config.dialect
     },
     production: {
         username: config.username,
@@ -32,7 +30,6 @@ module.exports = {
         database: config.database,
         host: config.host,
         port: config.port,
-        dialect: config.dialect,
-        storage: config.storage
+        dialect: config.dialect
     }
 }
