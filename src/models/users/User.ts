@@ -1,5 +1,16 @@
-import { Table, Column, Model, Unique, AllowNull, BeforeCreate, BeforeUpdate } from 'sequelize-typescript'
+import {
+    Table,
+    Column,
+    Model,
+    Unique,
+    AllowNull,
+    BeforeCreate,
+    BeforeUpdate,
+    ForeignKey
+} from 'sequelize-typescript'
 import hashPassword from '../../utils/hashPassword'
+import Organization from '../organizations/Organization'
+import UserRole from './UserRole'
 
 @Table
 class User extends Model {
@@ -13,6 +24,20 @@ class User extends Model {
     @AllowNull(false)
     @Column
     password: string
+
+    @Column
+    timezone: string
+
+    @Column
+    hasAcceptTermsOfUse: boolean
+
+    @ForeignKey(() => UserRole)
+    @Column
+    userRole: number
+
+    @ForeignKey(() => Organization)
+    @Column
+    organization: number
 
     @BeforeCreate
     @BeforeUpdate
