@@ -1,4 +1,5 @@
 import { Sequelize } from 'sequelize-typescript'
+import AuthorizationLink from '../models/auth/AuthorizationLink'
 import RefreshToken from '../models/auth/RefreshToken'
 import Organization from '../models/organizations/Organization'
 import User from '../models/users/User'
@@ -13,7 +14,7 @@ const sequelize = new Sequelize({
   logging: console.log,
 })
 
-const models = [User, RefreshToken, UserRole, Organization]
+const models = [User, RefreshToken, UserRole, Organization, AuthorizationLink]
 
 sequelize.addModels(models)
 
