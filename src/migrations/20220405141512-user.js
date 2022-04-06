@@ -25,6 +25,28 @@ module.exports = {
             updatedAt: {
                 allowNull: false,
                 type: Sequelize.DataTypes.DATE
+            },
+            timezone: Sequelize.DataTypes.STRING,
+            hasAcceptTermsOfUse: Sequelize.DataTypes.BOOLEAN,
+            userRole: {
+                type: Sequelize.DataTypes.INTEGER,
+                references: {
+                    model: {
+                        tableName: 'UserRoles',
+                    },
+                    key: 'id'
+                },
+                allowNull: false
+            },
+            organization: {
+                type: Sequelize.DataTypes.INTEGER,
+                references: {
+                    model: {
+                        tableName: 'Organizations',
+                    },
+                    key: 'id'
+                },
+                allowNull: false
             }
         });
     },
