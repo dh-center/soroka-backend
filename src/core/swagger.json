@@ -1,0 +1,79 @@
+{
+  "swagger": "2.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "REST API",
+    "description": ""
+  },
+  "host": "localhost:8000",
+  "basePath": "/v1",
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {
+    "apiKeyAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Bearer",
+      "description": "JWT-токен"
+    }
+  },
+  "paths": {
+    "/users/": {
+      "post": {
+        "description": "POST-эндпоинт для регистрации пользователя",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/users/profile": {
+      "get": {
+        "description": "Получить профиль по токену",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/users/profile/{id}": {
+      "get": {
+        "description": "Получить профиль по id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/users/login": {
+      "post": {
+        "description": "Логин",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/users/refresh": {
+      "post": {
+        "description": "Обновление токена",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/authorization-link/{uuid}": {
+      "get": {
+        "description": "Использование authorization-link из письма",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    }
+  }
+}
