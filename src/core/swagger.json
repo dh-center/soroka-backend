@@ -1,79 +1,213 @@
 {
-  "swagger": "2.0.0",
-  "info": {
-    "version": "1.0.0",
-    "title": "REST API",
-    "description": ""
-  },
-  "host": "localhost:8000",
-  "basePath": "/v1",
-  "schemes": [
-    "http"
-  ],
-  "securityDefinitions": {
-    "apiKeyAuth": {
-      "type": "apiKey",
-      "in": "header",
-      "name": "Bearer",
-      "description": "JWT-токен"
+    "swagger": "2.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "REST API",
+        "description": ""
+    },
+    "host": "localhost:8000",
+    "basePath": "/v1",
+    "schemes": [
+        "http"
+    ],
+    "securityDefinitions": {
+        "apiKeyAuth": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "Bearer",
+            "description": "JWT-токен"
+        }
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/users/": {
+            "post": {
+                "description": "POST-эндпоинт для регистрации пользователя",
+                "parameters": [
+                    {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Данные пользователя",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreateUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Пользователь успешно зарегистрирован",
+                        "schema": {
+                            "$ref": "#/definitions/CreatedUser"
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка: не введён любое обязательное поле"
+                    }
+                }
+            }
+        },
+        "/users/profile": {
+            "get": {
+                "description": "Получить профиль по токену",
+                "parameters": [],
+                "responses": {}
+            }
+        },
+        "/users/profile/{id}": {
+            "get": {
+                "description": "Получить профиль по id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/users/login": {
+            "post": {
+                "description": "Логин",
+                "parameters": [],
+                "responses": {}
+            }
+        },
+        "/users/refresh": {
+            "post": {
+                "description": "Обновление токена",
+                "parameters": [],
+                "responses": {}
+            }
+        },
+        "/authorization-link/{uuid}": {
+            "get": {
+                "description": "Использование authorization-link из письма",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "example": "eac65110-734f-4a52-9238-8b4f190d9c80"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Пользователь успешно зарегистрирован",
+                        "schema": {
+                            "$ref": "#/definitions/CreatedUser"
+                        }
+                    },
+                    "404": {
+                        "description": "Пользователь не найден"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "CreateUser": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                },
+                "email": {
+                    "type": "number",
+                    "example": "example@example.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "pAssWord123"
+                },
+                "timezone": {
+                    "type": "string",
+                    "example": "GMT+3"
+                },
+                "hasAcceptTermsOfUse": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "userRole": {
+                    "type": "number",
+                    "example": 1
+                },
+                "organization": {
+                    "type": "number",
+                    "example": 1
+                }
+            },
+            "required": [
+                "name",
+                "email",
+                "password",
+                "timezone",
+                "hasAcceptTermsOfUse",
+                "userRole",
+                "organization"
+            ]
+        },
+        "CreatedUser": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "example": 1
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2022-04-11T10:52:16.483Z"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2022-04-11T10:52:16.483Z"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "$2b$08$VbgdkbqmN99Yr.1cB5QPp.QVk0ejPZLJ2FSrC1c78vIPYBIptpkIO"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                },
+                "email": {
+                    "type": "number",
+                    "example": "example@example.com"
+                },
+                "timezone": {
+                    "type": "string",
+                    "example": "GMT+3"
+                },
+                "hasAcceptTermsOfUse": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "userRole": {
+                    "type": "number",
+                    "example": 1
+                },
+                "organization": {
+                    "type": "number",
+                    "example": 1
+                }
+            },
+            "required": [
+                "name",
+                "email",
+                "timezone",
+                "hasAcceptTermsOfUse",
+                "userRole",
+                "organization"
+            ]
+        }
     }
-  },
-  "paths": {
-    "/users/": {
-      "post": {
-        "description": "POST-эндпоинт для регистрации пользователя",
-        "parameters": [],
-        "responses": {}
-      }
-    },
-    "/users/profile": {
-      "get": {
-        "description": "Получить профиль по токену",
-        "parameters": [],
-        "responses": {}
-      }
-    },
-    "/users/profile/{id}": {
-      "get": {
-        "description": "Получить профиль по id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {}
-      }
-    },
-    "/users/login": {
-      "post": {
-        "description": "Логин",
-        "parameters": [],
-        "responses": {}
-      }
-    },
-    "/users/refresh": {
-      "post": {
-        "description": "Обновление токена",
-        "parameters": [],
-        "responses": {}
-      }
-    },
-    "/authorization-link/{uuid}": {
-      "get": {
-        "description": "Использование authorization-link из письма",
-        "parameters": [
-          {
-            "name": "uuid",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {}
-      }
-    }
-  }
 }
