@@ -1,13 +1,9 @@
-// eslint-disable-next-line
-const fs = require('fs')
-// eslint-disable-next-line
-const ini = require('ini')
-
+import fs from 'fs'
+import ini from 'ini'
 const configFile = fs.readFileSync('src/configs/settings.ini', 'utf-8')
 const config = ini.parse(configFile)['DATABASE']
 
-// eslint-disable-next-line
-module.exports = {
+export default {
     development: {
         username: config.username,
         password: config.password,
