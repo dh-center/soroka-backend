@@ -5,6 +5,7 @@ import {
     Model,
     Unique,
     AllowNull,
+    AfterCreate,
     BeforeCreate,
     BeforeUpdate,
     ForeignKey
@@ -56,7 +57,7 @@ class User extends Model {
         }
     }
 
-    @BeforeCreate
+    @AfterCreate
     static async generateAuthorizationLink(instance: User) {
         const token = randomUUID()
 
