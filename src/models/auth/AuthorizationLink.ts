@@ -8,6 +8,7 @@ class AuthorizationLink extends Model {
     @Column
     token: string
 
+    @AllowNull(false)
     @ForeignKey(() => User)
     @Column
     userId: number 

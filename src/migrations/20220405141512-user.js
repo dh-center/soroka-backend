@@ -9,8 +9,12 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.DataTypes.INTEGER
             },
-            name: Sequelize.DataTypes.STRING,
+            name: {
+                allowNull: false,
+                type: Sequelize.DataTypes.STRING
+            },
             email: {
+                allowNull: false,
                 type: Sequelize.DataTypes.STRING,
                 unique: true
             },
@@ -26,8 +30,14 @@ module.exports = {
                 allowNull: false,
                 type: Sequelize.DataTypes.DATE
             },
-            timezone: Sequelize.DataTypes.STRING,
-            hasAcceptTermsOfUse: Sequelize.DataTypes.BOOLEAN,
+            timezone: {
+                allowNull: false,
+                type: Sequelize.DataTypes.STRING,
+            },
+            hasAcceptTermsOfUse: {
+                allowNull: false,
+                type: Sequelize.DataTypes.BOOLEAN,
+            },
             userRole: {
                 type: Sequelize.DataTypes.INTEGER,
                 references: {

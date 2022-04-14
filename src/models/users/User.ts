@@ -16,9 +16,11 @@ import UserRole from './UserRole'
 
 @Table
 class User extends Model {
+    @AllowNull(false)
     @Column
     name: string
 
+    @AllowNull(false)
     @Unique
     @Column
     email: string
@@ -27,12 +29,15 @@ class User extends Model {
     @Column
     password: string
 
+    @AllowNull(false)
     @Column
     timezone: string
 
+    @AllowNull(false)
     @Column
     hasAcceptTermsOfUse: boolean
 
+    @AllowNull(false)
     @ForeignKey(() => UserRole)
     @Column
     userRole: number
