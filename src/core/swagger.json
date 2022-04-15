@@ -52,39 +52,58 @@
                 }
             }
         },
-        "/users/profile": {
-            "get": {
-                "description": "Получить профиль по токену",
-                "parameters": [],
-                "responses": {}
-            }
-        },
-        "/users/profile/{id}": {
-            "get": {
-                "description": "Получить профиль по id",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {}
-            }
-        },
         "/users/login": {
             "post": {
                 "description": "Логин",
-                "parameters": [],
-                "responses": {}
+                "parameters": [
+                    {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Данные для логина",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/LoginData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешный логин",
+                        "schema": {
+                            "$ref": "#/definitions/Tokens"
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка, неверные данные"
+                    }
+                }
             }
         },
         "/users/refresh": {
             "post": {
                 "description": "Обновление токена",
-                "parameters": [],
-                "responses": {}
+                "parameters": [
+                    {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Данные для обновления токена",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RefreshData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Обновлённые токены",
+                        "schema": {
+                            "$ref": "#/definitions/Tokens"
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка, токен некорректен/истёк"
+                    }
+                }
             }
         },
         "/authorization-link/{uuid}": {
@@ -208,6 +227,45 @@
                 "userRole",
                 "organization"
             ]
+        },
+        "LoginData": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "example@example.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "pAssWord123"
+                }
+            },
+            "required": [
+                "email",
+                "password"
+            ]
+        },
+        "Tokens": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjUwMDMzNTk2fQ.2fchX_E8bJJtR87iXtEVm0d9EaM8D7G7D9EibAidQs0"
+                },
+                "refreshToken": {
+                    "type": "string",
+                    "example": "3aab2a94-b62e-47b6-8d86-5cc426f12f8f"
+                }
+            }
+        },
+        "RefreshData": {
+            "type": "object",
+            "properties": {
+                "refreshToken": {
+                    "type": "string",
+                    "example": "3aab2a94-b62e-47b6-8d86-5cc426f12f8f"
+                }
+            }
         }
     }
 }
