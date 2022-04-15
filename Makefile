@@ -4,6 +4,7 @@ init:
 
 .PHONY: run
 run:
+	docker-compose up -d
 	npm start
 
 .PHONY: lint
