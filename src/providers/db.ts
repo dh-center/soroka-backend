@@ -8,7 +8,8 @@ import UserRole from '../models/users/UserRole'
 const sequelize = new Sequelize({
   database: 'soroka',
   dialect: 'postgres',
-  port: 6432,
+  port: 5432,
+  host: 'db',
   username: 'soroka',
   password: 'soroka',
   logging: console.log,

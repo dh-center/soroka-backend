@@ -11,4 +11,16 @@ services:
             - POSTGRES_DB=soroka
         volumes:
             - ./dbs/postgres-data:/var/lib/postgresql
-
+    backend:
+        container_name: soroka-backend
+        build:
+            context: .
+            dockerfile: Dockerfile
+        command: npm start --start;
+        volumes:
+            - ./:/soroka-backend/
+            - ./src:/soroka-backend/src
+        ports:
+            - "8000:8000"
+        depends_on:
+            - db
