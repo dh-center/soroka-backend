@@ -2,20 +2,25 @@
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        return queryInterface.createTable('Users', {
+        return queryInterface.createTable('RefreshTokens', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.DataTypes.INTEGER
             },
-            name: Sequelize.DataTypes.STRING,
-            email: {
-                type: Sequelize.DataTypes.STRING,
-                unique: true
+            token: {
+                allowNull: false,
+                type: Sequelize.DataTypes.STRING
             },
-            password: {
-                type: Sequelize.DataTypes.STRING,
+            userId: {
+                type: Sequelize.DataTypes.INTEGER,
+                references: {
+                    model: {
+                        tableName: 'Users'
+                    },
+                    key: 'id'
+                },
                 allowNull: false
             },
             createdAt: {
@@ -30,6 +35,6 @@ module.exports = {
     },
 
     down: async (queryInterface, Sequelize) => {
-        return queryInterface.dropTable('Users');
+        return queryInterface.dropTable('RefreshTokens');
     }
 };

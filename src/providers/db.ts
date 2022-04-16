@@ -1,17 +1,21 @@
 import { Sequelize } from 'sequelize-typescript'
+import AuthorizationLink from '../models/auth/AuthorizationLink'
 import RefreshToken from '../models/auth/RefreshToken'
+import Organization from '../models/organizations/Organization'
 import User from '../models/users/User'
+import UserRole from '../models/users/UserRole'
 
 const sequelize = new Sequelize({
-  database: 'some_db',
-  dialect: 'sqlite',
-  username: 'root',
-  password: '',
-  storage: 'db.sqlite',
+  database: 'soroka',
+  dialect: 'postgres',
+  port: 5432,
+  host: 'db',
+  username: 'soroka',
+  password: 'soroka',
   logging: console.log,
 })
 
-const models = [User, RefreshToken]
+const models = [User, RefreshToken, UserRole, Organization, AuthorizationLink]
 
 sequelize.addModels(models)
 

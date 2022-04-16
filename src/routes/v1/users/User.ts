@@ -12,6 +12,7 @@ router.route('/')
 router.route('/profile')
     .get(passport.authenticate('jwt', { session: false }), controller.me)
 
+//  #swagger.parameters['id'] = { description: 'Some description...' }
 router.route('/profile/:id')
     .get(controller.get)
 

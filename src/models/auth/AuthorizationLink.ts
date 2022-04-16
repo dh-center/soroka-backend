@@ -2,7 +2,7 @@ import { Table, Column, Model, Unique, AllowNull, ForeignKey } from 'sequelize-t
 import User from '../users/User'
 
 @Table
-class RefreshToken extends Model {
+class AuthorizationLink extends Model {
     @Unique
     @AllowNull(false)
     @Column
@@ -14,4 +14,4 @@ class RefreshToken extends Model {
     userId: number 
 }
 
-export default RefreshToken
+export default AuthorizationLink

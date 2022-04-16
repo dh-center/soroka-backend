@@ -2,14 +2,17 @@
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        return queryInterface.createTable('RefreshTokens', {
+        return queryInterface.createTable('AuthorizationLink', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.DataTypes.INTEGER
             },
-            token: Sequelize.DataTypes.STRING,
+            token: {
+                allowNull: false,
+                type: Sequelize.DataTypes.STRING
+            },
             userId: {
                 type: Sequelize.DataTypes.INTEGER,
                 references: {
@@ -32,6 +35,6 @@ module.exports = {
     },
 
     down: async (queryInterface, Sequelize) => {
-        return queryInterface.dropTable('RefreshTokens');
+        return queryInterface.dropTable('AuthorizationLink');
     }
 };

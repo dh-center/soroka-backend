@@ -1,17 +1,17 @@
-.PHONY: init
-init:
-	npm i
-
 .PHONY: run
 run:
-	npm start
+	docker-compose up
+
+.PHONY: rund
+rund:
+	docker-compose up -d
 
 .PHONY: lint
 lint:
-	npm run lint
+	docker exec -it soroka-backend npm run lint
 
 .PHONY: build
 build:
-	npm run build
+	docker-compose build
 
-.DEFAULT_GOAL: init
+.DEFAULT_GOAL := build
