@@ -1,3 +1,19 @@
-# express-sequelize-boilerplate
+# Soroka backend
 
-Simple boilerplate for express RESTful API, using TypeScript and Sequelize ORM
+Запустить приложение:
+
+```bash
+$ make run
+```
+
+Запустить линтинг:
+
+```bash
+$ make lint
+```
+
+Запустить сборку:
+
+```bash
+$ make build
+```

@@ -3,24 +3,24 @@ version: '3'
 services:
     db:
         image: postgres
-        ports:
-            - 6432:5432
+        expose:
+            - 5432
         environment:
             - POSTGRES_USER=soroka
             - POSTGRES_PASSWORD=soroka
             - POSTGRES_DB=soroka
         volumes:
             - ./dbs/postgres-data:/var/lib/postgresql
+
     backend:
         container_name: soroka-backend
         build:
             context: .
-            dockerfile: Dockerfile
-        command: npm start --start;
+        command: npm start
         volumes:
             - ./:/soroka-backend/
-            - ./src:/soroka-backend/src
+            - /soroka-backend/node_modules
         ports:
-            - "8000:8000"
+            - 8000:8000
         depends_on:
             - db
