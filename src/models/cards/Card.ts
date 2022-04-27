@@ -19,7 +19,7 @@ class Card extends Model {
     @Column
     organizationId: number
 
-    @BelongsToMany(() => FilledProperty, () => FilledPropertyCard)
+    @BelongsToMany(() => FilledProperty, { as: "properties", through: () => FilledPropertyCard })
     propertiesList: FilledProperty[]
 
     @AllowNull(false)

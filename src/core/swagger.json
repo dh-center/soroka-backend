@@ -25,8 +25,9 @@
         "application/json"
     ],
     "paths": {
-        "/users/": {
+        "/users": {
             "post": {
+                "tags": ["users"],
                 "description": "POST-эндпоинт для регистрации пользователя",
                 "parameters": [
                     {
@@ -55,6 +56,7 @@
         "/users/login": {
             "post": {
                 "description": "Логин",
+                "tags": ["users"],
                 "parameters": [
                     {
                         "name": "obj",
@@ -82,6 +84,7 @@
         "/users/refresh": {
             "post": {
                 "description": "Обновление токена",
+                "tags": ["users"],
                 "parameters": [
                     {
                         "name": "obj",
@@ -109,6 +112,7 @@
         "/authorization-link/{uuid}": {
             "get": {
                 "description": "Использование authorization-link из письма",
+                "tags": ["users"],
                 "parameters": [
                     {
                         "name": "uuid",
@@ -127,6 +131,260 @@
                     },
                     "404": {
                         "description": "Пользователь не найден"
+                    }
+                }
+            }
+        },
+        "/cards/data-types": {
+            "get": {
+                "description": "Типы для свойств",
+                "tags": ["cards"],
+                "responses": {
+                    "200": {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Тело типа",
+                        "schema": {
+                            "$ref": "#/definitions/DataTypesResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/cards/properties": {
+            "get": {
+                "description": "Свойства",
+                "tags": ["cards"],
+                "responses": {
+                    "200": {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Тело свойства",
+                        "schema": {
+                            "$ref": "#/definitions/PropertiesResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/cards/filled-properties/{cardId}": {
+            "get": {
+                "description": "Свойства по карточке",
+                "tags": ["cards"],
+                "parameters": [
+                    {
+                        "name": "cardId",
+                        "in": "path",
+                        "required": true,
+                        "type": "number",
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Свойства",
+                        "schema": {
+                            "$ref": "#/definitions/FilledPropertiesResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Заполнение свойства в карточке",
+                "tags": ["cards"],
+                "parameters": [
+                    {
+                        "name": "cardId",
+                        "in": "path",
+                        "required": true,
+                        "type": "number",
+                        "example": "1"
+                    },
+                    {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Данные для заполнения свойства",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/FilledPropertyData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Заполненное свойство",
+                        "schema": {
+                            "$ref": "#/definitions/FilledPropertiesResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Заполнение свойства в карточке",
+                "tags": ["cards"],
+                "parameters": [
+                    {
+                        "name": "cardId",
+                        "in": "path",
+                        "required": true,
+                        "type": "number",
+                        "example": "1"
+                    },
+                    {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "ID удаляемого свойства",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/FilledPropertyDeleteResponse"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Успешно удалено"
+                    }
+                }
+                
+            }
+        },
+        "/cards": {
+            "get": {
+                "description": "Список карточек",
+                "tags": ["cards"],
+                "responses": {
+                    "200": {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Список карточек",
+                        "schema": {
+                            "$ref": "#/definitions/CardsResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Создание новой карточки",
+                "tags": ["cards"],
+                "parameters": [
+                    {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Данные для создания карточки",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CardData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Созданная карточка",
+                        "schema": {
+                            "$ref": "#/definitions/CardsResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/cards/{cardId}": {
+            "get": {
+                "description": "Получение карточки по ID",
+                "tags": ["cards"],
+                "parameters": [
+                    {
+                        "name": "cardId",
+                        "in": "path",
+                        "required": true,
+                        "type": "number",
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Карточка",
+                        "schema": {
+                            "$ref": "#/definitions/CardsResponse"
+                        }
+                    }
+                }
+            },
+            "update": {
+                "description": "Создание новой карточки",
+                "tags": ["cards"],
+                "parameters": [
+                    {
+                        "name": "cardId",
+                        "in": "path",
+                        "required": true,
+                        "type": "number",
+                        "example": "1"
+                    },
+                    {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Данные для обновления карточки",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CardData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Обновленная карточка",
+                        "schema": {
+                            "$ref": "#/definitions/CardsResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/cards/templates": {
+            "get": {
+                "description": "Список шаблонов карточек",
+                "tags": ["cards"],
+                "responses": {
+                    "200": {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Список шаблонов карточек",
+                        "schema": {
+                            "$ref": "#/definitions/CardsTemplateResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/cards/templates/{id}": {
+            "get": {
+                "description": "Шаблон карточки по id",
+                "tags": ["cards"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "number",
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Шаблон карточки по id",
+                        "schema": {
+                            "$ref": "#/definitions/CardsTemplateResponse"
+                        }
                     }
                 }
             }
@@ -264,6 +522,191 @@
                 "refreshToken": {
                     "type": "string",
                     "example": "3aab2a94-b62e-47b6-8d86-5cc426f12f8f"
+                }
+            }
+        },
+        "DataTypesResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "string"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2022-04-27T11:16:18.771Z"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2022-04-27T11:16:18.771Z"
+                }
+            }
+        },
+        "PropertiesResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "example": 1
+                },
+                "name": {
+                    "type": "text property",
+                    "example": "string"
+                },
+                "dataTypeId": {
+                    "type": "number",
+                    "example": 1
+                },
+                "isLink": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2022-04-27T11:16:18.771Z"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2022-04-27T11:16:18.771Z"
+                }
+            }
+        },
+        "FilledPropertyData": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "test property"
+                },
+                "propertyId": {
+                    "type": "number",
+                    "example": 1
+                },
+                "data": {
+                    "type": "string",
+                    "example": "test data"
+                }
+            },
+            "required": ["name", "propertyId", "data"]
+        },
+        "FilledPropertiesResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "test property"
+                },
+                "propertyId": {
+                    "type": "number",
+                    "example": 1
+                },
+                "data": {
+                    "type": "string",
+                    "example": "test data"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2022-04-27T11:16:18.771Z"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2022-04-27T11:16:18.771Z"
+                }
+            }
+        },
+        "CardsResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "example": 10
+                },
+                "name": {
+                    "type": "string",
+                    "example": "test card"
+                },
+                "userId": {
+                    "type": "number",
+                    "example": 1
+                },
+                "organizationId": {
+                    "type": "number",
+                    "example": 1
+                },
+                "preventDelete": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2022-04-27T11:16:18.771Z"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2022-04-27T11:16:18.771Z"
+                }
+            }
+        },
+        "CardData": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "test card"
+                },
+                "userId": {
+                    "type": "number",
+                    "example": 1
+                },
+                "organizationId": {
+                    "type": "number",
+                    "example": 1
+                },
+                "preventDelete": {
+                    "type": "boolean",
+                    "example": false
+                }
+            }
+        },
+        "CardsTemplateResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "example": 10
+                },
+                "name": {
+                    "type": "string",
+                    "example": "test card"
+                },
+                "propertiesList": {
+                    "type": "string",
+                    "example": "\"[1, 2]\""
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2022-04-27T11:16:18.771Z"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2022-04-27T11:16:18.771Z"
+                }
+            }
+        },
+        "FilledPropertyDeleteResponse": {
+            "type": "object",
+            "properties": {
+                "filledPropertyId": {
+                    "type": "number",
+                    "example": 10
                 }
             }
         }
