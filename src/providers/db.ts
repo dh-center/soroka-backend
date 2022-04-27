@@ -1,6 +1,11 @@
 import { Sequelize } from 'sequelize-typescript'
 import AuthorizationLink from '../models/auth/AuthorizationLink'
 import RefreshToken from '../models/auth/RefreshToken'
+import Card, { FilledPropertyCard } from '../models/cards/Card'
+import CardTemplate from '../models/cards/CardTemplate'
+import DataType from '../models/cards/DataType'
+import FilledProperty from '../models/cards/FilledProperty'
+import Property from '../models/cards/Property'
 import Organization from '../models/organizations/Organization'
 import User from '../models/users/User'
 import UserRole from '../models/users/UserRole'
@@ -15,7 +20,15 @@ const sequelize = new Sequelize({
   logging: console.log,
 })
 
-const models = [User, RefreshToken, UserRole, Organization, AuthorizationLink]
+const models = [
+    User, RefreshToken,
+    UserRole, Organization,
+    AuthorizationLink,
+    DataType, Property,
+    FilledProperty, Card,
+    CardTemplate,
+    FilledPropertyCard
+]
 
 sequelize.addModels(models)
 
