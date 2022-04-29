@@ -291,7 +291,7 @@
                 }
             }
         },
-        "/cards/{cardId}": {
+        "/cards/by-id/{cardId}": {
             "get": {
                 "description": "Получение карточки по ID",
                 "tags": ["cards"],

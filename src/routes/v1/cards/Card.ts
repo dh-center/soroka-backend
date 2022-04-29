@@ -9,7 +9,7 @@ router.route('/')
     .get(controller.getAll)
     .post(controller.create)
 
-router.route('/:cardId')
+router.route('/by-id/:cardId')
     .get(controller.getByPk)
     .patch(controller.update)
 
