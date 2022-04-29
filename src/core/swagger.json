@@ -315,7 +315,7 @@
                     }
                 }
             },
-            "update": {
+            "patch": {
                 "description": "Создание новой карточки",
                 "tags": ["cards"],
                 "parameters": [
