@@ -250,6 +250,63 @@
                 
             }
         },
+        "/cards/filled-properties/by-id/{propertyId}": {
+            "get": {
+                "description": "Получение заполненного свойства по ID",
+                "tags": ["cards"],
+                "parameters": [
+                    {
+                        "name": "propertyId",
+                        "in": "path",
+                        "required": true,
+                        "type": "number",
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Заполненное свойство",
+                        "schema": {
+                            "$ref": "#/definitions/FilledPropertiesResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Обновление заполненного свойства",
+                "tags": ["cards"],
+                "parameters": [
+                    {
+                        "name": "propertyId",
+                        "in": "path",
+                        "required": true,
+                        "type": "number",
+                        "example": "1"
+                    },
+                    {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Данные для обновления свойства",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/FilledPropertyData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Обновленное свойство",
+                        "schema": {
+                            "$ref": "#/definitions/FilledPropertiesResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/cards": {
             "get": {
                 "description": "Список карточек",
@@ -316,7 +373,7 @@
                 }
             },
             "patch": {
-                "description": "Создание новой карточки",
+                "description": "Обновление карточки",
                 "tags": ["cards"],
                 "parameters": [
                     {
