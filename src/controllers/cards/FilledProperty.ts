@@ -47,6 +47,46 @@ class FilledPropertyController {
 
         return response.status(204).send()
     }
+
+    async update (request: any, response: any): Promise<any> {
+        const propertyId = Number(request.params.propertyId)
+
+        if (propertyId > 0 && !propertyId) {
+            return { detail: 'Property id is required param', status: 400 }
+        }
+
+        const propertyData = request.body
+
+        try {
+            const updatedProperty: any = await FilledProperty.findByPk(propertyId)
+
+            for (const key in propertyData) {
+                updatedProperty[key] = propertyData[key]
+            }
+
+            await updatedProperty.save()
+
+            return response.send(updatedProperty)
+        } catch (e) {
+            return response.status(400).send({ detail: e })
+        }
+    }
+
+    async getByPk (request: any, response: any): Promise<any> {
+        const propertyId = Number(request.params.propertyId)
+
+        if (propertyId > 0 && !propertyId) {
+            return { detail: 'Property id is required param', status: 400 }
+        }
+
+        try {
+            const property: any = await FilledProperty.findByPk(propertyId)
+
+            return response.send(property)
+        } catch (e) {
+            return response.status(400).send({ detail: e })
+        }
+    }
 }
 
 export default FilledPropertyController

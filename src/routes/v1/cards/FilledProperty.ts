@@ -10,4 +10,8 @@ router.route('/:cardId')
     .post(controller.create)
     .delete(controller.delete)
 
+router.route('/by-id/:propertyId')
+    .patch(controller.update)
+    .get(controller.getByPk)
+
 export default router
