@@ -1,52 +1,38 @@
-import Card, { FilledPropertyCard } from '../../models/cards/Card'
+import CardService from '../../services/cards/Card'
 
 class CardController {
+    private cardService: CardService
+
+    constructor () {
+        this.cardService = new CardService()
+    }
+
     getAll = async (request: any, response: any) => {
-        const cards: any = await Card.findAll()
+        const cardsList = await this.cardService.getAll()
 
-        const cardsResponse = [] 
-        
-        for (const card of cards) {
-            const cardObj = card.toJSON()
-
-            const props = await card.getProperties()
-
-            cardObj.propertiesList = props.map(
-                (prop: FilledPropertyCard) => prop.toJSON()
-            )
-
-            cardsResponse.push(cardObj)
-        }
-
-        return response.send(cardsResponse)
+        return response.send(cardsList)
     }
 
     create = async (request: any, response: any) => {
-        const createdCard = await Card.create(request.body)
+        const createdCard = await this.cardService.create(request.body)
 
-        return response.send(createdCard)
+        return response.status(createdCard.status).send(createdCard.detail)
     }
 
     getByPk = async (request: any, response: any) => {
-        const { cardId } = request.params
+        const cardId = Number(request.params.cardId)
 
-        const card = await Card.findByPk(Number(cardId))
+        const cardResponse = await this.cardService.getByPk(cardId)
 
-        return response.send(card)
+        return response.status(cardResponse.status).send(cardResponse.detail)
     }
 
     update = async (request: any, response: any) => {
-        const { cardId } = request.params
+        const cardId = Number(request.params.cardId)
 
-        const updatedCard: any = await Card.findByPk(Number(cardId))
+        const updatedCardResponse = await this.cardService.update(cardId, request.body)
 
-        for (const key in request.body) {
-            updatedCard[key] = request.body[key]
-        }
-
-        updatedCard.save()
-
-        return response.send(updatedCard)
+        return response.status(updatedCardResponse.status).send(updatedCardResponse.detail)
     }
 }
 
