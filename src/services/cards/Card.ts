@@ -1,8 +1,18 @@
 import Card, { FilledPropertyCard } from "../../models/cards/Card"
 
 class CardService {
-    async getAll (): Promise<any> {
-        const cards: any = await Card.findAll()
+    async getAll (user: any): Promise<any> {
+        const ALLOWED_ROLES = ['ADMIN', 'EDITOR']
+
+        if (!user) {
+            return []
+        }
+
+        const hasPermission = ALLOWED_ROLES.includes(user.userRole.key)
+
+        const filters = hasPermission ? {} : { organizationId: user.organization }
+
+        const cards: any = await Card.findAll({ where: {...filters} })
 
         const cardsList = [] 
         

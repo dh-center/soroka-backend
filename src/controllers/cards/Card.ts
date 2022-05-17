@@ -8,7 +8,7 @@ class CardController {
     }
 
     getAll = async (request: any, response: any) => {
-        const cardsList = await this.cardService.getAll()
+        const cardsList = await this.cardService.getAll(request.user)
 
         return response.send(cardsList)
     }
