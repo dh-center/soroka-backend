@@ -1,52 +1,24 @@
-import CardTemplate from '../../models/cards/CardTemplate'
-import Property from '../../models/cards/Property'
-import { Op } from 'sequelize'
+import CardTemplateService from "../../services/cards/CardTemplate"
 
 class CardTemplateController {
+    private cardTemplateService: CardTemplateService
+
+    constructor () {
+        this.cardTemplateService = new CardTemplateService()
+    }
+
     getAll = async (request: any, response: any) => {
-        const cards: any = await CardTemplate.findAll()
+        const cardsResponse = await this.cardTemplateService.getAll()
 
-        const cardsResponse: any = []
-
-        for (const card of cards) {
-            const cardObj = card.toJSON()
-
-            // TODO: понять, почему необходимо дважды написать 
-            // JSON.parse, чтобы вытащить массив
-            const cardProps: number[] = JSON.parse(
-                JSON.parse(card.propertiesList)
-            )
-
-            const propertiesList = await Property.findAll(
-                { where: { id: { [Op.in]: cardProps } } }
-            )
-
-            cardObj.propertiesList = propertiesList
-
-            cardsResponse.push(cardObj)
-        }
-
-        return response.send(cardsResponse)
+        return response.status(cardsResponse.status).send(cardsResponse.detail)
     }
 
     getByPk = async (request: any, response: any) => {
-        const { id } = request.params
+        const id = Number(request.params.id)
 
-        const card: any = await CardTemplate.findByPk(Number(id))
+        const cardResponse = await this.cardTemplateService.getByPk(id)
 
-        const cardObj = card.toJSON()
-
-        const cardProps: number[] = JSON.parse(
-            JSON.parse(card.propertiesList)
-        )
-
-        const propertiesList = await Property.findAll(
-            { where: { id: { [Op.in]: cardProps } } }
-        )
-
-        cardObj.propertiesList = propertiesList
-
-        return response.send(cardObj)
+        return response.status(cardResponse.status).send(cardResponse.detail)
     }
 }
 
