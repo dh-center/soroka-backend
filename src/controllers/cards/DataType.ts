@@ -1,10 +1,16 @@
-import DataType from '../../models/cards/DataType'
+import DataTypeService from "../../services/cards/DataType"
 
 class DataTypeController {
-    getAll = async (request: any, response: any) => {
-        const dataTypes = await DataType.findAll()
+    private dataTypeService: DataTypeService
 
-        return response.send(dataTypes.map((dataType: DataType) => dataType.toJSON()))
+    constructor() {
+        this.dataTypeService = new DataTypeService()
+    }
+
+    getAll = async (request: any, response: any) => {
+        const dataTypeResponse = await this.dataTypeService.getAll()
+
+        return response.status(dataTypeResponse.status).send(dataTypeResponse.detail)
     } 
 }
 
