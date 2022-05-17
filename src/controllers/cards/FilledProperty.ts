@@ -1,7 +1,12 @@
-import Card, { FilledPropertyCard } from '../../models/cards/Card'
-import FilledProperty from '../../models/cards/FilledProperty'
+import FilledPropertyService from "../../services/cards/FilledProperty"
 
 class FilledPropertyController {
+    private filledPropertyService: FilledPropertyService
+
+    constructor() {
+        this.filledPropertyService = new FilledPropertyService()
+    }
+
     getAll = async (request: any, response: any) => {
         const id = Number(request.params.cardId)
 
@@ -9,15 +14,11 @@ class FilledPropertyController {
             return response.status(400).send({"detail": "Card ID is required param"})
         }
 
-        try {
-            const card: any = await Card.findByPk(id)
+        const filledPropertiesResponse = await this.filledPropertyService.getAll(id)
 
-            const properties = await card.getProperties()
-
-            return response.send(properties.map((property: FilledProperty) => property.toJSON()))
-        } catch (e) {
-            return response.status(404).send({"detail": "Not found"})
-        }
+        return response
+            .status(filledPropertiesResponse.status)
+            .send(filledPropertiesResponse.detail)
     }
 
     create = async (request: any, response: any) => {
@@ -27,11 +28,13 @@ class FilledPropertyController {
             return response.status(400).send({"detail": "Card ID is required param"})
         }
 
-        const createdProperty = await FilledProperty.create(request.body)
-
-        await FilledPropertyCard.create({ filledPropertyId: createdProperty.id, cardId: Number(cardId) })
-
-        return response.send(createdProperty)
+        const createdPropertyResponse = await this.filledPropertyService.create(
+            cardId, request.body
+        )
+     
+        return response
+            .status(createdPropertyResponse.status)
+            .send(createdPropertyResponse.detail)
     }
 
     delete = async (request: any, response: any) => {
@@ -41,11 +44,15 @@ class FilledPropertyController {
             return response.status(400).send({"detail": "Card ID is required param"})
         }
 
-        const { filledPropertyId } = request.body
+        const filledPropertyId = Number(request.body.filledPropertyId)
 
-        await FilledPropertyCard.destroy({ where: { cardId, filledPropertyId } })
+        const deletedPropertyResponse = await this.filledPropertyService.delete(
+            cardId, filledPropertyId
+        )
 
-        return response.status(204).send()
+        return response
+            .status(deletedPropertyResponse.status)
+            .send(deletedPropertyResponse.detail)
     }
 
     async update (request: any, response: any): Promise<any> {
@@ -57,19 +64,12 @@ class FilledPropertyController {
 
         const propertyData = request.body
 
-        try {
-            const updatedProperty: any = await FilledProperty.findByPk(propertyId)
-
-            for (const key in propertyData) {
-                updatedProperty[key] = propertyData[key]
-            }
-
-            await updatedProperty.save()
-
-            return response.send(updatedProperty)
-        } catch (e) {
-            return response.status(400).send({ detail: e })
-        }
+        const updatedPropertyResponse = await this.filledPropertyService
+            .update(propertyId, propertyData)
+        
+        return response
+            .status(updatedPropertyResponse.status)
+            .send(updatedPropertyResponse.detail)
     }
 
     async getByPk (request: any, response: any): Promise<any> {
@@ -79,13 +79,11 @@ class FilledPropertyController {
             return { detail: 'Property id is required param', status: 400 }
         }
 
-        try {
-            const property: any = await FilledProperty.findByPk(propertyId)
+        const propertyResponse = await this.filledPropertyService.getByPk(propertyId)
 
-            return response.send(property)
-        } catch (e) {
-            return response.status(400).send({ detail: e })
-        }
+        return response
+            .status(propertyResponse.status)
+            .send(propertyResponse.detail)
     }
 }
 
