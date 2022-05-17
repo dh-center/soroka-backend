@@ -445,6 +445,47 @@
                     }
                 }
             }
+        },
+        "/organizations": {
+            "get": {
+                "description": "Список всех организаций",
+                "tags": ["organizations"],
+                "responses": {
+                    "200": {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Список всех организаций",
+                        "schema": {
+                            "$ref": "#/definitions/OrganizationsResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/organizations/owners/{id}": {
+            "get": {
+                "description": "Список всех владельцев организации по id организации",
+                "tags": ["organizations"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "number",
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Список всех владельцев организации по id организации",
+                        "schema": {
+                            "$ref": "#/definitions/OwnersResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -764,6 +805,36 @@
                 "filledPropertyId": {
                     "type": "number",
                     "example": 10
+                }
+            }
+        },
+        "OrganizationsResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "example": 1
+                },
+                "name": {
+                    "type": "number",
+                    "example": "Test org"
+                },
+                "address": {
+                    "type": "string",
+                    "example": "Lenina avenue"
+                }
+            }
+        },
+        "OwnersResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "example": 1
+                },
+                "name": {
+                    "type": "number",
+                    "example": "Ivan Ivanov"
                 }
             }
         }
