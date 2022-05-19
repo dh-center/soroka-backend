@@ -9,7 +9,17 @@ class AuthorizationLinkService {
         this.token = token
     }
 
-    getUser = async () : Promise<any | null> => {
+    getUser = async () : Promise<any> => {
+        const user = await this.getUserInstance()
+
+        if (user) {
+            return user.toJSON()
+        }
+
+        return null
+    }
+
+    getUserInstance = async() : Promise<any> => {
         const token = this.token
         const authorizationLink = await AuthorizationLink.findOne({ where: { token } })
         
@@ -17,10 +27,8 @@ class AuthorizationLinkService {
             const { userId } = authorizationLink
             const user = await User.findOne({ where: { id: userId } })
 
-            return user?.toJSON()
+            return user
         }
-
-        return null
     }
 }
 
