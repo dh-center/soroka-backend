@@ -846,7 +846,7 @@
                     "example": 1
                 },
                 "name": {
-                    "type": "number",
+                    "type": "string",
                     "example": "Test org"
                 },
                 "address": {
@@ -863,7 +863,7 @@
                     "example": 1
                 },
                 "name": {
-                    "type": "number",
+                    "type": "string",
                     "example": "Ivan Ivanov"
                 }
             }
