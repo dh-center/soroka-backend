@@ -55,7 +55,7 @@ class FilledPropertyController {
             .send(deletedPropertyResponse.detail)
     }
 
-    async update (request: any, response: any): Promise<any> {
+    update = async (request: any, response: any): Promise<any> => {
         const propertyId = Number(request.params.propertyId)
 
         if (propertyId > 0 && !propertyId) {
@@ -72,7 +72,7 @@ class FilledPropertyController {
             .send(updatedPropertyResponse.detail)
     }
 
-    async getByPk (request: any, response: any): Promise<any> {
+    getByPk = async (request: any, response: any): Promise<any> => {
         const propertyId = Number(request.params.propertyId)
 
         if (propertyId > 0 && !propertyId) {
