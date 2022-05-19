@@ -133,6 +133,36 @@
                         "description": "Пользователь не найден"
                     }
                 }
+            },
+            "post": {
+                "description": "Использование authorization-link из письма",
+                "tags": ["users"],
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "example": "eac65110-734f-4a52-9238-8b4f190d9c80"
+                    },
+                    {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Данные для установки пароля",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SetPasswordData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Пароль успешно установлен"
+                    },
+                    "400": {
+                        "description": "Введенные пароли не совпадают"
+                    }
+                }
             }
         },
         "/cards/data-types": {
@@ -867,6 +897,19 @@
                 "name": {
                     "type": "number",
                     "example": "Ivan Ivanov"
+                }
+            }
+        },
+        "SetPasswordData": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "example": "test123"
+                },
+                "rePassword": {
+                    "type": "string",
+                    "example": "test123"
                 }
             }
         }
