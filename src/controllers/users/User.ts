@@ -36,6 +36,14 @@ class UserController {
         }
     }
 
+    acceptTerms = async (request: any, response: any) => {
+        const { hasAcceptTermsOfUse, userId } = request.body
+
+        const user: any = await this.userService.update(userId, { hasAcceptTermsOfUse })
+
+        return response.status(200).send(user.toJSON())
+    }
+
     me = async (request: any, response: any) => {
         response.send(request.user)
     }

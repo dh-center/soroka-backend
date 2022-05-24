@@ -23,6 +23,22 @@ class UserService {
         }
     }
 
+    async update(id: number, userData: any) : Promise<any> {
+        try {
+            const user: any = await User.findByPk(id)
+
+            for (const key in userData) {
+                user[key] = userData[key]
+            }
+
+            await user.save()
+
+            return user
+        } catch (e) {
+            return e
+        }
+    }
+
     async checkPassword(email: string, password: string) : Promise<any> {
         const user = await User.scope('auth').findOne({ where: { email } })
 
