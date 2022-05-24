@@ -109,6 +109,31 @@
                 }
             }
         },
+        "/users/accept-terms": {
+            "post": {
+                "tags": ["users"],
+                "description": "POST-эндпоинт для принятия пользовательского соглашения",
+                "parameters": [
+                    {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Данные принятия пользовательского соглашения",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/AcceptTermsData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Обновлённый пользователь",
+                        "schema": {
+                            "$ref": "#/definitions/CreatedUser"
+                        }
+                    }
+                }
+            }
+        },
         "/authorization-link/{uuid}": {
             "get": {
                 "description": "Использование authorization-link из письма",
@@ -124,7 +149,7 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "Пользователь успешно зарегистрирован",
+                        "description": "Пользователь найден",
                         "schema": {
                             "$ref": "#/definitions/CreatedUser"
                         }
@@ -878,6 +903,19 @@
                 "rePassword": {
                     "type": "string",
                     "example": "test123"
+                }
+            }
+        },
+        "AcceptTermsData": {
+            "type": "object",
+            "properties": {
+                "hasAcceptTermsOfUse": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "userId": {
+                    "type": "number",
+                    "example": 1
                 }
             }
         }
