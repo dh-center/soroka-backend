@@ -13,7 +13,6 @@ class FilledProperty extends Model {
     @Column
     propertyId: number
 
-    @AllowNull(false)
     @Column(DT.JSON)
     data: string
 
