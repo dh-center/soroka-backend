@@ -1,4 +1,5 @@
-import Card, { FilledPropertyCard } from "../../models/cards/Card"
+import Card from "../../models/cards/Card"
+import FilledProperty from "../../models/cards/FilledProperty"
 
 class CardService {
     async getAll (user: any): Promise<any> {
@@ -19,7 +20,15 @@ class CardService {
         for (const card of cards) {
             const cardObj = card.toJSON()
 
-            const props = await card.getProperties()
+            let props = await card.getProperties()
+
+            props = props.map((prop: FilledProperty) => {
+                const { id, name, propertyId, data } = prop
+
+                return { id, name, propertyId, data }
+            })
+
+            cardObj.propertiesList = props
 
             cardObj.propertiesList = props.map(
                 (prop: FilledPropertyCard) => prop.toJSON()
