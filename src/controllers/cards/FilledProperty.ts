@@ -85,6 +85,32 @@ class FilledPropertyController {
             .status(propertyResponse.status)
             .send(propertyResponse.detail)
     }
+
+    bulkUpdate = async (request: any, response: any): Promise<any> => {
+        const { properties } = request.body
+
+        const propertiesResponse = await this.filledPropertyService.bulkUpdate(properties)
+
+        return response
+            .status(propertiesResponse.status)
+            .send(propertiesResponse.detail)
+    }
+
+    bulkDelete = async (request: any, response: any): Promise<any> => {
+        const cardId = Number(request.params.cardId)
+
+        if (!cardId) {
+            return response.status(400).send({"detail": "Card ID is required param"})
+        }
+
+        const { properties } = request.body
+
+        const propertiesResponse = await this.filledPropertyService.bulkDelete(cardId, properties)
+
+        return response
+            .status(propertiesResponse.status)
+            .send(propertiesResponse.detail)
+    }
 }
 
 export default FilledPropertyController
