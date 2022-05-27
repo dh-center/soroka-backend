@@ -10,10 +10,10 @@ router.route('/:cardId')
     .post(controller.create)
     .delete(controller.delete)
 
-router.route('/bulk-update')
+router.route('/bulk/update')
     .patch(controller.bulkUpdate)
 
-router.route('/bulk-delete/:cardId')
+router.route('/bulk/delete/:cardId')
     .delete(controller.bulkDelete)
 
 router.route('/by-id/:propertyId')
