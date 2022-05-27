@@ -55,6 +55,40 @@ class FilledPropertyService {
         }
     }
 
+    async bulkUpdate(properties: any) {
+        const updatedProperties = []
+
+        try {
+            for (const property of properties) {
+                const updatedProperty: any = await FilledProperty.findByPk(property.id)
+
+                for (const key in property) {
+                    updatedProperty[key] = property[key]
+                }
+
+                await updatedProperty.save()
+
+                updatedProperties.push(updatedProperty)
+            }
+
+            return { detail: updatedProperties, status: 200 }
+        } catch (e) {
+            return { detail: e, status: 400 }
+        }
+    }
+
+    async bulkDelete(cardId: number, filledProperties: any) {
+        try {
+            for (const filledPropertyId of filledProperties) {
+                await FilledPropertyCard.destroy({ where: { cardId, filledPropertyId } })
+            }
+
+            return { status: 204 }
+        } catch (error) {
+            return { detail: error, status: 400 }
+        }
+    }
+
     async getByPk(propertyId: number): Promise<any> {
         try {
             const property: any = await FilledProperty.findByPk(propertyId)
