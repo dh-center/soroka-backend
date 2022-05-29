@@ -31,7 +31,7 @@ class CardService {
             cardObj.propertiesList = props
 
             cardObj.isFilled = props.every(
-                (prop: FilledProperty) => JSON.parse(prop.data).length > 0
+                (prop: FilledProperty) => prop.data && JSON.parse(prop.data).length > 0
             )
 
             cardsList.push(cardObj)
