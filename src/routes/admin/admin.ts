@@ -16,13 +16,16 @@ const FilledProperty = sequelize.model('FilledProperty')
 const CardTemplate = sequelize.model('CardTemplate')
 const Card = sequelize.model('Card')
 const FilledPropertyCard = sequelize.model('FilledPropertyCard')
+const DateCatalog = sequelize.model('DateCatalog')
+const Calendar = sequelize.model('Calendar')
 
 const adminJs = new AdminJS({
   resources: [
     User, UserRole, Organization,
     AuthorizationLink, RefreshToken,
     DataType, Property, FilledProperty,
-    CardTemplate, Card, FilledPropertyCard
+    CardTemplate, Card, FilledPropertyCard,
+    DateCatalog, Calendar
   ],
   branding: {
     companyName: 'AdminJS',
