@@ -14,4 +14,8 @@ lint:
 build:
 	docker-compose build
 
+.PHONY: migrate
+migrate:
+	docker exec -it soroka-backend npm run migrate
+
 .DEFAULT_GOAL := build
