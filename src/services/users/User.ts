@@ -24,7 +24,7 @@ class UserService {
     }
 
     async checkPassword(email: string, password: string) : Promise<any> {
-        const user = await User.findOne({ where: { email } })
+        const user = await User.scope('auth').findOne({ where: { email } })
 
         if (user) return { user: user.toJSON(), checkPassword: checkPassword(user, password) }
 
