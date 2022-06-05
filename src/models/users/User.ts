@@ -8,13 +8,23 @@ import {
     AfterCreate,
     BeforeCreate,
     BeforeUpdate,
-    ForeignKey
+    ForeignKey,
+    DefaultScope,
+    Scopes
 } from 'sequelize-typescript'
 import hashPassword from '../../utils/hashPassword'
 import AuthorizationLink from '../auth/AuthorizationLink'
 import Organization from '../organizations/Organization'
 import UserRole from './UserRole'
 
+@DefaultScope(() => ({
+    attributes: ['id', 'name', 'email', 'hasAcceptTermsOfUse', 'userRole', 'organization']
+}))
+@Scopes(() => ({
+    auth: {
+        attributes: ['id', 'email', 'password']
+    } 
+}))
 @Table
 class User extends Model {
     @AllowNull(false)
