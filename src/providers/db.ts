@@ -6,6 +6,8 @@ import CardTemplate from '../models/cards/CardTemplate'
 import DataType from '../models/cards/DataType'
 import FilledProperty from '../models/cards/FilledProperty'
 import Property from '../models/cards/Property'
+import Calendar from '../models/dates/Calendar'
+import DateCatalog from '../models/dates/DateCatalog'
 import Organization from '../models/organizations/Organization'
 import User from '../models/users/User'
 import UserRole from '../models/users/UserRole'
@@ -27,7 +29,9 @@ const models = [
     DataType, Property,
     FilledProperty, Card,
     CardTemplate,
-    FilledPropertyCard
+    FilledPropertyCard,
+    DateCatalog,
+    Calendar
 ]
 
 sequelize.addModels(models)
