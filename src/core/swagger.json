@@ -486,6 +486,38 @@
                     }
                 }
             }
+        },
+        "/dates": {
+            "get": {
+                "description": "Свойства по карточке",
+                "tags": ["dates"],
+                "parameters": [
+                    {
+                        "name": "dateStart",
+                        "in": "query",
+                        "required": true,
+                        "type": "number",
+                        "example": 2459727
+                    },
+                    {
+                        "name": "dateEnd",
+                        "in": "query",
+                        "required": true,
+                        "type": "number",
+                        "example": 2459827
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Свойства, соответствующие фильтру",
+                        "schema": {
+                            "$ref": "#/definitions/FilledPropertiesResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
