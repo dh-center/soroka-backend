@@ -8,7 +8,7 @@ const controller: CardController = new CardController()
 
 router.route('/')
     .get(passport.authenticate('jwt', { session: false }), controller.getAll)
-    .post(controller.create)
+    .post(passport.authenticate('jwt', { session: false }), controller.create)
 
 router.route('/by-id/:cardId')
     .get(controller.getByPk)

@@ -40,8 +40,13 @@ class CardService {
         return cardsList
     }
 
-    async create (cardData: any): Promise<any> {
+    async create (user: any, cardData: any): Promise<any> {
         try {
+            if (!cardData.userId && !cardData.organizationId) {
+                cardData.userId = user.id
+                cardData.organizationId = user.organization
+            }
+
             const createdCard = await Card.create(cardData)
 
             return { detail: createdCard, status: 200 }
