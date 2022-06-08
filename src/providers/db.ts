@@ -5,6 +5,7 @@ import Card, { FilledPropertyCard } from '../models/cards/Card'
 import CardTemplate from '../models/cards/CardTemplate'
 import DataType from '../models/cards/DataType'
 import FilledProperty from '../models/cards/FilledProperty'
+import GeoProperty from '../models/cards/GeoProperty'
 import Property from '../models/cards/Property'
 import Calendar from '../models/dates/Calendar'
 import DateCatalog from '../models/dates/DateCatalog'
@@ -31,7 +32,8 @@ const models = [
     CardTemplate,
     FilledPropertyCard,
     DateCatalog,
-    Calendar
+    Calendar,
+    GeoProperty
 ]
 
 sequelize.addModels(models)

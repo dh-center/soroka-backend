@@ -18,6 +18,7 @@ const Card = sequelize.model('Card')
 const FilledPropertyCard = sequelize.model('FilledPropertyCard')
 const DateCatalog = sequelize.model('DateCatalog')
 const Calendar = sequelize.model('Calendar')
+const GeoProperty = sequelize.model('GeoProperty')
 
 const adminJs = new AdminJS({
   resources: [
@@ -25,7 +26,7 @@ const adminJs = new AdminJS({
     AuthorizationLink, RefreshToken,
     DataType, Property, FilledProperty,
     CardTemplate, Card, FilledPropertyCard,
-    DateCatalog, Calendar
+    DateCatalog, Calendar, GeoProperty
   ],
   branding: {
     companyName: 'AdminJS',
