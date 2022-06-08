@@ -1,5 +1,6 @@
 import Card from "../../models/cards/Card"
 import FilledProperty from "../../models/cards/FilledProperty"
+import UserRole from "../../models/users/UserRole"
 
 class CardService {
     async getAll (user: any): Promise<any> {
@@ -9,7 +10,9 @@ class CardService {
             return []
         }
 
-        const hasPermission = ALLOWED_ROLES.includes(user.userRole.key)
+        const userRole: any = await UserRole.findByPk(user.userRole)
+
+        const hasPermission = ALLOWED_ROLES.includes(userRole.key)
 
         const filters = hasPermission ? {} : { organizationId: user.organization }
 
