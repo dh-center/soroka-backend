@@ -8,6 +8,7 @@ import cardRoutes from "./cards/Card"
 import cardTemplateRoutes from "./cards/CardTemplate"
 import organizationRoutes from "./organizations/Organization"
 import dateRoutes from "./dates/DateCatalog"
+import geoPropertyRoutes from "./cards/GeoProperty"
 
 const router: express.Router = express.Router()
 
@@ -20,5 +21,6 @@ router.use('/cards/filled-properties', filledPropertiesRoutes)
 router.use('/authorization-link', authorizationLinkRoutes)
 router.use('/organizations', organizationRoutes)
 router.use('/dates', dateRoutes)
+router.use('/geo-properties', geoPropertyRoutes)
 
 export default router
