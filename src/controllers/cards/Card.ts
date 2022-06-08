@@ -14,7 +14,7 @@ class CardController {
     }
 
     create = async (request: any, response: any) => {
-        const createdCard = await this.cardService.create(request.body)
+        const createdCard = await this.cardService.create(request.user, request.body)
 
         return response.status(createdCard.status).send(createdCard.detail)
     }
