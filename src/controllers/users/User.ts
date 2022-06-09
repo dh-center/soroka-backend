@@ -41,7 +41,7 @@ class UserController {
 
         const user: any = await this.userService.update(userId, { hasAcceptTermsOfUse })
 
-        return response.status(200).send(user.toJSON())
+        return response.status(200).send(user)
     }
 
     me = async (request: any, response: any) => {
