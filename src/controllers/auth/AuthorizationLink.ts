@@ -1,10 +1,11 @@
 import AuthorizationLinkService from "../../services/auth/AuthorizationLink"
 import User from "../../models/users/User"
+import { Request, Response } from "express"
 
 class AuthorizationLinkController {
     private authorizationLinkService: AuthorizationLinkService
 
-    get = async (request: any, response: any) => {
+    get = async (request: Request, response: Response) => {
         this.authorizationLinkService = new AuthorizationLinkService(
             request.params.uuid
         )
@@ -18,7 +19,7 @@ class AuthorizationLinkController {
         return response.status(404).send({ message: "User is not found" })
     }
 
-    setPassword = async (request: any, response: any) => {
+    setPassword = async (request: Request, response: Response) => {
         const { password, rePassword } = request.body
 
         if (password !== rePassword) {

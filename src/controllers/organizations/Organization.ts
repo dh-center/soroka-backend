@@ -1,4 +1,5 @@
 import OrganizationService from "../../services/organizations/Organization"
+import { Request, Response } from "express"
 
 class OrganizationController {
     private organizationService: OrganizationService
@@ -7,7 +8,7 @@ class OrganizationController {
         this.organizationService = new OrganizationService()
     }
 
-    getAll = async (request: any, response: any) => {
+    getAll = async (request: Request, response: Response) => {
         const organizationsResponse = await this.organizationService.getAll()
 
         return response
@@ -15,7 +16,7 @@ class OrganizationController {
             .send(organizationsResponse.detail)
     }
 
-    getOwnersByOrganizationId = async (request: any, response: any) => {
+    getOwnersByOrganizationId = async (request: Request, response: Response) => {
         const organizationId = Number(request.params.organizationId)
 
         const ownersResponse = await this.organizationService

@@ -1,4 +1,5 @@
 import FilledPropertyService from "../../services/cards/FilledProperty"
+import { Request, Response } from "express"
 
 class FilledPropertyController {
     private filledPropertyService: FilledPropertyService
@@ -7,22 +8,22 @@ class FilledPropertyController {
         this.filledPropertyService = new FilledPropertyService()
     }
 
-    getAll = async (request: any, response: any) => {
-        const id = Number(request.params.cardId)
+    getAll = async (request: Request, response: Response) => {
+        const cardId = Number(request.params.cardId)
 
-        if (!id) {
+        if (!cardId) {
             return response.status(400).send({"detail": "Card ID is required param"})
         }
 
-        const filledPropertiesResponse = await this.filledPropertyService.getAll(id)
+        const filledPropertiesResponse = await this.filledPropertyService.getAll(cardId)
 
         return response
             .status(filledPropertiesResponse.status)
             .send(filledPropertiesResponse.detail)
     }
 
-    create = async (request: any, response: any) => {
-        const { cardId } = request.params
+    create = async (request: Request, response: Response) => {
+        const cardId = Number(request.params.cardId)
 
         if (!cardId) {
             return response.status(400).send({"detail": "Card ID is required param"})
@@ -37,7 +38,7 @@ class FilledPropertyController {
             .send(createdPropertyResponse.detail)
     }
 
-    delete = async (request: any, response: any) => {
+    delete = async (request: Request, response: Response) => {
         const cardId = Number(request.params.cardId)
 
         if (!cardId) {
@@ -55,7 +56,7 @@ class FilledPropertyController {
             .send(deletedPropertyResponse.detail)
     }
 
-    update = async (request: any, response: any): Promise<any> => {
+    update = async (request: Request, response: Response): Promise<any> => {
         const propertyId = Number(request.params.propertyId)
 
         if (propertyId > 0 && !propertyId) {
@@ -72,7 +73,7 @@ class FilledPropertyController {
             .send(updatedPropertyResponse.detail)
     }
 
-    getByPk = async (request: any, response: any): Promise<any> => {
+    getByPk = async (request: Request, response: Response): Promise<any> => {
         const propertyId = Number(request.params.propertyId)
 
         if (propertyId > 0 && !propertyId) {
@@ -86,7 +87,7 @@ class FilledPropertyController {
             .send(propertyResponse.detail)
     }
 
-    bulkUpdate = async (request: any, response: any): Promise<any> => {
+    bulkUpdate = async (request: Request, response: Response): Promise<any> => {
         const { properties } = request.body
 
         const propertiesResponse = await this.filledPropertyService.bulkUpdate(properties)
@@ -96,7 +97,7 @@ class FilledPropertyController {
             .send(propertiesResponse.detail)
     }
 
-    bulkDelete = async (request: any, response: any): Promise<any> => {
+    bulkDelete = async (request: Request, response: Response): Promise<any> => {
         const cardId = Number(request.params.cardId)
 
         if (!cardId) {
