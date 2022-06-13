@@ -1,6 +1,6 @@
 import process from "process"
 
-export default {
+const dbConfig = {
     development: {
         username: process.env.POSTGRES_USER || 'soroka',
         password: process.env.POSTGRES_PASSWORD || 'soroka',
@@ -26,3 +26,5 @@ export default {
         dialect: process.env.DB_DIALECT
     }
 }
+
+export default dbConfig
