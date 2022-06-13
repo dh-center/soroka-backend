@@ -1,4 +1,5 @@
 import DataTypeService from "../../services/cards/DataType"
+import { Request, Response } from "express"
 
 class DataTypeController {
     private dataTypeService: DataTypeService
@@ -7,7 +8,7 @@ class DataTypeController {
         this.dataTypeService = new DataTypeService()
     }
 
-    getAll = async (request: any, response: any) => {
+    getAll = async (request: Request, response: Response) => {
         const dataTypeResponse = await this.dataTypeService.getAll()
 
         return response.status(dataTypeResponse.status).send(dataTypeResponse.detail)

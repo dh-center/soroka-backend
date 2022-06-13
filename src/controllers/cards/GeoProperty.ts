@@ -1,4 +1,5 @@
 import GeoPropertyService from "../../services/cards/GeoProperty"
+import { Request, Response } from "express"
 
 class GeoPropertyController {
     private GeoPropertyService: GeoPropertyService
@@ -7,19 +8,19 @@ class GeoPropertyController {
         this.GeoPropertyService = new GeoPropertyService()
     }
 
-    getAll = async (request: any, response: any) => {
+    getAll = async (request: Request, response: Response) => {
         const GeoPropertyResponse = await this.GeoPropertyService.getAll()
 
         return response.status(GeoPropertyResponse.status).send(GeoPropertyResponse.detail)
     }
 
-    create = async (request: any, response: any) => {
+    create = async (request: Request, response: Response) => {
         const GeoPropertyResponse = await this.GeoPropertyService.create(request.body)
 
         return response.status(GeoPropertyResponse.status).send(GeoPropertyResponse.detail)
     }
 
-    getByPk = async (request: any, response: any) => {
+    getByPk = async (request: Request, response: Response) => {
         const propertyId = Number(request.params.propertyId)
 
         const GeoPropertyResponse = await this.GeoPropertyService.getByPk(propertyId)
@@ -27,7 +28,7 @@ class GeoPropertyController {
         return response.status(GeoPropertyResponse.status).send(GeoPropertyResponse.detail) 
     }
 
-    update = async (request: any, response: any) => {
+    update = async (request: Request, response: Response) => {
         const propertyId = Number(request.params.propertyId)
 
         const GeoPropertyResponse = await this.GeoPropertyService.update(propertyId, request.body)

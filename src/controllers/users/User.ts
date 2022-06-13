@@ -4,6 +4,7 @@ import UserError from '../../errors/users/User'
 import jwt from 'jsonwebtoken'
 import { jwtOptions } from '../../middlewares/passport'
 import RefreshTokenService from '../../services/auth/RefreshToken'
+import { Request, Response } from "express"
 
 class UserController {
     private userService: UserService
@@ -12,7 +13,7 @@ class UserController {
         this.userService = new UserService()
     }
 
-    get = async (request: any, response: any) => {
+    get = async (request: Request, response: Response) => {
         try {
             const user: User | UserError = await this.userService.getById(
                 Number(request.params.id)
@@ -24,7 +25,7 @@ class UserController {
         }
     }
 
-    post = async (request: any, response: any) => {
+    post = async (request: Request, response: Response) => {
         const { body } = request
 
         try {
@@ -36,7 +37,7 @@ class UserController {
         }
     }
 
-    acceptTerms = async (request: any, response: any) => {
+    acceptTerms = async (request: Request, response: Response) => {
         const { hasAcceptTermsOfUse, userId } = request.body
 
         const user: any = await this.userService.update(userId, { hasAcceptTermsOfUse })
@@ -44,11 +45,11 @@ class UserController {
         return response.status(200).send(user)
     }
 
-    me = async (request: any, response: any) => {
+    me = async (request: Request, response: Response) => {
         response.send(request.user)
     }
 
-    auth = async (request: any, response: any) => {
+    auth = async (request: Request, response: Response) => {
         const { body } = request
 
         const { email, password } = body
@@ -76,7 +77,7 @@ class UserController {
         }
     }
 
-    refreshToken = async (request: any, response: any) => {
+    refreshToken = async (request: Request, response: Response) => {
         const { body } = request
 
         const { refreshToken } = body
