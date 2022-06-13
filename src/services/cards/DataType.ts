@@ -1,6 +1,7 @@
 import DataType from '../../models/cards/DataType'
+import { IDataTypeService } from '../../interfaces'
 
-class DataTypeService {
+class DataTypeService implements IDataTypeService {
     async getAll(): Promise<any> {
         const dataTypes = await DataType.findAll()
 

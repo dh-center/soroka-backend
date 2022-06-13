@@ -1,16 +1,15 @@
-import AuthorizationLinkService from "../../services/auth/AuthorizationLink"
 import User from "../../models/users/User"
 import { Request, Response } from "express"
+import { IAuthorizationLinkController, IAuthorizationLinkService } from "../../interfaces"
 
-class AuthorizationLinkController {
-    private authorizationLinkService: AuthorizationLinkService
+class AuthorizationLinkController implements IAuthorizationLinkController {
+    constructor(private authorizationLinkService: IAuthorizationLinkService) {
+        this.authorizationLinkService = authorizationLinkService
+    }
 
     get = async (request: Request, response: Response) => {
-        this.authorizationLinkService = new AuthorizationLinkService(
-            request.params.uuid
-        )
-
-        const user: User | null = await this.authorizationLinkService.getUser()
+        const user: User | null = await this.authorizationLinkService
+            .getUser(request.params.uuid)
 
         if (user) {
             return response.send(user)
@@ -26,11 +25,8 @@ class AuthorizationLinkController {
             return response.status(400).send({ message: "Passwords do not match" })
         }
 
-        this.authorizationLinkService = new AuthorizationLinkService(
-            request.params.uuid
-        )
-
-        const user: User | null = await this.authorizationLinkService.getUserInstance()
+        const user: User | null = await this.authorizationLinkService
+            .getUserInstance(request.params.uuid)
 
         if (user) {
             user.password = password

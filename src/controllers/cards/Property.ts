@@ -1,11 +1,9 @@
-import PropertyService from "../../services/cards/Property"
 import { Request, Response } from "express"
+import { IPropertyController, IPropertyService } from "../../interfaces"
 
-class PropertyController {
-    private propertyService: PropertyService
-
-    constructor() {
-        this.propertyService = new PropertyService()
+class PropertyController implements IPropertyController {
+    constructor(private propertyService: IPropertyService) {
+        this.propertyService = propertyService
     }
 
     getAll = async (request: Request, response: Response) => {

@@ -1,14 +1,18 @@
 import express from "express"
-import OrganizationController from "../../../controllers/organizations/Organization"
+import { IOrganizationController } from "../../../interfaces"
 
-const router: express.Router = express.Router()
+function getRouter(
+    controller: IOrganizationController
+) {
+    const router: express.Router = express.Router()
 
-const controller: OrganizationController = new OrganizationController()
+    router.route('/')
+        .get(controller.getAll)
 
-router.route('/')
-    .get(controller.getAll)
+    router.route('/owners/:organizationId')
+        .get(controller.getOwnersByOrganizationId)
+    
+    return router
+}
 
-router.route('/owners/:organizationId')
-    .get(controller.getOwnersByOrganizationId)
-
-export default router
+export default getRouter

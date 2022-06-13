@@ -1,7 +1,8 @@
+import { IFilledPropertyService } from '../../interfaces'
 import Card, { FilledPropertyCard } from '../../models/cards/Card'
 import FilledProperty from '../../models/cards/FilledProperty'
 
-class FilledPropertyService {
+class FilledPropertyService implements IFilledPropertyService {
     async getAll(cardId: number): Promise<any> {
         try {
             const card: any = await Card.findByPk(cardId)
