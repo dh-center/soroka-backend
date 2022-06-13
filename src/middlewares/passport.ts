@@ -1,17 +1,14 @@
 import passport from 'passport'
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt'
 import UserService from '../services/users/User'
-import configParser from "../utils/configParser"
-import path from 'path'
 
-const configPath = path.resolve(__dirname, "../configs/settings.ini")
-const config: any = configParser(configPath, "JWT")
+const ACCESS_TOKEN_LIFETIME = process.env.ACCESS_TOKEN_LIFETIME as unknown as number || 300000
 
 const opts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: 'secret',
     jsonWebTokenOptions: {
-        maxAge: `${config.accessTokenLifetime}ms`
+        maxAge: `${ACCESS_TOKEN_LIFETIME}ms`
     }
 }
 
