@@ -1,12 +1,17 @@
 import express from "express"
-import AuthorizationLinkController from "../../../controllers/auth/AuthorizationLink"
+import { IAuthorizationLinkController } from "../../../interfaces"
 
-const router: express.Router = express.Router()
+function getRouter(
+    controller: IAuthorizationLinkController
+) {
 
-const controller: AuthorizationLinkController = new AuthorizationLinkController()
+    const router: express.Router = express.Router()
 
-router.route('/:uuid')
-    .get(controller.get)
-    .post(controller.setPassword)
+    router.route('/:uuid')
+        .get(controller.get)
+        .post(controller.setPassword)
+    
+    return router
+}
 
-export default router
+export default getRouter

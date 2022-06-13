@@ -1,8 +1,9 @@
 import FilledProperty from "../../models/cards/FilledProperty"
 import DateCatalog from "../../models/dates/DateCatalog"
 import { Op } from 'sequelize'
+import { IDateCatalogService } from "../../interfaces"
 
-class DateCatalogService {
+class DateCatalogService implements IDateCatalogService {
     async list(dateStart: number, dateEnd: number) {
         const filteredProperties = await DateCatalog.scope('properties').findAll({
             where: {

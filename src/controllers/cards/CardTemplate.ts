@@ -1,11 +1,9 @@
-import CardTemplateService from "../../services/cards/CardTemplate"
 import { Request, Response } from "express"
+import { ICardTemplateController, ICardTemplateService } from "../../interfaces"
 
-class CardTemplateController {
-    private cardTemplateService: CardTemplateService
-
-    constructor () {
-        this.cardTemplateService = new CardTemplateService()
+class CardTemplateController implements ICardTemplateController {
+    constructor (private cardTemplateService: ICardTemplateService) {
+        this.cardTemplateService = cardTemplateService
     }
 
     getAll = async (request: Request, response: Response) => {

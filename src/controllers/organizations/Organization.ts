@@ -1,11 +1,9 @@
-import OrganizationService from "../../services/organizations/Organization"
 import { Request, Response } from "express"
+import { IOrganizationController, IOrganizationService } from "../../interfaces"
 
-class OrganizationController {
-    private organizationService: OrganizationService
-
-    constructor () {
-        this.organizationService = new OrganizationService()
+class OrganizationController implements IOrganizationController {
+    constructor (private organizationService: IOrganizationService) {
+        this.organizationService = organizationService
     }
 
     getAll = async (request: Request, response: Response) => {

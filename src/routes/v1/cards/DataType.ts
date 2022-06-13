@@ -1,11 +1,15 @@
 import express from "express"
-import DataTypeController from "../../../controllers/cards/DataType"
+import { IDataTypeController } from "../../../interfaces"
 
-const router: express.Router = express.Router()
+function getRouter(
+    controller: IDataTypeController
+) {
+    const router: express.Router = express.Router()
 
-const controller: DataTypeController = new DataTypeController()
+    router.route('/')
+        .get(controller.getAll)
 
-router.route('/')
-    .get(controller.getAll)
+    return router
+}
 
-export default router
+export default getRouter

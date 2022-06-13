@@ -1,21 +1,19 @@
-import GeoPropertyService from "../../services/cards/GeoProperty"
 import { Request, Response } from "express"
+import { IGeoPropertyController, IGeoPropertyService } from "../../interfaces"
 
-class GeoPropertyController {
-    private GeoPropertyService: GeoPropertyService
-
-    constructor() {
-        this.GeoPropertyService = new GeoPropertyService()
+class GeoPropertyController implements IGeoPropertyController {
+    constructor(private geoPropertyService: IGeoPropertyService) {
+        this.geoPropertyService = geoPropertyService
     }
 
     getAll = async (request: Request, response: Response) => {
-        const GeoPropertyResponse = await this.GeoPropertyService.getAll()
+        const GeoPropertyResponse = await this.geoPropertyService.getAll()
 
         return response.status(GeoPropertyResponse.status).send(GeoPropertyResponse.detail)
     }
 
     create = async (request: Request, response: Response) => {
-        const GeoPropertyResponse = await this.GeoPropertyService.create(request.body)
+        const GeoPropertyResponse = await this.geoPropertyService.create(request.body)
 
         return response.status(GeoPropertyResponse.status).send(GeoPropertyResponse.detail)
     }
@@ -23,7 +21,7 @@ class GeoPropertyController {
     getByPk = async (request: Request, response: Response) => {
         const propertyId = Number(request.params.propertyId)
 
-        const GeoPropertyResponse = await this.GeoPropertyService.getByPk(propertyId)
+        const GeoPropertyResponse = await this.geoPropertyService.getByPk(propertyId)
 
         return response.status(GeoPropertyResponse.status).send(GeoPropertyResponse.detail) 
     }
@@ -31,7 +29,7 @@ class GeoPropertyController {
     update = async (request: Request, response: Response) => {
         const propertyId = Number(request.params.propertyId)
 
-        const GeoPropertyResponse = await this.GeoPropertyService.update(propertyId, request.body)
+        const GeoPropertyResponse = await this.geoPropertyService.update(propertyId, request.body)
 
         return response.status(GeoPropertyResponse.status).send(GeoPropertyResponse.detail) 
     }

@@ -1,11 +1,15 @@
-import DateCatalogController from '../../../controllers/dates/DateCatalog'
 import express from "express"
+import { IDateCatalogController } from '../../../interfaces'
 
-const router: express.Router = express.Router()
+function getRouter(
+    controller: IDateCatalogController
+) {
+    const router: express.Router = express.Router()
 
-const controller: DateCatalogController = new DateCatalogController()
+    router.route('/')
+        .get(controller.list)
+    
+    return router
+}
 
-router.route('/')
-    .get(controller.list)
-
-export default router
+export default getRouter

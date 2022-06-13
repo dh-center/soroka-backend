@@ -9,18 +9,23 @@ import cardTemplateRoutes from "./cards/CardTemplate"
 import organizationRoutes from "./organizations/Organization"
 import dateRoutes from "./dates/DateCatalog"
 import geoPropertyRoutes from "./cards/GeoProperty"
+import { ControllerContainer } from "../../types"
 
-const router: express.Router = express.Router()
+function getRouter(container: ControllerContainer) {
+    const router: express.Router = express.Router()
 
-router.use('/users', userRoutes)
-router.use('/cards', cardRoutes)
-router.use('/cards/templates', cardTemplateRoutes)
-router.use('/cards/data-types', dataTypeRoutes)
-router.use('/cards/properties', propertyRoutes)
-router.use('/cards/filled-properties', filledPropertiesRoutes)
-router.use('/authorization-link', authorizationLinkRoutes)
-router.use('/organizations', organizationRoutes)
-router.use('/dates', dateRoutes)
-router.use('/geo-properties', geoPropertyRoutes)
+    router.use('/users', userRoutes(container.userController))
+    router.use('/cards', cardRoutes(container.cardController))
+    router.use('/cards/templates', cardTemplateRoutes(container.cardTemplateController))
+    router.use('/cards/data-types', dataTypeRoutes(container.dataTypeController))
+    router.use('/cards/properties', propertyRoutes(container.propertyController))
+    router.use('/cards/filled-properties', filledPropertiesRoutes(container.filledPropertyContoller))
+    router.use('/authorization-link', authorizationLinkRoutes(container.authorizationLinkController))
+    router.use('/organizations', organizationRoutes(container.organizationController))
+    router.use('/dates', dateRoutes(container.dateController))
+    router.use('/geo-properties', geoPropertyRoutes(container.geoPropertyController))
 
-export default router
+    return router
+}
+
+export default getRouter

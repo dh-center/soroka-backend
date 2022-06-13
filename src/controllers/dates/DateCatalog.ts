@@ -1,11 +1,9 @@
 import { Request, Response } from "express"
-import DateCatalogService from '../../services/dates/DateCatalog'
+import { IDateCatalogController, IDateCatalogService } from "../../interfaces"
 
-class DateCatalogController {
-    private dateCatalogService: DateCatalogService
-
-    constructor() {
-        this.dateCatalogService = new DateCatalogService()
+class DateCatalogController implements IDateCatalogController {
+    constructor(private dateCatalogService: IDateCatalogService) {
+        this.dateCatalogService = dateCatalogService
     }
 
     list = async (request: Request, response: Response) => {

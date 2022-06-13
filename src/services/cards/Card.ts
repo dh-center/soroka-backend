@@ -1,8 +1,9 @@
+import { ICardService } from "../../interfaces"
 import Card from "../../models/cards/Card"
 import FilledProperty from "../../models/cards/FilledProperty"
 import UserRole from "../../models/users/UserRole"
 
-class CardService {
+class CardService implements ICardService {
     async getAll (user: any): Promise<any> {
         const ALLOWED_ROLES = ['ADMIN', 'EDITOR']
 

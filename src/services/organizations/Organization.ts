@@ -1,7 +1,8 @@
+import { IOrganizationService } from "../../interfaces"
 import Organization from "../../models/organizations/Organization"
 import User from "../../models/users/User"
 
-class OrganizationService {
+class OrganizationService implements IOrganizationService {
     async getAll(): Promise<any> {
         const organizations = await Organization.findAll()
 

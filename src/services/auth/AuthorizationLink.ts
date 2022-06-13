@@ -1,16 +1,11 @@
+import { IAuthorizationLinkService } from "../../interfaces"
 import AuthorizationLink from "../../models/auth/AuthorizationLink"
 import User from "../../models/users/User"
 
 
-class AuthorizationLinkService {
-    private token: string
-
-    constructor(token: string) {
-        this.token = token
-    }
-
-    getUser = async () : Promise<any> => {
-        const user = await this.getUserInstance()
+class AuthorizationLinkService implements IAuthorizationLinkService {
+    getUser = async (token: string) : Promise<any> => {
+        const user = await this.getUserInstance(token)
 
         if (user) {
             return user.toJSON()
@@ -19,8 +14,7 @@ class AuthorizationLinkService {
         return null
     }
 
-    getUserInstance = async() : Promise<any> => {
-        const token = this.token
+    getUserInstance = async(token: string) : Promise<any> => {
         const authorizationLink = await AuthorizationLink.findOne({ where: { token } })
         
         if (authorizationLink) {
