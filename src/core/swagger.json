@@ -573,7 +573,99 @@
                     }
                 }
             }
+        },
+        "/geo-properties": {
+            "get": {
+                "description": "Список всех гео-свойств",
+                "tags": ["geo-properties"],
+                "responses": {
+                    "200": {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Гео-свойства",
+                        "schema": {
+                            "$ref": "#/definitions/GeoPropertyResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Создание нового гео-свойства",
+                "tags": ["geo-properties"],
+                "parameters": [
+                    {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Данные для создания гео-свойства",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/GeoPropertyData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Гео-свойство",
+                        "schema": {
+                            "$ref": "#/definitions/GeoPropertyResponse"
+                        }
+                    }
+                }
+            }     
+        },
+        "/geo-properties/by-id/{id}": {
+            "get": {
+                "description": "Гео-свойство по id",
+                "tags": ["geo-properties"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "number",
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Гео-свойства",
+                        "schema": {
+                            "$ref": "#/definitions/GeoPropertyResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Обновление гео-свойства по id",
+                "tags": ["geo-properties"],
+                "parameters": [
+                    {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Данные для обновления гео-свойства",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/GeoPropertyData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "name": "obj",
+                        "in": "body",
+                        "description": "Гео-свойство",
+                        "schema": {
+                            "$ref": "#/definitions/GeoPropertyResponse"
+                        }
+                    }
+                }
+            }     
         }
+
     },
     "definitions": {
         "CreateUser": {
@@ -797,6 +889,12 @@
                     "type": "string",
                     "example": "test data"
                 },
+                "geoProperty": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/GeoPropertyResponse"
+                    }
+                },
                 "createdAt": {
                     "type": "string",
                     "example": "2022-04-27T11:16:18.771Z"
@@ -950,6 +1048,56 @@
                     "example": 1
                 }
             }
+        },
+        "GeoPropertyData": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "location name"
+                },
+                "filledPropertyId": {
+                    "type": "number",
+                    "example": 1
+                },
+                "location": {
+                    "type": "object",
+                    "example": {
+                        "type": "Point",
+                        "coordinates": [
+                            -78.984722,
+                            40.807222
+                        ]
+                    }
+                }
+            }
+        },
+        "GeoPropertyResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "location name"
+                },
+                "filledPropertyId": {
+                    "type": "number",
+                    "example": 1
+                },
+                "location": {
+                    "type": "object",
+                    "example": {
+                        "type": "Point",
+                        "coordinates": [
+                            -78.984722,
+                            40.807222
+                        ]
+                    }
+                }
+            }   
         }
     }
 }
