@@ -15,7 +15,6 @@ class GeoProperty extends Model {
     @Column(DT.GEOMETRY('POINT'))
     location: string
 
-    @AllowNull(false)
     @Column
     name: string
 
