@@ -1,4 +1,5 @@
 import CardTemplateService from "../../services/cards/CardTemplate"
+import { Request, Response } from "express"
 
 class CardTemplateController {
     private cardTemplateService: CardTemplateService
@@ -7,13 +8,13 @@ class CardTemplateController {
         this.cardTemplateService = new CardTemplateService()
     }
 
-    getAll = async (request: any, response: any) => {
+    getAll = async (request: Request, response: Response) => {
         const cardsResponse = await this.cardTemplateService.getAll()
 
         return response.status(cardsResponse.status).send(cardsResponse.detail)
     }
 
-    getByPk = async (request: any, response: any) => {
+    getByPk = async (request: Request, response: Response) => {
         const id = Number(request.params.id)
 
         const cardResponse = await this.cardTemplateService.getByPk(id)
