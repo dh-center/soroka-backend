@@ -8,26 +8,20 @@ import sequelize from "../providers/db"
 import { Sequelize } from 'sequelize-typescript'
 import bodyParser from "body-parser"
 import passport from "../middlewares/passport"
-import configParser from "../utils/configParser"
-import path from 'path'
 
-const configPath = path.resolve(__dirname, "../configs/settings.ini")
-const config: any = configParser(configPath, "SERVER")
 
 class App {
-    public port: number
-    public host: string
+    public port: string
   
     private app: express.Application
     private server: Server
     private sequelize: Sequelize
 
-    constructor(port = 8000, host = "localhost") {
-        this.port = config.port || port
-        this.host = config.host || host
+    constructor(port = '8000') {
+        this.port = process.env.SERVER_PORT || port
     
         this.app = this.createApp()
-        this.server = this.createServer()
+        this.server = createServer(this.app)
         this.sequelize = sequelize
     }
     
@@ -41,12 +35,6 @@ class App {
         app.use('/swagger', docsRoutes)
     
         return app
-      }
-    
-    private createServer(): Server {
-        const server = createServer(this.app)
-    
-        return server
     }
 
     public start(): void {
