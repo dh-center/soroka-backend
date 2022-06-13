@@ -6,13 +6,19 @@ import {
     ForeignKey,
     BelongsToMany,
     DataType as DT,
-    BeforeUpdate
+    BeforeUpdate,
+    HasMany,
+    DefaultScope
 } from 'sequelize-typescript'
 import Card, { FilledPropertyCard } from './Card'
 import DataType from './DataType'
 import DateCatalog from '../dates/DateCatalog'
 import Property from './Property'
+import GeoProperty from './GeoProperty'
 
+@DefaultScope(() => ({
+    include: [GeoProperty]
+}))
 @Table
 class FilledProperty extends Model {
     @AllowNull(false)
@@ -29,6 +35,9 @@ class FilledProperty extends Model {
 
     @BelongsToMany(() => Card, () => FilledPropertyCard)
     cardsList: Card[]
+
+    @HasMany(() => GeoProperty)
+    geoProperty: GeoProperty
 
     @BeforeUpdate
     static async onJulianDateChanged(instance: FilledProperty) {

@@ -4,7 +4,8 @@ import {
     Model,
     AllowNull,
     ForeignKey,
-    DataType as DT
+    DataType as DT,
+    BelongsTo
 } from 'sequelize-typescript'
 import FilledProperty from './FilledProperty'
 
@@ -22,6 +23,9 @@ class GeoProperty extends Model {
     @ForeignKey(() => FilledProperty)
     @Column
     filledPropertyId: number
+
+    @BelongsTo(() => FilledProperty)
+    filledProperty: FilledProperty
 }
 
 export default GeoProperty
