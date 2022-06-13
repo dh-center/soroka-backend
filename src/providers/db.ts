@@ -12,15 +12,20 @@ import DateCatalog from '../models/dates/DateCatalog'
 import Organization from '../models/organizations/Organization'
 import User from '../models/users/User'
 import UserRole from '../models/users/UserRole'
+import { Dialect } from 'sequelize/types'
+
+const dbConfig = {
+    database: process.env.POSTGRES_DB as string || 'soroka',
+    username: process.env.POSTGRES_USER as string || 'soroka',
+    host: process.env.DB_HOST as string || 'db',
+    dialect: process.env.DB_DIALECT as Dialect || 'postgres',
+    password: process.env.POSTGRES_PASSWORD as string || 'soroka',
+    port: process.env.DB_PORT as unknown as number || 5432
+}
 
 const sequelize = new Sequelize({
-  database: 'soroka',
-  dialect: 'postgres',
-  port: 5432,
-  host: 'db',
-  username: 'soroka',
-  password: 'soroka',
-  logging: console.log,
+    ...dbConfig,
+    logging: console.log,
 })
 
 const models = [
@@ -39,12 +44,11 @@ const models = [
 sequelize.addModels(models)
 
 sequelize
-  .sync()
-  .then(() => {
-     //something here
-     console.log('synced models')
-  })
-  .catch((e) => console.log(e));
+    .sync()
+    .then(() => {
+        console.log('synced models')
+    })
+    .catch((e) => console.log(e));
 
 async function testConnection() {
     try {

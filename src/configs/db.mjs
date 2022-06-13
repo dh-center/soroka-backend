@@ -1,31 +1,28 @@
-import fs from 'fs'
-import ini from 'ini'
-const configFile = fs.readFileSync('src/configs/settings.ini', 'utf-8')
-const config = ini.parse(configFile)['DATABASE']
+import process from "process"
 
 export default {
     development: {
-        username: config.username,
-        password: config.password,
-        database: config.database,
-        host: config.host,
-        port: config.port,
-        dialect: config.dialect
+        username: process.env.POSTGRES_USER || 'soroka',
+        password: process.env.POSTGRES_PASSWORD || 'soroka',
+        database: process.env.POSTGRES_DATABASE || 'soroka',
+        host: process.env.DB_HOST || 'db',
+        port: process.env.DB_PORT || 5432,
+        dialect: process.env.DB_DIALECT || 'postgres'
     },
     test: {
-        username: config.username,
-        password: config.password,
-        database: config.database,
-        host: config.host,
-        port: config.port,
-        dialect: config.dialect
+        username: process.env.POSTGRES_USER,
+        password: process.env.POSTGRES_PASSWORD,
+        database: process.env.POSTGRES_DATABASE,
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        dialect: process.env.DB_DIALECT
     },
     production: {
-        username: config.username,
-        password: config.password,
-        database: config.database,
-        host: config.host,
-        port: config.port,
-        dialect: config.dialect
+        username: process.env.POSTGRES_USER,
+        password: process.env.POSTGRES_PASSWORD,
+        database: process.env.POSTGRES_DATABASE,
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        dialect: process.env.DB_DIALECT
     }
 }
