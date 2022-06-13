@@ -1,11 +1,9 @@
-import FilledPropertyService from "../../services/cards/FilledProperty"
 import { Request, Response } from "express"
+import { IFilledPropertyController, IFilledPropertyService } from "../../interfaces"
 
-class FilledPropertyController {
-    private filledPropertyService: FilledPropertyService
-
-    constructor() {
-        this.filledPropertyService = new FilledPropertyService()
+class FilledPropertyController implements IFilledPropertyController {
+    constructor(private filledPropertyService: IFilledPropertyService) {
+        this.filledPropertyService = filledPropertyService
     }
 
     getAll = async (request: Request, response: Response) => {

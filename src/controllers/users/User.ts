@@ -1,16 +1,14 @@
 import User from '../../models/users/User'
-import UserService from '../../services/users/User'
 import UserError from '../../errors/users/User'
 import jwt from 'jsonwebtoken'
 import { jwtOptions } from '../../middlewares/passport'
 import RefreshTokenService from '../../services/auth/RefreshToken'
 import { Request, Response } from "express"
+import { IUserController, IUserService } from '../../interfaces'
 
-class UserController {
-    private userService: UserService
-
-    constructor() {
-        this.userService = new UserService()
+class UserController implements IUserController {
+    constructor(private userService: IUserService) {
+        this.userService = userService
     }
 
     get = async (request: Request, response: Response) => {

@@ -1,6 +1,7 @@
+import { IPropertyService } from '../../interfaces'
 import Property from '../../models/cards/Property'
 
-class PropertyService {
+class PropertyService implements IPropertyService {
     async getAll(): Promise<any> {
         const properties = await Property.findAll()
 

@@ -1,8 +1,9 @@
 import CardTemplate from "../../models/cards/CardTemplate"
 import Property from '../../models/cards/Property'
 import { Op } from 'sequelize'
+import { ICardTemplateService } from "../../interfaces"
 
-class CardTemplateService {
+class CardTemplateService implements ICardTemplateService {
     async getAll(): Promise<any> {
         const cards: any = await CardTemplate.findAll()
 

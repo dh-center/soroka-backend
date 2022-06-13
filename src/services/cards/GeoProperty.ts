@@ -1,6 +1,7 @@
+import { IGeoPropertyService } from '../../interfaces'
 import GeoProperty from '../../models/cards/GeoProperty'
 
-class GeoPropertyService {
+class GeoPropertyService implements IGeoPropertyService {
     async getAll(): Promise<any> {
         const geoProperties = await GeoProperty.findAll()
 

@@ -1,8 +1,9 @@
 import User from '../../models/users/User'
 import UserError from '../../errors/users/User'
 import checkPassword from '../../utils/checkPassword'
+import { IUserService } from '../../interfaces'
 
-class UserService {
+class UserService implements IUserService {
     async getById(id: number) : Promise<User> {
         const user = await User.findByPk(id)
 

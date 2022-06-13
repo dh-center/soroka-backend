@@ -1,11 +1,9 @@
-import DataTypeService from "../../services/cards/DataType"
 import { Request, Response } from "express"
+import { IDataTypeController, IDataTypeService } from "../../interfaces"
 
-class DataTypeController {
-    private dataTypeService: DataTypeService
-
-    constructor() {
-        this.dataTypeService = new DataTypeService()
+class DataTypeController implements IDataTypeController {
+    constructor(private dataTypeService: IDataTypeService) {
+        this.dataTypeService = dataTypeService
     }
 
     getAll = async (request: Request, response: Response) => {
