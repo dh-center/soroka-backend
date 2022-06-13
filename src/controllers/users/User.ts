@@ -49,6 +49,20 @@ class UserController {
         response.send(request.user)
     }
 
+    private signJwt = async (user: User): Promise<
+        { accessToken: string, refreshToken: string } | null
+    > => {
+        const payload = { id: user.id }
+
+        const accessToken = jwt.sign(payload, jwtOptions.secretOrKey)
+
+        const refreshTokenService = new RefreshTokenService(user)
+
+        const refreshToken = await refreshTokenService.generateRefreshToken()
+
+        return { accessToken, refreshToken }
+    } 
+
     auth = async (request: Request, response: Response) => {
         const { body } = request
 
@@ -58,22 +72,18 @@ class UserController {
             const { user, checkPassword } = await this.userService.checkPassword(email, password)
 
             if (checkPassword) {
-                const payload = { id: user.id }
+                const tokens = await this.signJwt(user)
 
-                console.log('payload is', payload)
+                if (tokens) {
+                    const { accessToken, refreshToken } = tokens
 
-                const accessToken = jwt.sign(payload, jwtOptions.secretOrKey)
-
-                const refreshTokenService = new RefreshTokenService(user)
-
-                const refreshToken = await refreshTokenService.generateRefreshToken()
-
-                response.send({ accessToken, refreshToken })
-            } else {
-                throw new Error('Login or password is incorrect!')
+                    response.send({ accessToken, refreshToken })
+                }
             }
+
+            response.status(401).send({ error: 'Login or password is incorrect!' })
         } catch (e: any) {
-            response.status(401).send({ "error": e.message })
+            response.status(500).send({ error: e })
         }
     }
 
@@ -91,20 +101,18 @@ class UserController {
             if (!isExpired && userId) {
                 const user = await this.userService.getById(userId)
 
-                const payload = { id: user.id }
+                const tokens = await this.signJwt(user)
 
-                const accessToken = jwt.sign(payload, jwtOptions.secretOrKey)
+                if (tokens) {
+                    const { accessToken, refreshToken } = tokens
 
-                const refreshTokenService = new RefreshTokenService(user)
-
-                const refreshToken = await refreshTokenService.generateRefreshToken()
-
-                response.send({ accessToken, refreshToken })
-            } else {
-                throw new Error('Invalid credentials')
+                    response.send({ accessToken, refreshToken })
+                }
             }
+
+            response.status(401).send({ error: 'Invalid credentials' })
         } catch (e) {
-            response.status(401).send({ 'error': 'Invalid credentials' })
+            response.status(500).send({ error: e })
         }
     }
 }
