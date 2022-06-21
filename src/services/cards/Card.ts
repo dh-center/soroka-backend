@@ -27,9 +27,9 @@ class CardService implements ICardService {
             let props = await card.getProperties()
 
             props = props.map((prop: FilledProperty) => {
-                const { id, name, propertyId, data } = prop
+                const { id, propertyId, data } = prop
 
-                return { id, name, propertyId, data }
+                return { id, propertyId, data }
             })
 
             cardObj.propertiesList = props
