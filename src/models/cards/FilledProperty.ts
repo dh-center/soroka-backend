@@ -9,7 +9,8 @@ import {
     BeforeUpdate,
     HasMany,
     DefaultScope,
-    Length
+    Length,
+    BelongsTo
 } from 'sequelize-typescript'
 import Card, { FilledPropertyCard } from './Card'
 import DataType from './DataType'
@@ -18,7 +19,8 @@ import Property from './Property'
 import GeoProperty from './GeoProperty'
 
 @DefaultScope(() => ({
-    include: [GeoProperty]
+    include: [GeoProperty, Property.scope('dataType')],
+    attributes: { exclude: ['FilledPropertyCard', 'createdAt', 'updatedAt'] }
 }))
 @Table
 class FilledProperty extends Model {
@@ -36,6 +38,9 @@ class FilledProperty extends Model {
 
     @HasMany(() => GeoProperty)
     geoProperty: GeoProperty
+
+    @BelongsTo(() => Property)
+    property: Property
 
     @BeforeUpdate
     static async onJulianDateChanged(instance: FilledProperty) {
