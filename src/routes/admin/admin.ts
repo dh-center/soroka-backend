@@ -25,8 +25,22 @@ const adminJs = new AdminJS({
     User, UserRole, Organization,
     AuthorizationLink, RefreshToken,
     DataType, Property, FilledProperty,
-    CardTemplate, Card, FilledPropertyCard,
-    DateCatalog, Calendar, GeoProperty
+    CardTemplate, FilledPropertyCard,
+    DateCatalog, Calendar, GeoProperty,
+    {
+        resource: Card,
+        options: {
+            actions: {
+                CSVImport: {
+                    actionType: 'resource',
+                    icon: 'Upload',
+                    isVisible: true,
+                    handler: async () => { console.log() },
+                    component: AdminJS.bundle('../../admin/components/import-action-component.jsx'),
+                },
+            },
+        },
+    }
   ],
   branding: {
     companyName: 'AdminJS',
