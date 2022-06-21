@@ -8,7 +8,8 @@ import {
     DataType as DT,
     BeforeUpdate,
     HasMany,
-    DefaultScope
+    DefaultScope,
+    Length
 } from 'sequelize-typescript'
 import Card, { FilledPropertyCard } from './Card'
 import DataType from './DataType'
@@ -22,14 +23,11 @@ import GeoProperty from './GeoProperty'
 @Table
 class FilledProperty extends Model {
     @AllowNull(false)
-    @Column
-    name: string
-
-    @AllowNull(false)
     @ForeignKey(() => Property)
     @Column
     propertyId: number
 
+    @Length({ max: 100000 })
     @Column(DT.JSON)
     data: string
 
