@@ -7,7 +7,7 @@ on:
     types:
       - closed
     branches:
-      - main
+      - master
 env:
   USERNAME: deploy
   HOST: wunder-kammer.ru

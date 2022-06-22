@@ -2,7 +2,7 @@ name: Build Docker Image
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
     types: ["opened", "reopened", "synchronize"]
     tags: [ 'v*.*.*' ]
 

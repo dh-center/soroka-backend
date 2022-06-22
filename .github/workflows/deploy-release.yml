@@ -7,7 +7,7 @@ on:
     types:
       - released
     branches:
-      - main
+      - master
     tags:
       - 'v*'
 env:
