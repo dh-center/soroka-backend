@@ -55,7 +55,9 @@ class App {
         app.use(passport.initialize())
         app.use('/v1', getRouter(this.provideControllers()))
         app.use('/admin', adminRoutes)
-        app.use('/swagger', docsRoutes)
+        if (process.env.NODE_ENV != 'production') {
+            app.use('/swagger', docsRoutes)
+        }
     
         return app
     }
