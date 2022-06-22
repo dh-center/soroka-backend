@@ -1,0 +1,79 @@
+name: Build and deploy release
+
+concurrency: production
+
+on:
+  release:
+    types:
+      - released
+    branches:
+      - main
+    tags:
+      - 'v*'
+env:
+  USERNAME: deploy
+  HOST: wunder-kammer.ru
+  PORT: 22
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  NAME: soroka-backend-prod
+
+jobs:
+  deploy:
+    name: Build and Deploy release
+    runs-on: ubuntu-latest
+    env:
+        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        DB_PORT: ${{ secrets.DB_PORT }}
+        DB_HOST: ${{ secrets.DB_HOST }}
+        DB_DIALECT: postgres
+        SERVER_PORT: 8000
+        ACCESS_TOKEN_LIFETIME: 300000
+        REFRESH_TOKEN_LIFETIME: 3600000
+    steps:
+      - name: Checkout latest
+        uses: actions/checkout@v3
+
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          flavor: |
+            latest=true
+            prefix=
+            suffix=
+          tags: |
+            type=semver,pattern={{version}}
+
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ env.HOST }}
+          username: ${{ env.USERNAME }}
+          key: ${{ secrets.WNDRKMR_SSH_KEY }}
+          port: ${{ env.PORT }}
+          script: |
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u dice4x4 --password-stdin
+            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+            docker rm -f ${{ env.NAME }}
+            docker run -dp 8084:8000 --network wndrnet --name ${{ env.NAME }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+            docker logout
+
