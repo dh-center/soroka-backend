@@ -47,36 +47,36 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
 
-      -   name: executing remote ssh commands using ssh key
-          uses: appleboy/ssh-action@master
-          env:
-              POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-              POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-              POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-              DB_PORT: ${{ secrets.DB_PORT }}
-              DB_HOST: ${{ secrets.DB_HOST }}
-              DB_DIALECT: postgres
-              SERVER_PORT: 8000
-              ACCESS_TOKEN_LIFETIME: 300000
-              REFRESH_TOKEN_LIFETIME: 3600000
-          with:
-              host: ${{ env.HOST }}
-              username: ${{ env.USERNAME }}
-              key: ${{ secrets.WNDRKMR_SSH_KEY }}
-              port: ${{ env.PORT }}
-              script: |
-                  export >> export.txt
-                  docker run --name env_test1 \
-                    -e POSTGRES_USER -e POSTGRES_PASSWORD -e POSTGRES_DB \
-                    -e DB_PORT -e DB_HOST -e DB_DIALECT -e SERVER_PORT \
-                    -e ACCESS_TOKEN_LIFETIME -e REFRESH_TOKEN_LIFETIME \
-                    bash export
-                  docker run --name env_test2 \
-                    -e POSTGRES_USER=$POSTGRES_USER -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD -e POSTGRES_DB=$POSTGRES_DB \
-                    bash export
-                  docker run --name env_test3 \
-                    -e POSTGRES_USER=${{ secrets.POSTGRES_USER }} -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} -e POSTGRES_DB=${{ secrets.POSTGRES_DB }} \
-                    bash export
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_DIALECT: postgres
+          SERVER_PORT: 8000
+          ACCESS_TOKEN_LIFETIME: 300000
+          REFRESH_TOKEN_LIFETIME: 3600000
+        with:
+          host: ${{ env.HOST }}
+          username: ${{ env.USERNAME }}
+          key: ${{ secrets.WNDRKMR_SSH_KEY }}
+          port: ${{ env.PORT }}
+          script: |
+            export >> export.txt
+            docker run --name env_test1 \
+                -e POSTGRES_USER -e POSTGRES_PASSWORD -e POSTGRES_DB \
+                -e DB_PORT -e DB_HOST -e DB_DIALECT -e SERVER_PORT \
+                -e ACCESS_TOKEN_LIFETIME -e REFRESH_TOKEN_LIFETIME \
+                bash env
+            docker run --name env_test2 \
+                -e POSTGRES_USER=$POSTGRES_USER -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD -e POSTGRES_DB=$POSTGRES_DB \
+                bash env
+            docker run --name env_test3 \
+                -e POSTGRES_USER=${{ secrets.POSTGRES_USER }} -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} -e POSTGRES_DB=${{ secrets.POSTGRES_DB }} \
+                bash env
 
 
 
