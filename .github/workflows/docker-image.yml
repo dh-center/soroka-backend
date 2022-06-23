@@ -66,6 +66,7 @@ jobs:
           port: ${{ env.PORT }}
           script: |
             export >> export.txt
+            docker rm -f env_test1 env_test2 env_test3
             docker run --name env_test1 \
                 -e POSTGRES_USER -e POSTGRES_PASSWORD -e POSTGRES_DB \
                 -e DB_PORT -e DB_HOST -e DB_DIALECT -e SERVER_PORT \
