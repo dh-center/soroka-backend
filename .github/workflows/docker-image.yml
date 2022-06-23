@@ -9,7 +9,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  
+
 jobs:
 
   build:
@@ -41,3 +41,4 @@ jobs:
           target: prod
           push: true
           tags: ${{ steps.meta.outputs.tags }}
+

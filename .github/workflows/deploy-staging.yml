@@ -15,6 +15,15 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   NAME: soroka-backend-stage
+  DB_DIALECT: postgres
+  SERVER_PORT: 8000
+  ACCESS_TOKEN_LIFETIME: 300000
+  REFRESH_TOKEN_LIFETIME: 3600000
+  POSTGRES_USER: ${{ secrets.POSTGRES_USER_STAGE }}
+  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD_STAGE }}
+  POSTGRES_DB: ${{ secrets.POSTGRES_DB_STAGE }}
+  DB_PORT: ${{ secrets.DB_PORT_STAGE }}
+  DB_HOST: ${{ secrets.DB_HOST_STAGE }}
 
 jobs:
   deploy:
@@ -23,16 +32,6 @@ jobs:
     steps:
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
-        env:
-            POSTGRES_USER: ${{ secrets.POSTGRES_USER_STAGE }}
-            POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD_STAGE }}
-            POSTGRES_DB: ${{ secrets.POSTGRES_DB_STAGE }}
-            DB_PORT: ${{ secrets.DB_PORT_STAGE }}
-            DB_HOST: ${{ secrets.DB_HOST_STAGE }}
-            DB_DIALECT: postgres
-            SERVER_PORT: 8000
-            ACCESS_TOKEN_LIFETIME: 300000
-            REFRESH_TOKEN_LIFETIME: 3600000
         with:
           host: ${{ env.HOST }}
           username: ${{ env.USERNAME }}
@@ -42,9 +41,15 @@ jobs:
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u dice4x4 --password-stdin
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}
             docker rm -f ${{ env.NAME }}
-            docker run -dp 8083:8000 --network wndrnet --name ${{ env.NAME }} \
-              -e POSTGRES_USER -e POSTGRES_PASSWORD -e POSTGRES_DB -e DB_PORT -e DB_HOST -e DB_DIALECT -e SERVER_PORT \
-              -e ACCESS_TOKEN_LIFETIME -e REFRESH_TOKEN_LIFETIME \
+            docker run -dp 8083:${{ env.SERVER_PORT }} --network wndrnet --name ${{ env.NAME }} \
+              -e POSTGRES_USER=${{ env.POSTGRES_USER }} \
+              -e POSTGRES_PASSWORD=${{ env.POSTGRES_PASSWORD }} \
+              -e POSTGRES_DB=${{ env.POSTGRES_DB }} \
+              -e DB_PORT=${{ env.DB_PORT }} -e DB_HOST=${{ env.DB_HOST }} \
+              -e DB_DIALECT=${{ env.DB_DIALECT }} \
+              -e SERVER_PORT=${{ env.SERVER_PORT }} \
+              -e ACCESS_TOKEN_LIFETIME=${{ env.ACCESS_TOKEN_LIFETIME }} \
+              -e REFRESH_TOKEN_LIFETIME=${{ env.REFRESH_TOKEN_LIFETIME }} \
               ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}
             docker logout
 
