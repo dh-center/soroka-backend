@@ -60,6 +60,10 @@ class FilledProperty extends Model {
             const dateStart = data[0].jd
             const dateEnd = data[0].jd
 
+            if (!dateStart) {
+                return
+            }
+
             const filledPropertyId = instance.id
 
             await DateCatalog.create({ dateStart, dateEnd, filledPropertyId })
