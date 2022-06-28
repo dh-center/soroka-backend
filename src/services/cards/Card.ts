@@ -4,7 +4,7 @@ import FilledProperty from "../../models/cards/FilledProperty"
 import UserRole from "../../models/users/UserRole"
 
 class CardService implements ICardService {
-    async getAll (user: any): Promise<any> {
+    async getAll (user: any, page = 1): Promise<any> {
         const ALLOWED_ROLES = ['ADMIN', 'EDITOR']
 
         if (!user) {
@@ -17,11 +17,17 @@ class CardService implements ICardService {
 
         const filters = hasPermission ? {} : { organizationId: user.organization }
 
-        const cards: any = await Card.findAll({ where: {...filters} })
+        const cardsCount = await Card.count({ where: {...filters} })
+
+        const cards: any = await Card.findAndCountAll({
+            where: {...filters},
+            limit: 10,
+            offset: page > 1 ? page * 10 : 0
+        })
 
         const cardsList = [] 
         
-        for (const card of cards) {
+        for (const card of cards.rows) {
             const cardObj = card.toJSON()
 
             let props = await card.getProperties()
@@ -41,7 +47,15 @@ class CardService implements ICardService {
             cardsList.push(cardObj)
         }
 
-        return cardsList
+        const hasNextPage = cardsList.length === 10
+
+        const nextPage = hasNextPage ? page + 1 : null
+        
+        return {
+            count: cardsCount,
+            results: cardsList,
+            nextPage
+        }
     }
 
     async create (user: any, cardData: any): Promise<any> {

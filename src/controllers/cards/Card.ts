@@ -7,9 +7,11 @@ class CardController implements ICardController {
     }
 
     getAll = async (request: Request, response: Response) => {
-        const cardsList = await this.cardService.getAll(request.user)
+        const cardsResponse = await this.cardService.getAll(
+            request.user, Number(request.query.page)
+        )
 
-        return response.send(cardsList)
+        return response.send(cardsResponse)
     }
 
     create = async (request: Request, response: Response) => {
