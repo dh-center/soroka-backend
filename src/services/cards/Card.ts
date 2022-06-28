@@ -2,6 +2,7 @@ import { ICardService } from "../../interfaces"
 import Card from "../../models/cards/Card"
 import FilledProperty from "../../models/cards/FilledProperty"
 import UserRole from "../../models/users/UserRole"
+import paginate from "../../utils/paginate"
 
 class CardService implements ICardService {
     async getAll (user: any, page = 1): Promise<any> {
@@ -17,17 +18,11 @@ class CardService implements ICardService {
 
         const filters = hasPermission ? {} : { organizationId: user.organization }
 
-        const cardsCount = await Card.count({ where: {...filters} })
-
-        const cards: any = await Card.findAndCountAll({
-            where: {...filters},
-            limit: 10,
-            offset: page > 1 ? page * 10 : 0
-        })
+        const cards: any = await paginate(Card, filters, page)
 
         const cardsList = [] 
         
-        for (const card of cards.rows) {
+        for (const card of cards.results) {
             const cardObj = card.toJSON()
 
             let props = await card.getProperties()
@@ -47,14 +42,10 @@ class CardService implements ICardService {
             cardsList.push(cardObj)
         }
 
-        const hasNextPage = cardsList.length === 10
-
-        const nextPage = hasNextPage ? page + 1 : null
-        
         return {
-            count: cardsCount,
+            count: cards.count,
             results: cardsList,
-            nextPage
+            nextPage: cards.nextPage
         }
     }
 
