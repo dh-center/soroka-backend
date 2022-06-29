@@ -1,20 +1,22 @@
-const paginate = async (model: any, filters = {}, page = 1, limit = 10) => {
-    const offset = page > 1 ? page * limit : 0
+const paginate = async (model: any, filters = {}, limit?: number, offset = 0) => {
+    const queryParams: any = { where: filters, offset }
 
-    const results = await model.findAndCountAll({
-        where: filters,
-        limit,
-        offset
-    })
+    if (limit) {
+        queryParams.limit = limit
+    }
 
-    const hasNextPage = results.rows.length === limit
+    const results = await model.findAndCountAll(queryParams)
 
-    const nextPage = hasNextPage ? page + 1 : null
+    let hasNextPage = false
+
+    if (limit) {
+        hasNextPage = (results.count - offset) > limit
+    }
 
     return {
-        count: results.count,
+        total: results.count,
         results: results.rows,
-        nextPage
+        hasNextPage
     }
 }
 
