@@ -24,9 +24,9 @@ FROM node:16 as dev
 
 ENV NODE_ENV development
 
-WORKDIR /soroka-backend
+WORKDIR /opt/app
 
-COPY --from=builder /opt/app/ /soroka-backend
+COPY --from=builder /opt/app/ /opt/app
 
 RUN npm install
 
