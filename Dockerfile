@@ -20,7 +20,7 @@ COPY --from=builder /opt/app/node_modules /opt/app/node_modules
 CMD node /opt/app/index.js
 
 
-FROM node:16 as dev
+FROM node:lts-alpine as dev
 
 ENV NODE_ENV development
 

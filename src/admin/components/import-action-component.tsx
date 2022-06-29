@@ -1,7 +1,7 @@
 import React from 'react'
 
 const ImportAction = () => {
-    async function submitForm(form) {
+    async function submitForm(form: HTMLFormElement) {
         const formData = new FormData(form)
 
         const response = await fetch(
@@ -24,7 +24,7 @@ const ImportAction = () => {
             style={{display: "flex", flexDirection: "column"}}
             onSubmit={(event) => {
                 event.preventDefault()
-                submitForm(event.target)
+                submitForm(event.currentTarget)
             }}
         >
             <label style={{fontSize: "1.5rem"}} htmlFor="csvFile">
