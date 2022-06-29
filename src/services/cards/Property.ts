@@ -3,10 +3,10 @@ import Property from '../../models/cards/Property'
 
 class PropertyService implements IPropertyService {
     async getAll(): Promise<any> {
-        const properties = await Property.findAll()
+        const properties = await Property.scope('detail').findAll()
 
         return {
-            detail: properties.map((property: Property) => property.toJSON()),
+            detail: properties,
             status: 200
         }
     }

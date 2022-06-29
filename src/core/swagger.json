@@ -366,13 +366,29 @@
             "get": {
                 "description": "Список карточек",
                 "tags": ["cards"],
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": true,
+                        "type": "number",
+                        "example": 2
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "required": true,
+                        "type": "number",
+                        "example": 20
+                    }
+                ],
                 "responses": {
                     "200": {
                         "name": "obj",
                         "in": "body",
                         "description": "Список карточек",
                         "schema": {
-                            "$ref": "#/definitions/CardsResponse"
+                            "$ref": "#/definitions/PaginatedCardsResponse"
                         }
                     }
                 }
@@ -935,6 +951,25 @@
                 "updatedAt": {
                     "type": "string",
                     "example": "2022-04-27T11:16:18.771Z"
+                }
+            }
+        },
+        "PaginatedCardsResponse": {
+            "type": "object",
+            "properties": {
+                "total": {
+                    "type": "number",
+                    "example": 2200
+                },
+                "hasNextPage": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CardsResponse"
+                    }
                 }
             }
         },
