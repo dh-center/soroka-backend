@@ -8,7 +8,9 @@ class CardController implements ICardController {
 
     getAll = async (request: Request, response: Response) => {
         const cardsResponse = await this.cardService.getAll(
-            request.user, Number(request.query.page) || 1
+            request.user,
+            Number(request.query.limit) || null,
+            Number(request.query.offset) || null
         )
 
         return response.send(cardsResponse)

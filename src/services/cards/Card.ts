@@ -5,7 +5,7 @@ import UserRole from "../../models/users/UserRole"
 import paginate from "../../utils/paginate"
 
 class CardService implements ICardService {
-    async getAll (user: any, page = 1): Promise<any> {
+    async getAll (user: any, limit?: number, offset?: number): Promise<any> {
         const ALLOWED_ROLES = ['ADMIN', 'EDITOR']
 
         if (!user) {
@@ -18,7 +18,7 @@ class CardService implements ICardService {
 
         const filters = hasPermission ? {} : { organizationId: user.organization }
 
-        const cards: any = await paginate(Card, filters, page)
+        const cards: any = await paginate(Card, filters, limit, offset)
 
         const cardsList = [] 
         
@@ -43,9 +43,9 @@ class CardService implements ICardService {
         }
 
         return {
-            count: cards.count,
+            total: cards.total,
             results: cardsList,
-            nextPage: cards.nextPage
+            hasNextPage: cards.hasNextPage
         }
     }
 
