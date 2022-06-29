@@ -1,6 +1,6 @@
 import AdminJS from 'adminjs'
 import AdminJSExpress from '@adminjs/express'
-import AdminJSSequelize = require('@adminjs/sequelize')
+import * as AdminJSSequelize from '@adminjs/sequelize'
 import sequelize from '../../providers/db'
 
 AdminJS.registerAdapter(AdminJSSequelize)
@@ -36,7 +36,7 @@ const adminJs = new AdminJS({
                     icon: 'Upload',
                     isVisible: true,
                     handler: async () => { console.log() },
-                    component: AdminJS.bundle('../../admin/components/import-action-component.jsx'),
+                    component: AdminJS.bundle('../../admin/components/import-action-component'),
                 },
             },
         },
