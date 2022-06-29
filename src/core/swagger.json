@@ -366,13 +366,22 @@
             "get": {
                 "description": "Список карточек",
                 "tags": ["cards"],
-                "parameters": {
-                    "name": "page",
-                    "in": "query",
-                    "required": true,
-                    "type": "number",
-                    "example": 2
-                },
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": true,
+                        "type": "number",
+                        "example": 2
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "required": true,
+                        "type": "number",
+                        "example": 20
+                    }
+                ],
                 "responses": {
                     "200": {
                         "name": "obj",
@@ -948,13 +957,13 @@
         "PaginatedCardsResponse": {
             "type": "object",
             "properties": {
-                "count": {
+                "total": {
                     "type": "number",
                     "example": 2200
                 },
-                "nextPage": {
-                    "type": "number",
-                    "example": 2
+                "hasNextPage": {
+                    "type": "boolean",
+                    "example": true
                 },
                 "results": {
                     "type": "array",
