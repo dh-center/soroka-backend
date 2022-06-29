@@ -13,10 +13,9 @@ services:
     backend:
         container_name: soroka-backend
         build:
-            context: .
-            target: dev
+            dockerfile: Dockerfile.dev
         volumes:
-            - ./:/soroka-backend/
+            - ./:/soroka-backend
             - /soroka-backend/node_modules
         ports:
             - 8000:8000

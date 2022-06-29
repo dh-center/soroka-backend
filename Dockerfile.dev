@@ -1,0 +1,10 @@
+FROM node:16
+
+ENV NODE_ENV development
+
+WORKDIR /soroka-backend
+
+COPY package*.json .
+RUN npm install
+
+CMD npm start
