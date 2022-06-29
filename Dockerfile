@@ -22,9 +22,11 @@ CMD node /opt/app/index.js
 
 FROM node:16 as dev
 
+ENV NODE_ENV development
+
 WORKDIR /soroka-backend
 
-COPY --from=builder /opt/app/ /opt/app/
+COPY --from=builder /opt/app/ /soroka-backend
 
 RUN npm install
 
