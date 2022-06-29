@@ -9,11 +9,13 @@ import cardTemplateRoutes from "./cards/CardTemplate"
 import organizationRoutes from "./organizations/Organization"
 import dateRoutes from "./dates/DateCatalog"
 import geoPropertyRoutes from "./cards/GeoProperty"
+import adminRoutes from "./cards/CsvImport"
 import { ControllerContainer } from "../../types"
 
 function getRouter(container: ControllerContainer) {
     const router: express.Router = express.Router()
 
+    router.use('/admin', adminRoutes)
     router.use('/users', userRoutes(container.userController))
     router.use('/cards', cardRoutes(container.cardController))
     router.use('/cards/templates', cardTemplateRoutes(container.cardTemplateController))

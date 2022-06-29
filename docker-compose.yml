@@ -7,6 +7,8 @@ services:
             - 5432
         volumes:
             - ./dbs/postgres-data:/var/lib/postgresql
+        env_file:
+            - .env
 
     backend:
         container_name: soroka-backend
