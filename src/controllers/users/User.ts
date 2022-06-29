@@ -75,13 +75,13 @@ class UserController implements IUserController {
                 if (tokens) {
                     const { accessToken, refreshToken } = tokens
 
-                    response.send({ accessToken, refreshToken })
+                    return response.send({ accessToken, refreshToken })
                 }
             }
 
-            response.status(401).send({ error: 'Login or password is incorrect!' })
+            return response.status(401).send({ error: 'Login or password is incorrect!' })
         } catch (e: any) {
-            response.status(500).send({ error: e })
+            return response.status(500).send({ error: 'Internal server error' })
         }
     }
 
@@ -104,13 +104,13 @@ class UserController implements IUserController {
                 if (tokens) {
                     const { accessToken, refreshToken } = tokens
 
-                    response.send({ accessToken, refreshToken })
+                    return response.send({ accessToken, refreshToken })
                 }
             }
 
-            response.status(401).send({ error: 'Invalid credentials' })
+            return response.status(401).send({ error: 'Invalid credentials' })
         } catch (e) {
-            response.status(500).send({ error: e })
+            return response.status(500).send({ error: 'Internal server error' })
         }
     }
 }
