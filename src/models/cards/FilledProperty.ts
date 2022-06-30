@@ -10,16 +10,17 @@ import {
     HasMany,
     DefaultScope,
     Length,
-    BelongsTo
+    BelongsTo,
+    AfterCreate
 } from 'sequelize-typescript'
 import Card, { FilledPropertyCard } from './Card'
 import DataType from './DataType'
-import DateCatalog from '../dates/DateCatalog'
 import Property from './Property'
 import GeoProperty from './GeoProperty'
+import { fillRelatedData } from '../../utils/filledProperties'
 
 @DefaultScope(() => ({
-    include: [GeoProperty, Property.scope('dataType')],
+    include: [Property.scope('dataType')],
     attributes: { exclude: ['FilledPropertyCard', 'createdAt', 'updatedAt'] }
 }))
 @Table
@@ -43,30 +44,20 @@ class FilledProperty extends Model {
     property: Property
 
     @BeforeUpdate
-    static async onJulianDateChanged(instance: FilledProperty) {
-        // FIXME: добавить BelongsTo во всех связанных моделях
-        // чтобы делать запросы через related getter
+    static async onFilledPropertyChanged(instance: FilledProperty) {
+        const dataType = instance.property.dataType.name
+
+        fillRelatedData(instance, dataType)
+    }
+
+    @AfterCreate
+    static async onFilledPropertyCreated(instance: FilledProperty) {
+        // после создания мы ещё не имеем связи
         const property = await Property.findByPk(instance.propertyId)
         const dataType = await DataType.findByPk(property?.dataTypeId)
 
-        const isJulianDate = dataType?.name === 'JULIAN_DATE'
-
-        if (isJulianDate) {
-            const data: any = JSON.parse(instance.data)
-
-            // FIXME: в будущем будут периоды дат и тд
-            // сейчас просто заглушка для определения
-            // даты начала и окончания
-            const dateStart = data[0].jd
-            const dateEnd = data[0].jd
-
-            if (!dateStart) {
-                return
-            }
-
-            const filledPropertyId = instance.id
-
-            await DateCatalog.create({ dateStart, dateEnd, filledPropertyId })
+        if (dataType?.name) {
+            fillRelatedData(instance, dataType.name)
         }
     }
 }
