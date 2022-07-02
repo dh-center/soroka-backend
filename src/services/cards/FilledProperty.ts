@@ -57,20 +57,11 @@ class FilledPropertyService implements IFilledPropertyService {
     }
 
     async bulkUpdate(properties: any) {
-        const updatedProperties = []
-
         try {
-            for (const property of properties) {
-                const updatedProperty: any = await FilledProperty.findByPk(property.id)
-
-                for (const key in property) {
-                    updatedProperty[key] = property[key]
-                }
-
-                await updatedProperty.save()
-
-                updatedProperties.push(updatedProperty)
-            }
+            const updatedProperties = await FilledProperty.bulkCreate(
+                properties,
+                { updateOnDuplicate: ["propertyId", "data"] }
+            )
 
             return { detail: updatedProperties, status: 200 }
         } catch (e) {
