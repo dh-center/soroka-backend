@@ -31,6 +31,7 @@ import FilledPropertyService from "../services/cards/FilledProperty"
 import GeoPropertyService from "../services/cards/GeoProperty"
 import DateCatalogService from "../services/dates/DateCatalog"
 import OrganizationService from "../services/organizations/Organization"
+import { API_PREFIX } from "../configs/constants"
 
 class App {
     public port: string
@@ -38,10 +39,13 @@ class App {
     readonly app: express.Application
     readonly server: Server
     readonly sequelize: Sequelize
+    readonly apiPrefix: string
 
     constructor(port = '8000') {
         this.port = process.env.SERVER_PORT || port
     
+        this.apiPrefix = API_PREFIX
+
         this.app = this.createApp()
         this.server = createServer(this.app)
         this.sequelize = sequelize
@@ -53,7 +57,7 @@ class App {
         app.use(cors())
         app.use(bodyParser.json())
         app.use(passport.initialize())
-        app.use('/v1', getRouter(this.provideControllers()))
+        app.use(`${this.apiPrefix}/`, getRouter(this.provideControllers()))
         app.use('/admin', adminRoutes)
         if (process.env.NODE_ENV != 'production') {
             app.use('/swagger', docsRoutes)

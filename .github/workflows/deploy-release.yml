@@ -26,6 +26,7 @@ env:
   SERVER_PORT: 8000
   ACCESS_TOKEN_LIFETIME: 300000
   REFRESH_TOKEN_LIFETIME: 3600000
+  API_PREFIX: /restapi/v1
 
 jobs:
   deploy:
@@ -80,6 +81,7 @@ jobs:
               -e POSTGRES_DB=${{ env.POSTGRES_DB }} \
               -e DB_PORT=${{ env.DB_PORT }} -e DB_HOST=${{ env.DB_HOST }} \
               -e DB_DIALECT=${{ env.DB_DIALECT }} \
+              -e API_PREFIX=${{ env.API_PREFIX }} \
               -e SERVER_PORT=${{ env.SERVER_PORT }} \
               -e ACCESS_TOKEN_LIFETIME=${{ env.ACCESS_TOKEN_LIFETIME }} \
               -e REFRESH_TOKEN_LIFETIME=${{ env.REFRESH_TOKEN_LIFETIME }} \
