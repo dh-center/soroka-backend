@@ -38,10 +38,13 @@ class App {
     readonly app: express.Application
     readonly server: Server
     readonly sequelize: Sequelize
+    readonly apiPrefix: string
 
     constructor(port = '8000') {
         this.port = process.env.SERVER_PORT || port
     
+        this.apiPrefix = process.env.API_PREFIX || "/api/v1"
+
         this.app = this.createApp()
         this.server = createServer(this.app)
         this.sequelize = sequelize
@@ -53,7 +56,7 @@ class App {
         app.use(cors())
         app.use(bodyParser.json())
         app.use(passport.initialize())
-        app.use('/v1', getRouter(this.provideControllers()))
+        app.use(`${this.apiPrefix}/`, getRouter(this.provideControllers()))
         app.use('/admin', adminRoutes)
         if (process.env.NODE_ENV != 'production') {
             app.use('/swagger', docsRoutes)

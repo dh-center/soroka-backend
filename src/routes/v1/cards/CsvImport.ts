@@ -4,7 +4,6 @@ import { parse } from "csv-parse/sync"
 import fs from "fs"
 import Card, { FilledPropertyCard } from "../../../models/cards/Card"
 import FilledProperty from "../../../models/cards/FilledProperty"
-import GeoProperty from "../../../models/cards/GeoProperty"
 import Property from "../../../models/cards/Property"
 
 class JulianDate {

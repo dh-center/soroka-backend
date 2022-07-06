@@ -4,8 +4,10 @@ const ImportAction = () => {
     async function submitForm(form: HTMLFormElement) {
         const formData = new FormData(form)
 
+        const apiPrefix = process.env.API_PREFIX || "/api/v1"
+
         const response = await fetch(
-            '/restapi/v1/admin/import-csv',
+            `${apiPrefix}/admin/import-csv`,
             {
                 method: 'POST',
                 body: formData
