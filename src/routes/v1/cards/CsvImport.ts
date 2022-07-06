@@ -42,6 +42,11 @@ class Controller {
         const tagsProp = await Property.findOne({ where: { name: 'tags' } })
         const annotationProp = await Property.findOne({ where: { name: 'annotation' } })
 
+        const CALENDAR_TYPES = {
+            gregorian: 1,
+            julian: 2
+        }
+
         for (const card of cards) {
             const cardData = {
                 name: card.description,
@@ -69,9 +74,13 @@ class Controller {
                 new Date(`${card.year}-${card.month}-${card.day}`)
             )
 
+            const calendarRow: "julian" | "gregorian" = card.calendar
+
+            const calendar = CALENDAR_TYPES[calendarRow]
+
             const datePropertyData = {
                 propertyId: julianDateProp?.id,
-                data: [{ jd: julianDate.getJulianDate() }]
+                data: [{ jd: julianDate.getJulianDate(), calendar }]
             }
 
             const cytePropertyData = {
