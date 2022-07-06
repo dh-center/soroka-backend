@@ -5,7 +5,7 @@ const ImportAction = () => {
         const formData = new FormData(form)
 
         const response = await fetch(
-            '/v1/admin/import-csv',
+            '/restapi/v1/admin/import-csv',
             {
                 method: 'POST',
                 body: formData
