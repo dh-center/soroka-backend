@@ -1,13 +1,12 @@
 import React from 'react'
+import { API_PREFIX } from "../../configs/constants"
 
 const ImportAction = () => {
     async function submitForm(form: HTMLFormElement) {
         const formData = new FormData(form)
 
-        const apiPrefix = process.env.API_PREFIX || "/api/v1"
-
         const response = await fetch(
-            `${apiPrefix}/admin/import-csv`,
+            `${API_PREFIX}/admin/import-csv`,
             {
                 method: 'POST',
                 body: formData

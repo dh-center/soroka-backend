@@ -31,6 +31,7 @@ import FilledPropertyService from "../services/cards/FilledProperty"
 import GeoPropertyService from "../services/cards/GeoProperty"
 import DateCatalogService from "../services/dates/DateCatalog"
 import OrganizationService from "../services/organizations/Organization"
+import { API_PREFIX } from "../configs/constants"
 
 class App {
     public port: string
@@ -43,7 +44,7 @@ class App {
     constructor(port = '8000') {
         this.port = process.env.SERVER_PORT || port
     
-        this.apiPrefix = process.env.API_PREFIX || "/api/v1"
+        this.apiPrefix = API_PREFIX
 
         this.app = this.createApp()
         this.server = createServer(this.app)
