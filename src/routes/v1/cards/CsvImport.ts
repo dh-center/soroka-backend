@@ -56,18 +56,16 @@ class Controller {
             }
 
             const geoPropertyData = {
-                propertyId: geoPointProp?.id
-            }
-
-            const geoJsonData = {
-                name: card.place,
-                location: {
-                    type: "Point",
-                    coordinates: card.coords.split(',').map(
-                        (coord: string) => parseFloat(coord)
-                    )
-                },
-                filledPropertyId: null
+                propertyId: geoPointProp?.id,
+                data: [{
+                    name: card.place,
+                    location: {
+                        type: "Point",
+                        coordinates: card.coords.split(',').map(
+                            (coord: string) => parseFloat(coord)
+                        )
+                    }
+                }]
             }
 
             const julianDate = new JulianDate(
@@ -103,19 +101,12 @@ class Controller {
                 propertyId: annotationProp?.id
             }
 
-            // создадим гео-свойство
-            const createdGeoProperty = await FilledProperty.create(geoPropertyData)
-
-            geoJsonData.filledPropertyId = createdGeoProperty.id
-
-            await GeoProperty.create(geoJsonData)
-
             // создадим одним запросом все остальные свойства
             const createdFilledProps = await FilledProperty.bulkCreate(
                 [
                     datePropertyData, cytePropertyData,
                     sourcePropertyData, tagsPropertyData,
-                    annotationPropertyData
+                    annotationPropertyData, geoPropertyData
                 ]
             )
 
@@ -125,10 +116,6 @@ class Controller {
             // запишем все свойства в карточку
             const filledProps = createdFilledProps.map(
                 (prop) => { return { filledPropertyId: prop.id, cardId: createdCard.id } }
-            )
-
-            filledProps.push(
-                { filledPropertyId: createdGeoProperty.id, cardId: createdCard.id }
             )
 
             await FilledPropertyCard.bulkCreate(filledProps)
