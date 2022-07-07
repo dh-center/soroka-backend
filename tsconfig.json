@@ -1,15 +1,15 @@
 {
-    "compilerOptions": {
-      "target": "es6",
-      "module": "es6",
-      "moduleResolution": "node",
-      "outDir": "./dist",
-      "strict": true,
-      "esModuleInterop": true,
-      "strictPropertyInitialization": false,
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "strictPropertyInitialization": false,
       "experimentalDecorators": true,
       "emitDecoratorMetadata": true,
-      "jsx": "react",
-      "allowJs": true
-    }
+    "jsx": "react",
+    "allowJs": true
+  }
 }
