@@ -11,7 +11,8 @@ import {
     DefaultScope,
     Length,
     BelongsTo,
-    AfterCreate
+    AfterCreate,
+    Scopes
 } from 'sequelize-typescript'
 import Card, { FilledPropertyCard } from './Card'
 import DataType from './DataType'
@@ -22,6 +23,11 @@ import { fillRelatedData } from '../../utils/filledProperties'
 @DefaultScope(() => ({
     include: [Property.scope('dataType')],
     attributes: { exclude: ['FilledPropertyCard', 'createdAt', 'updatedAt'] }
+}))
+@Scopes(() => ({
+    short: {
+        attributes: { exclude: ['createdAt', 'updatedAt'] }
+    }
 }))
 @Table
 class FilledProperty extends Model {

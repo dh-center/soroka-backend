@@ -19,6 +19,7 @@ interface ICardController {
     create: any
     update: any
     getAll: any
+    getAllByFirstOrganization: any
 }
 
 interface ICardService {
@@ -26,6 +27,7 @@ interface ICardService {
     create: any
     update: any
     getAll: any
+    getAllByFirstOrganization: any
 }
 
 interface ICardTemplateController {

@@ -10,6 +10,9 @@ function getRouter(
     router.route('/')
         .get(passport.authenticate('jwt', { session: false }), controller.getAll)
         .post(passport.authenticate('jwt', { session: false }), controller.create)
+    
+    router.route('/by-first-organization')
+        .get(controller.getAllByFirstOrganization)
 
     router.route('/by-id/:cardId')
         .get(controller.getByPk)
