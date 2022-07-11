@@ -1,8 +1,21 @@
-import { Table, Column, Model, AllowNull, ForeignKey, BelongsToMany } from 'sequelize-typescript'
+import {
+    Table,
+    Column,
+    Model,
+    AllowNull,
+    ForeignKey,
+    BelongsToMany,
+    Scopes
+} from 'sequelize-typescript'
 import Organization from '../organizations/Organization'
 import User from '../users/User'
 import FilledProperty from './FilledProperty'
 
+@Scopes(() => ({
+    detail: {
+        include: [FilledProperty.scope('short')]
+    }
+}))
 @Table
 class Card extends Model {
     @AllowNull(false)

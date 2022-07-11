@@ -18,16 +18,26 @@ class CardService implements ICardService {
 
         const filters = hasPermission ? {} : { organizationId: user.organization }
 
-        const cards: any = await paginate(Card, filters, limit, offset)
+        const cards: any = await paginate(Card.scope('detail'), filters, limit, offset)
 
         const cardsList = [] 
         
         for (const card of cards.results) {
-            const cardObj = card.toJSON()
+            const cardObj = {
+                id: card.id,
+                name: card.name,
+                userId: card.userId,
+                organizationId: card.organizationId,
+                preventDelete: card.preventDelete,
+                createdAt: card.createdAt,
+                updatedAt: card.updatedAt,
+                propertiesList: [],
+                isFilled: null
+            }
 
-            let props = await card.getProperties()
+            let props = card.properties
 
-            props = props.map((prop: FilledProperty) => {
+            props = props.map((prop: any) => {
                 const { id, propertyId, data } = prop
 
                 return { id, propertyId, data }
@@ -36,7 +46,51 @@ class CardService implements ICardService {
             cardObj.propertiesList = props
 
             cardObj.isFilled = props.every(
-                (prop: FilledProperty) => prop.data && JSON.parse(prop.data).length > 0
+                (prop: any) => prop.data && JSON.parse(prop.data).length > 0
+            )
+
+            cardsList.push(cardObj)
+        }
+
+        return {
+            total: cards.total,
+            results: cardsList,
+            hasNextPage: cards.hasNextPage
+        }
+    }
+
+    async getAllByFirstOrganization (limit?: number, offset?: number): Promise<any> {
+        const filters = { organizationId: 1 }
+
+        const cards: any = await paginate(Card.scope('detail'), filters, limit, offset)
+
+        const cardsList = [] 
+        
+        for (const card of cards.results) {
+            const cardObj = {
+                id: card.id,
+                name: card.name,
+                userId: card.userId,
+                organizationId: card.organizationId,
+                preventDelete: card.preventDelete,
+                createdAt: card.createdAt,
+                updatedAt: card.updatedAt,
+                propertiesList: [],
+                isFilled: null
+            }
+
+            let props = card.properties
+
+            props = props.map((prop: any) => {
+                const { id, propertyId, data } = prop
+
+                return { id, propertyId, data }
+            })
+
+            cardObj.propertiesList = props
+
+            cardObj.isFilled = props.every(
+                (prop: any) => prop.data && JSON.parse(prop.data).length > 0
             )
 
             cardsList.push(cardObj)
