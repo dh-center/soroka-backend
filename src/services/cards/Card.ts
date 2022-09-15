@@ -8,15 +8,14 @@ class CardService implements ICardService {
     async getAll (user: any, limit?: number, offset?: number): Promise<any> {
         const ALLOWED_ROLES = ['ADMIN', 'EDITOR']
 
-        if (!user) {
-            return []
+        let hasPermission = null;
+        let filters = {}
+
+        if (user) {
+            const userRole: any = await UserRole.findByPk(user.userRole);
+            hasPermission = ALLOWED_ROLES.includes(userRole.key);
+            filters = hasPermission ? {} : { organizationId: user.organization }
         }
-
-        const userRole: any = await UserRole.findByPk(user.userRole)
-
-        const hasPermission = ALLOWED_ROLES.includes(userRole.key)
-
-        const filters = hasPermission ? {} : { organizationId: user.organization }
 
         const cards: any = await paginate(Card.scope('detail'), filters, limit, offset)
 
@@ -46,21 +45,21 @@ class CardService implements ICardService {
             cardObj.propertiesList = props
 
             cardObj.isFilled = props.every(
-                (prop: any) => prop.data && JSON.parse(prop.data).length > 0
+                (prop: any) => prop.data && prop.data.length > 0
             )
 
             cardsList.push(cardObj)
         }
 
         return {
-            total: cards.total,
+            total: cardsList.length,
             results: cardsList,
             hasNextPage: cards.hasNextPage
         }
     }
 
-    async getAllByFirstOrganization (limit?: number, offset?: number): Promise<any> {
-        const filters = { organizationId: 1 }
+    async getAllById (orgId: number, limit?: number, offset?: number): Promise<any> {
+        const filters = { organizationId: orgId }
 
         const cards: any = await paginate(Card.scope('detail'), filters, limit, offset)
 
@@ -90,14 +89,14 @@ class CardService implements ICardService {
             cardObj.propertiesList = props
 
             cardObj.isFilled = props.every(
-                (prop: any) => prop.data && JSON.parse(prop.data).length > 0
+                (prop: any) => prop.data && prop.data.length > 0
             )
 
             cardsList.push(cardObj)
         }
 
         return {
-            total: cards.total,
+            total: cardsList.length,
             results: cardsList,
             hasNextPage: cards.hasNextPage
         }
