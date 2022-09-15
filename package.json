@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "prestart": "npm run build",
-        "start": "nodemon dist/index.js",
+        "start": "nodemon -L dist/index.js",
         "build": "npx tsc",
         "lint": "npx eslint . --ext .ts",
         "migrate": "npx sequelize db:migrate"

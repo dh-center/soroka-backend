@@ -17,7 +17,18 @@ class CardController implements ICardController {
     }
 
     getAllByFirstOrganization = async (request: Request, response: Response) => {
-        const cardsResponse = await this.cardService.getAllByFirstOrganization(
+        const cardsResponse = await this.cardService.getAllById(
+            1,
+            Number(request.query.limit) || null,
+            Number(request.query.offset) || null
+        )
+
+        return response.send(cardsResponse)
+    }
+
+    getAllByOrgId = async (request: Request, response: Response) => {
+        const cardsResponse = await this.cardService.getAllById(
+            request.params.orgId,
             Number(request.query.limit) || null,
             Number(request.query.offset) || null
         )
