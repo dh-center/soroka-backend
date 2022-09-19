@@ -59,6 +59,10 @@ class CardService implements ICardService {
     }
 
     async getAllById (orgId: number, limit?: number, offset?: number): Promise<any> {
+        if (!Number.isInteger(orgId) || orgId < 0) {
+            return { detail: 'Invalid organization id', status: 400 }
+        }
+
         const filters = { organizationId: orgId }
 
         const cards: any = await paginate(Card.scope('detail'), filters, limit, offset)

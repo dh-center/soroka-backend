@@ -28,7 +28,7 @@ class CardController implements ICardController {
 
     getAllByOrgId = async (request: Request, response: Response) => {
         const cardsResponse = await this.cardService.getAllById(
-            request.params.orgId,
+            Number(request.params.orgId),
             Number(request.query.limit) || null,
             Number(request.query.offset) || null
         )
