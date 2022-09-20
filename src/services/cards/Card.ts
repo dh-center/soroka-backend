@@ -10,7 +10,7 @@ class CardService implements ICardService {
 
         let hasPermission = null;
         let filters = {}
-
+        
         if (user) {
             const userRole: any = await UserRole.findByPk(user.userRole);
             hasPermission = ALLOWED_ROLES.includes(userRole.key);
@@ -52,7 +52,7 @@ class CardService implements ICardService {
         }
 
         return {
-            total: cardsList.length,
+            total: cards.total,
             results: cardsList,
             hasNextPage: cards.hasNextPage
         }
@@ -100,7 +100,7 @@ class CardService implements ICardService {
         }
 
         return {
-            total: cardsList.length,
+            total: cards.total,
             results: cardsList,
             hasNextPage: cards.hasNextPage
         }
