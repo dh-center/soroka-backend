@@ -10,7 +10,7 @@ class CardService implements ICardService {
 
         let hasPermission = null;
         let filters = {}
-
+        
         if (user) {
             const userRole: any = await UserRole.findByPk(user.userRole);
             hasPermission = ALLOWED_ROLES.includes(userRole.key);
@@ -52,13 +52,17 @@ class CardService implements ICardService {
         }
 
         return {
-            total: cardsList.length,
+            total: cards.total,
             results: cardsList,
             hasNextPage: cards.hasNextPage
         }
     }
 
     async getAllById (orgId: number, limit?: number, offset?: number): Promise<any> {
+        if (!Number.isInteger(orgId) || orgId < 0) {
+            return { detail: 'Invalid organization id', status: 400 }
+        }
+
         const filters = { organizationId: orgId }
 
         const cards: any = await paginate(Card.scope('detail'), filters, limit, offset)
@@ -96,7 +100,7 @@ class CardService implements ICardService {
         }
 
         return {
-            total: cardsList.length,
+            total: cards.total,
             results: cardsList,
             hasNextPage: cards.hasNextPage
         }
