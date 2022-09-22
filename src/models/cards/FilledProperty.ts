@@ -54,7 +54,7 @@ class FilledProperty extends Model {
     @BeforeUpdate
     static async onFilledPropertyChanged(instance: FilledProperty) {
         const dataType: string | null = instance.property.dataType.name
-        fillRelatedData(instance, dataType, "update")
+        fillRelatedData(instance, dataType)
     }
 
     @AfterCreate
@@ -63,7 +63,7 @@ class FilledProperty extends Model {
         const dataType: DataType | null = await DataType.findByPk(property?.dataTypeId)
         
         if (dataType?.name) {
-            fillRelatedData(instance, dataType.name, "create")
+            fillRelatedData(instance, dataType.name)
         }
     }
 
