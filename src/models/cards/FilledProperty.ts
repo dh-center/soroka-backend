@@ -12,13 +12,14 @@ import {
     Length,
     BelongsTo,
     AfterCreate,
+    AfterDestroy,
     Scopes
 } from 'sequelize-typescript'
 import Card, { FilledPropertyCard } from './Card'
 import DataType from './DataType'
 import Property from './Property'
 import GeoProperty from './GeoProperty'
-import { fillRelatedData } from '../../utils/filledProperties'
+import { fillRelatedData, deleteRelatedData } from '../../utils/filledProperties'
 
 @DefaultScope(() => ({
     include: [Property.scope('dataType')],
@@ -49,22 +50,27 @@ class FilledProperty extends Model {
     @BelongsTo(() => Property)
     property: Property
 
+    // if property type is JulianDate | Geo => fill / update / create an entry in DateCatalog
     @BeforeUpdate
     static async onFilledPropertyChanged(instance: FilledProperty) {
-        const dataType = instance.property.dataType.name
-
-        fillRelatedData(instance, dataType)
+        const dataType: string | null = instance.property.dataType.name
+        fillRelatedData(instance, dataType, "update")
     }
 
     @AfterCreate
     static async onFilledPropertyCreated(instance: FilledProperty) {
-        // после создания мы ещё не имеем связи
-        const property = await Property.findByPk(instance.propertyId)
-        const dataType = await DataType.findByPk(property?.dataTypeId)
-
+        const property: Property | null = await Property.findByPk(instance.propertyId)
+        const dataType: DataType | null = await DataType.findByPk(property?.dataTypeId)
+        
         if (dataType?.name) {
-            fillRelatedData(instance, dataType.name)
+            fillRelatedData(instance, dataType.name, "create")
         }
+    }
+
+    @AfterDestroy
+    static async onFilledPropertyDestroyed(instance: FilledProperty) {
+        const filledPropertyId: number = instance.id;
+        deleteRelatedData(filledPropertyId)
     }
 }
 
