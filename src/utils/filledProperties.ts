@@ -19,11 +19,10 @@ async function fillRelatedData(instance: FilledProperty, dataType: string, metho
     if (isJulianDate) {
         for (const el of data) {
             try {
+                if (!el.startJD) continue;
                 const dateStart = el.startJD
                 const dateEnd = el.endJD || el.startJD
                 const filledPropertyId = instance.id
-    
-                if (!dateStart) return
     
                 if (method === "update") {
                     await DateCatalog.destroy({where: {filledPropertyId: filledPropertyId}});
