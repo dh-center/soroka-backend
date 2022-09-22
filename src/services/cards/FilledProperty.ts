@@ -32,7 +32,11 @@ class FilledPropertyService implements IFilledPropertyService {
 
     async delete(cardId: number, filledPropertyId: number): Promise<any> {
         try {
-            await FilledPropertyCard.destroy({ where: { cardId, filledPropertyId } })
+            const propertyCard = await FilledPropertyCard.findOne({ where: { cardId, filledPropertyId } });
+            propertyCard?.destroy();
+
+            const filledProperty = await FilledProperty.findByPk(filledPropertyId);
+            filledProperty?.destroy();
 
             return { status: 204 }
         } catch (error) {
@@ -73,6 +77,8 @@ class FilledPropertyService implements IFilledPropertyService {
         try {
             for (const filledPropertyId of filledProperties) {
                 await FilledPropertyCard.destroy({ where: { cardId, filledPropertyId } })
+                const filledProperty = await FilledProperty.findByPk(filledPropertyId);
+                filledProperty?.destroy();
             }
 
             return { status: 204 }
