@@ -27,6 +27,6 @@ module.exports = {
 
   async down (queryInterface, Sequelize) {
     // Осторожно: удаляет все содержимое таблицы.
-    await queryInterface.bulkDelete('Properties', {}, {}, true);
+    await queryInterface.bulkDelete('UserRoles', {}, {}, true);
   }
 };
