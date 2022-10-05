@@ -18,6 +18,13 @@ module.exports = {
     },
     {
         id: 3,
+        name: 'AUTHOR',
+        key: 'AUTHOR',
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        id: 4,
         name: 'USER',
         key: 'USER',
         createdAt: new Date(),
