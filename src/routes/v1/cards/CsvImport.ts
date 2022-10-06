@@ -77,13 +77,14 @@ class Controller {
 
             const datePropertyData = {
                 propertyId: julianDateProp?.id,
-                data: [{ jd: julianDate.getJulianDate(), calendar }]
+                data: [{ startJD: julianDate.getJulianDate(), calendar }]
             }
 
-            const cytePropertyData = {
-                data: card.cyte,
-                propertyId: cyteProp?.id
-            }
+            // Временно убраны цитаты, т.к. в текущем CSV они не заполнены.
+            // const cytePropertyData = {
+            //     data: card.cyte,
+            //     propertyId: cyteProp?.id
+            // }
 
             const sourcePropertyData = {
                 data: card.source,
@@ -103,9 +104,11 @@ class Controller {
             // создадим одним запросом все остальные свойства
             const createdFilledProps = await FilledProperty.bulkCreate(
                 [
-                    datePropertyData, cytePropertyData,
+                    // Временно убраны цитаты, т.к. в текущем CSV они не заполнены.
+                    datePropertyData, // cytePropertyData,
                     sourcePropertyData, tagsPropertyData,
                     annotationPropertyData, geoPropertyData
+                    
                 ]
             )
 
