@@ -13,7 +13,8 @@ import {
     BelongsTo,
     AfterCreate,
     AfterDestroy,
-    Scopes
+    Scopes,
+    AfterBulkCreate
 } from 'sequelize-typescript'
 import Card, { FilledPropertyCard } from './Card'
 import DataType from './DataType'
@@ -64,6 +65,18 @@ class FilledProperty extends Model {
         
         if (dataType?.name) {
             fillRelatedData(instance, dataType.name)
+        }
+    }
+
+    @AfterBulkCreate
+    static async onFilledPropertyBulkCreated(instance: FilledProperty[]) {
+        for (const el of instance) {
+            const property: Property | null = await Property.findByPk(el.propertyId)
+            const dataType: DataType | null = await DataType.findByPk(property?.dataTypeId)
+        
+            if (dataType?.name) {
+                fillRelatedData(el, dataType.name)
+            }
         }
     }
 
