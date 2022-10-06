@@ -4,14 +4,14 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     queryInterface.bulkInsert('Properties', [{
         id: 1,
-        dataTypeId: 2,
+        dataTypeId: 1,
         name: 'julianDate',
         createdAt: new Date(),
         updatedAt: new Date(),
         isLink: false
     },{
         id: 2,
-        dataTypeId: 2,
+        dataTypeId: 5,
         name: 'address',
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -19,7 +19,7 @@ module.exports = {
     },
     {
         id: 3,
-        dataTypeId: 2,
+        dataTypeId: 5,
         name: 'artisticText',
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -35,7 +35,7 @@ module.exports = {
     },
     {
         id: 5,
-        dataTypeId: 2,
+        dataTypeId: 5,
         name: 'annotation',
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -43,7 +43,7 @@ module.exports = {
     },
     {
         id: 6,
-        dataTypeId: 2,
+        dataTypeId: 5,
         name: 'quote',
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -59,7 +59,7 @@ module.exports = {
     },
     {
         id: 8,
-        dataTypeId: 2,
+        dataTypeId: 5,
         name: 'sources',
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -67,8 +67,120 @@ module.exports = {
     },
     {
         id: 9,
-        dataTypeId: 2,
+        dataTypeId: 3,
         name: 'geoPoint',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isLink: false
+    },
+    {
+        id: 10,
+        dataTypeId: 4,
+        name: 'media',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isLink: false
+    },
+    {
+        id: 11,
+        dataTypeId: 5,
+        name: 'creator',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isLink: false
+    },
+    {
+        id: 12,
+        dataTypeId: 5,
+        name: 'creationPlace',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isLink: false
+    },
+    {
+        id: 13,
+        dataTypeId: 5,
+        name: 'copyrightHolder',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isLink: false
+    },
+    {
+        id: 14,
+        dataTypeId: 5,
+        name: 'originalText',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isLink: false
+    },
+    {
+        id: 15,
+        dataTypeId: 5,
+        name: 'bibliography',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isLink: false
+    },
+    {
+        id: 16,
+        dataTypeId: 5,
+        name: 'refutation',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isLink: false
+    },
+    {
+        id: 17,
+        dataTypeId: 5,
+        name: 'url',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isLink: false
+    },
+    {
+        id: 18,
+        dataTypeId: 5,
+        name: 'participants',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isLink: false
+    },
+    {
+        id: 19,
+        dataTypeId: 5,
+        name: 'family',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isLink: false
+    },
+    {
+        id: 20,
+        dataTypeId: 5,
+        name: 'profession',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isLink: false
+    },
+    {
+        id: 21,
+        dataTypeId: 5,
+        name: 'format',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isLink: false
+    },
+    {
+        id: 22,
+        dataTypeId: 5,
+        name: 'storage',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isLink: false
+    },
+    {
+        id: 23,
+        dataTypeId: 5,
+        name: 'socialNetworks',
         createdAt: new Date(),
         updatedAt: new Date(),
         isLink: false
@@ -76,11 +188,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+    // Осторожно: удаляет все содержимое таблицы.
+    await queryInterface.bulkDelete('Properties', {}, {}, true);
   }
 };

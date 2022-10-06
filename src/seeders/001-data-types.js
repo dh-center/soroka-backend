@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 'use strict';
 
 module.exports = {
@@ -19,15 +20,23 @@ module.exports = {
         name: 'GEO_POINT',
         createdAt: new Date(),
         updatedAt: new Date()
+    },
+    {
+      id: 4,
+      name: 'FILE',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      id: 5,
+      name: 'RICH_TEXT',
+      createdAt: new Date(),
+      updatedAt: new Date()
     }]);
   },
 
   async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+    // Осторожно: удаляет все содержимое таблицы.
+    await queryInterface.bulkDelete('DataTypes', {}, {}, true);
   }
 };

@@ -18,6 +18,13 @@ module.exports = {
     },
     {
         id: 3,
+        name: 'AUTHOR',
+        key: 'AUTHOR',
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        id: 4,
         name: 'USER',
         key: 'USER',
         createdAt: new Date(),
@@ -26,11 +33,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+    // Осторожно: удаляет все содержимое таблицы.
+    await queryInterface.bulkDelete('UserRoles', {}, {}, true);
   }
 };
