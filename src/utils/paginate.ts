@@ -1,5 +1,5 @@
 const paginate = async (model: any, filters = {}, limit?: number, offset = 0) => {
-    const queryParams: any = { where: filters, offset }
+    const queryParams: any = { where: filters, offset, distinct: true, col: "Card.id" }
 
     if (limit) {
         queryParams.limit = limit
