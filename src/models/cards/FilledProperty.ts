@@ -34,7 +34,7 @@ class FilledProperty extends Model {
 
     @Length({ max: 100000 })
     @Column(DT.STRING(100000))
-    data: any
+    data: string
 
     @BelongsToMany(() => Card, () => FilledPropertyCard)
     cardsList: Card[]
