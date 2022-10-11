@@ -1,12 +1,13 @@
 import { IFilledPropertyService } from '../../interfaces'
 import Card, { FilledPropertyCard } from '../../models/cards/Card'
 import FilledProperty from '../../models/cards/FilledProperty'
+import { fillRelatedData, deleteRelatedData } from '../../utils/fillRelatedData'
+import isObject from '../../utils/isObject'
 
 class FilledPropertyService implements IFilledPropertyService {
     async getAll(cardId: number): Promise<any> {
         try {
             const card: any = await Card.findByPk(cardId)
-
             const properties = await card.getProperties()
 
             return {
@@ -20,8 +21,15 @@ class FilledPropertyService implements IFilledPropertyService {
 
     async create(cardId: number, filledPropertyData: any): Promise<any> {
         try {
+            // Если свойство имеет тип объекта, конвертируем объекты в строку, чтобы база данных приняла их.
+            const isDataObject = isObject(filledPropertyData.data);
+
+            if (isDataObject) filledPropertyData.data = JSON.stringify(filledPropertyData.data);
+
             const createdProperty = await FilledProperty.create(filledPropertyData)
 
+            if (isDataObject) fillRelatedData(createdProperty)
+            
             await FilledPropertyCard.create({ filledPropertyId: createdProperty.id, cardId: Number(cardId) })
 
             return { detail: createdProperty, status: 200 }
@@ -32,6 +40,8 @@ class FilledPropertyService implements IFilledPropertyService {
 
     async delete(cardId: number, filledPropertyId: number): Promise<any> {
         try {
+            deleteRelatedData(filledPropertyId)
+
             const propertyCard = await FilledPropertyCard.findOne({ where: { cardId, filledPropertyId } });
             propertyCard?.destroy();
 
@@ -48,8 +58,15 @@ class FilledPropertyService implements IFilledPropertyService {
         try {
             const updatedProperty: any = await FilledProperty.findByPk(propertyId)
 
+            fillRelatedData(updatedProperty)
+
             for (const key in propertyData) {
-                updatedProperty[key] = propertyData[key]
+                // Конвертируем объекты в строку, чтобы база данных приняла их.
+                if (isObject(propertyData[key])) {
+                    updatedProperty[key] = JSON.stringify(propertyData[key]);
+                } else {
+                    updatedProperty[key] = propertyData[key]
+                }
             }
 
             await updatedProperty.save()
@@ -62,10 +79,18 @@ class FilledPropertyService implements IFilledPropertyService {
 
     async bulkUpdate(properties: any) {
         try {
+            for (const el of properties) {
+                if (isObject(el.data)) el.data = JSON.stringify(el.data)
+            }
+
             const updatedProperties = await FilledProperty.bulkCreate(
                 properties,
                 { updateOnDuplicate: ["propertyId", "data"] }
             )
+
+            for (const el of updatedProperties) {
+                fillRelatedData(el)
+            }
 
             return { detail: updatedProperties, status: 200 }
         } catch (e) {

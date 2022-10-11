@@ -11,6 +11,7 @@ class CardService implements ICardService {
         let hasPermission = null;
         let filters = {}
         
+        // Временное решение для noAuth маршрутов. Когда они будут отключены, вернуть, как было.
         if (user) {
             const userRole: any = await UserRole.findByPk(user.userRole);
             hasPermission = ALLOWED_ROLES.includes(userRole.key);

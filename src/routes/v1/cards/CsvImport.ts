@@ -3,8 +3,8 @@ import formidable from "express-formidable"
 import { parse } from "csv-parse/sync"
 import fs from "fs"
 import Card, { FilledPropertyCard } from "../../../models/cards/Card"
-import FilledProperty from "../../../models/cards/FilledProperty"
 import Property from "../../../models/cards/Property"
+import FilledPropertyService from "../../../services/cards/FilledProperty"
 
 class JulianDate {
     date: Date
@@ -100,9 +100,11 @@ class Controller {
                 data: card.annotation,
                 propertyId: annotationProp?.id
             }
+            
+            const service = new FilledPropertyService();
 
             // создадим одним запросом все остальные свойства
-            const createdFilledProps = await FilledProperty.bulkCreate(
+            const createdFilledProps = await service.bulkUpdate(
                 [
                     // Временно убраны цитаты, т.к. в текущем CSV они не заполнены.
                     datePropertyData, // cytePropertyData,
@@ -111,16 +113,17 @@ class Controller {
                     
                 ]
             )
-
+            
             // создадим карточку
             const createdCard = await Card.create(cardData)
 
             // запишем все свойства в карточку
-            const filledProps = createdFilledProps.map(
-                (prop) => { return { filledPropertyId: prop.id, cardId: createdCard.id } }
-            )
-
-            await FilledPropertyCard.bulkCreate(filledProps)
+            if (Array.isArray(createdFilledProps.detail)) {
+                const filledProps = createdFilledProps.detail.map(
+                    (prop: any) => { return { filledPropertyId: prop.id, cardId: createdCard.id } }
+                )
+                await FilledPropertyCard.bulkCreate(filledProps)
+            }
         }
 
         
