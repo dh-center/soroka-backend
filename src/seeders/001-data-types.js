@@ -32,6 +32,12 @@ module.exports = {
       name: 'RICH_TEXT',
       createdAt: new Date(),
       updatedAt: new Date()
+    },
+    {
+      id: 6,
+      name: 'MEASURMENT',
+      createdAt: new Date(),
+      updatedAt: new Date()
     }]);
   },
 
