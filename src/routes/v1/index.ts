@@ -10,6 +10,8 @@ import organizationRoutes from "./organizations/Organization"
 import dateRoutes from "./dates/DateCatalog"
 import geoPropertyRoutes from "./cards/GeoProperty"
 import adminRoutes from "./cards/CsvImport"
+import fileRoutes from "./files/File"
+
 import { ControllerContainer } from "../../types"
 
 function getRouter(container: ControllerContainer) {
@@ -26,6 +28,7 @@ function getRouter(container: ControllerContainer) {
     router.use('/organizations', organizationRoutes(container.organizationController))
     router.use('/dates', dateRoutes(container.dateController))
     router.use('/geo-properties', geoPropertyRoutes(container.geoPropertyController))
+    router.use('/files', fileRoutes(container.fileController))
 
     return router
 }

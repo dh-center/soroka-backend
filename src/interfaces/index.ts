@@ -1,3 +1,13 @@
+interface IFileController {
+    upload: any,
+    delete: any
+}
+
+interface IFileService {
+    upload: any,
+    delete: any
+}
+
 interface IUserController {
     get: any
     post: any
@@ -139,5 +149,7 @@ export {
     IDateCatalogController,
     IDateCatalogService,
     IGeoPropertyController,
-    IGeoPropertyService
+    IGeoPropertyService,
+    IFileController,
+    IFileService
 }

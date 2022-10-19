@@ -184,6 +184,14 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
         isLink: false
+    },
+    {
+        id: 24,
+        dataTypeId: 6,
+        name: 'size',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isLink: false
     }]);
   },
 

@@ -20,6 +20,7 @@ import CardTemplateService from "../services/cards/CardTemplate"
 import DataTypeController from "../controllers/cards/DataType"
 import DataTypeService from "../services/cards/DataType"
 import PropertyController from "../controllers/cards/Property"
+import FileController from "../controllers/file/File"
 import PropertyService from "../services/cards/Property"
 import AuthorizationLinkController from "../controllers/auth/AuthorizationLink"
 import FilledPropertyController from "../controllers/cards/FilledProperty"
@@ -31,6 +32,7 @@ import FilledPropertyService from "../services/cards/FilledProperty"
 import GeoPropertyService from "../services/cards/GeoProperty"
 import DateCatalogService from "../services/dates/DateCatalog"
 import OrganizationService from "../services/organizations/Organization"
+import FileService from "../services/file/File"
 import { API_PREFIX } from "../configs/constants"
 
 class App {
@@ -62,6 +64,7 @@ class App {
         if (process.env.NODE_ENV != 'production') {
             app.use('/swagger', docsRoutes)
         }
+        
     
         return app
     }
@@ -98,6 +101,9 @@ class App {
             ),
             geoPropertyController: new GeoPropertyController(
                 new GeoPropertyService()
+            ),
+            fileController: new FileController(
+                new FileService()
             )
         }
     }
