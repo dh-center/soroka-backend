@@ -1,4 +1,4 @@
-import { IAuthorizationLinkController, ICardController, ICardTemplateController, IDataTypeController, IDateCatalogController, IFilledPropertyController, IGeoPropertyController, IOrganizationController, IPropertyController, IUserController } from "../interfaces"
+import { IAuthorizationLinkController, ICardController, ICardTemplateController, IDataTypeController, IDateCatalogController, IFilledPropertyController, IGeoPropertyController, IOrganizationController, IPropertyController, IUserController, IFileController } from "../interfaces"
 
 type ControllerContainer = {
     userController: IUserController,
@@ -10,7 +10,8 @@ type ControllerContainer = {
     authorizationLinkController: IAuthorizationLinkController,
     organizationController: IOrganizationController,
     dateController: IDateCatalogController,
-    geoPropertyController: IGeoPropertyController
+    geoPropertyController: IGeoPropertyController,
+    fileController: IFileController
 }
 
 export {
