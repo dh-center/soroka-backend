@@ -7,6 +7,7 @@ function generateFilesObject() {
     let arr = [];
     let mainWasUsed = false;
     let types = ["png", "jpg", "gif"];
+    let names = ["Petr 1", "Пётр I", "Big. P", "This Is A Long Name Of The Great Peter With Some Symbols !@#$%^&*("]
 
     for (let i = 0; i <= lim; i++) {
         let isMain = false;
@@ -17,6 +18,7 @@ function generateFilesObject() {
         arr.push({
             fileId: Math.floor(Math.random() * 1000000),
             type: types[Math.floor(Math.random() * 3)],
+            name: names[Math.floor(Math.random() * 4)],
             isMain: isMain
         })
     }
