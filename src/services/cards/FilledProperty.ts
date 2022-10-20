@@ -16,8 +16,11 @@ class FilledPropertyService implements IFilledPropertyService {
                 if (el.property?.dataType?.name === "GEO_POINT") {
                     const geoProperty: GeoProperty | null = await GeoProperty
                         .findOne({ where: { filledPropertyId:  el.id} });
-                    el.data = geoProperty?.location
-                    delete el.data?.crs
+                    el.data = { 
+                        location: geoProperty?.location,
+                        name: geoProperty?.name
+                    }
+                    delete el.data?.location?.crs
                 }
             }
             
