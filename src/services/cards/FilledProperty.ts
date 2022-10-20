@@ -3,8 +3,6 @@ import Card, { FilledPropertyCard } from '../../models/cards/Card'
 import FilledProperty from '../../models/cards/FilledProperty'
 import { fillRelatedData, deleteRelatedData } from '../../utils/fillRelatedData'
 import isObject from '../../utils/isObject'
-import DataType from '../../models/cards/DataType'
-import Property from '../../models/cards/Property'
 import GeoProperty from '../../models/cards/GeoProperty'
 
 class FilledPropertyService implements IFilledPropertyService {
