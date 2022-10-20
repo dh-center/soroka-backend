@@ -3,6 +3,9 @@ import Card, { FilledPropertyCard } from '../../models/cards/Card'
 import FilledProperty from '../../models/cards/FilledProperty'
 import { fillRelatedData, deleteRelatedData } from '../../utils/fillRelatedData'
 import isObject from '../../utils/isObject'
+import DataType from '../../models/cards/DataType'
+import Property from '../../models/cards/Property'
+import GeoProperty from '../../models/cards/GeoProperty'
 
 class FilledPropertyService implements IFilledPropertyService {
     async getAll(cardId: number): Promise<any> {
@@ -10,6 +13,16 @@ class FilledPropertyService implements IFilledPropertyService {
             const card: any = await Card.findByPk(cardId)
             const properties = await card.getProperties()
 
+            // find and populate geoProperties
+            for (const el of properties) {
+                if (el.property?.dataType?.name === "GEO_POINT") {
+                    const geoProperty: GeoProperty | null = await GeoProperty
+                        .findOne({ where: { filledPropertyId:  el.id} });
+                    el.data = geoProperty?.location
+                    delete el.data?.crs
+                }
+            }
+            
             return {
                 detail: properties.map((property: FilledProperty) => property.toJSON()),
                 status: 200
