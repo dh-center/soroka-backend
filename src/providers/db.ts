@@ -12,6 +12,7 @@ import DateCatalog from '../models/dates/DateCatalog'
 import Organization from '../models/organizations/Organization'
 import User from '../models/users/User'
 import UserRole from '../models/users/UserRole'
+import File from "../models/files/File"
 import { Dialect } from 'sequelize/types'
 
 const dbConfig = {
@@ -38,7 +39,8 @@ const models = [
     FilledPropertyCard,
     DateCatalog,
     Calendar,
-    GeoProperty
+    GeoProperty,
+    File
 ]
 
 sequelize.addModels(models)

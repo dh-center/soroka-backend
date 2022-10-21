@@ -15,6 +15,7 @@ import {
 import Card, { FilledPropertyCard } from './Card'
 import Property from './Property'
 import GeoProperty from './GeoProperty'
+import File from '../files/File'
 
 @DefaultScope(() => ({
     include: [Property.scope('dataType')],
@@ -41,6 +42,9 @@ class FilledProperty extends Model {
 
     @HasMany(() => GeoProperty)
     geoProperty: GeoProperty
+
+    @HasMany(() => File)
+    file: File
 
     @BelongsTo(() => Property)
     property: Property
