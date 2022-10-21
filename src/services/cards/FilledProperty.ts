@@ -12,15 +12,17 @@ class FilledPropertyService implements IFilledPropertyService {
             const properties = await card.getProperties()
 
             // find and populate geoProperties
+            // FIXME: добавить работу с массивом, чтобы в нем было больше одного элемента.
             for (const el of properties) {
                 if (el.property?.dataType?.name === "GEO_POINT") {
                     const geoProperty: GeoProperty | null = await GeoProperty
                         .findOne({ where: { filledPropertyId:  el.id} });
-                    el.data = { 
+                    el.data = [{ 
                         location: geoProperty?.location,
                         name: geoProperty?.name
-                    }
-                    delete el.data?.location?.crs
+                    }]
+                    delete el.data[0]?.location?.crs
+                    el.data = JSON.stringify(el.data);
                 }
             }
             
