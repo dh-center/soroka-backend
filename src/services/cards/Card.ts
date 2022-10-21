@@ -3,6 +3,7 @@ import Card from "../../models/cards/Card"
 import FilledProperty from "../../models/cards/FilledProperty"
 import UserRole from "../../models/users/UserRole"
 import paginate from "../../utils/paginate"
+import GeoProperty from '../../models/cards/GeoProperty'
 
 class CardService implements ICardService {
     async getAll (user: any, limit?: number, offset?: number): Promise<any> {
@@ -36,6 +37,21 @@ class CardService implements ICardService {
             }
 
             let props = card.properties
+
+            // HOTFIX
+            for (const el of props) {
+                // console.log("EL: ", el.propertyId);
+                if (el.propertyId === 9) {
+                    const geoProperty: GeoProperty | null = await GeoProperty
+                        .findOne({ where: { filledPropertyId:  el.id} });
+                    el.data = [{ 
+                        location: geoProperty?.location,
+                        name: geoProperty?.name
+                    }]
+                    delete el.data[0]?.location?.crs
+                    el.data = JSON.stringify(el.data);
+                }
+            }
 
             props = props.map((prop: any) => {
                 const { id, propertyId, data } = prop
@@ -84,6 +100,21 @@ class CardService implements ICardService {
             }
 
             let props = card.properties
+
+            // HOTFIX
+            for (const el of props) {
+                // console.log("EL: ", el.propertyId);
+                if (el.propertyId === 9) {
+                    const geoProperty: GeoProperty | null = await GeoProperty
+                        .findOne({ where: { filledPropertyId:  el.id} });
+                    el.data = [{ 
+                        location: geoProperty?.location,
+                        name: geoProperty?.name
+                    }]
+                    delete el.data[0]?.location?.crs
+                    el.data = JSON.stringify(el.data);
+                }
+            }
 
             props = props.map((prop: any) => {
                 const { id, propertyId, data } = prop

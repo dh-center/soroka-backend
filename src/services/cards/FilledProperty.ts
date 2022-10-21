@@ -130,7 +130,22 @@ class FilledPropertyService implements IFilledPropertyService {
 
     async getByPk(propertyId: number): Promise<any> {
         try {
-            const property: any = await FilledProperty.findByPk(propertyId)
+            const filledProperty: any = await FilledProperty.findByPk(propertyId)
+            // find and populate geoProperties
+            // FIXME: добавить работу с массивом, чтобы в нем было больше одного элемента.
+            const property: any = filledProperty.property?.dataValues;
+   
+            if (property?.dataType?.name === "GEO_POINT") {
+                const geoProperty: GeoProperty | null = await GeoProperty
+                    .findOne({ where: { filledPropertyId:  filledProperty.id} });
+
+                property.data = [{ 
+                    location: geoProperty?.location,
+                    name: geoProperty?.name
+                }]
+                delete property.data[0]?.location?.crs
+                property.data = JSON.stringify(property.data);
+            }
 
             return { detail: property, status: 200 }
         } catch (e) {
