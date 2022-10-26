@@ -10,7 +10,6 @@ import {
 import Organization from '../organizations/Organization'
 import User from '../users/User'
 import FilledProperty from './FilledProperty'
-import File from '../files/File'
 
 @Scopes(() => ({
     detail: {
@@ -32,11 +31,6 @@ class Card extends Model {
     @ForeignKey(() => Organization)
     @Column
     organizationId: number
-
-    @AllowNull(true)
-    @ForeignKey(() => File)
-    @Column
-    cover: number
 
     @BelongsToMany(() => FilledProperty, { as: "properties", through: () => FilledPropertyCard })
     propertiesList: FilledProperty[]

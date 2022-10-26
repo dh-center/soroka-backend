@@ -23,12 +23,3 @@ services:
             - db
         env_file:
             - .env
-
-    minio:
-        image: minio/minio
-        ports:
-        - "9000:9000"
-        - "9001:9001"
-        env_file:
-            - .env
-        command: server --console-address ":9001" /data

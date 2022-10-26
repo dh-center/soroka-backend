@@ -1,10 +1,10 @@
 .PHONY: run
 run:
-	docker compose up
+	docker-compose up
 
 .PHONY: rund
 rund:
-	docker compose up -d
+	docker-compose up -d
 
 .PHONY: lint
 lint:
@@ -19,7 +19,7 @@ seed:
 
 .PHONY: build
 build:
-	docker compose build
+	docker-compose build
 
 .PHONY: migrate
 migrate:

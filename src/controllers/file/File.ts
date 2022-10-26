@@ -7,10 +7,7 @@ function generateFilesObject() {
     let arr = [];
     let mainWasUsed = false;
     let types = ["png", "jpg", "gif"];
-<<<<<<< Updated upstream
     let names = ["Petr 1", "Пётр I", "Big. P", "This Is A Long Name Of The Great Peter With Some Symbols !@#$%^&*("]
-=======
->>>>>>> Stashed changes
 
     for (let i = 0; i <= lim; i++) {
         let isMain = false;
@@ -21,10 +18,7 @@ function generateFilesObject() {
         arr.push({
             fileId: Math.floor(Math.random() * 1000000),
             type: types[Math.floor(Math.random() * 3)],
-<<<<<<< Updated upstream
             name: names[Math.floor(Math.random() * 4)],
-=======
->>>>>>> Stashed changes
             isMain: isMain
         })
     }
