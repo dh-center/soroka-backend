@@ -58,7 +58,26 @@ async function fillRelatedData(instance: FilledProperty) {
     }
 }
 
+async function retreiveRelatedData(instances: FilledProperty[]) {
+        try {
+            for (let prop of instances) {
+                const dataType = prop.property.dataType.name;
+
+                if (dataType === "GEO_POINT") {
+                    let geoProps = prop.toJSON().geoProperty
+
+                    for (let el of geoProps) delete el.location.crs
+
+                    prop.data = geoProps
+                }
+            }                  
+    } catch (e) {
+        console.log("retreiveRelatedDataError: ", e)
+    }
+}
+
 export {
     fillRelatedData,
-    deleteRelatedData
+    deleteRelatedData,
+    retreiveRelatedData
 }

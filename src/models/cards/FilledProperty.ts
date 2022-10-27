@@ -17,12 +17,13 @@ import Property from './Property'
 import GeoProperty from './GeoProperty'
 
 @DefaultScope(() => ({
-    include: [Property.scope('dataType')],
-    attributes: { exclude: ['FilledPropertyCard', 'createdAt', 'updatedAt'] }
+    include: [Property.scope('dataType'), {model: GeoProperty, attributes: ['name', 'location']}],
+    attributes: { exclude: ['FilledPropertyCard', 'createdAt', 'updatedAt']}
 }))
 @Scopes(() => ({
     short: {
-        attributes: { exclude: ['createdAt', 'updatedAt'] }
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+        include: [Property.scope('dataType'), {model: GeoProperty, attributes: ['name', 'location']}],
     }
 }))
 @Table

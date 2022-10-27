@@ -1,7 +1,7 @@
 import { IFilledPropertyService } from '../../interfaces'
 import Card, { FilledPropertyCard } from '../../models/cards/Card'
 import FilledProperty from '../../models/cards/FilledProperty'
-import { fillRelatedData, deleteRelatedData } from '../../utils/fillRelatedData'
+import { fillRelatedData, deleteRelatedData, retreiveRelatedData } from '../../utils/fillRelatedData'
 import isObject from '../../utils/isObject'
 import GeoProperty from '../../models/cards/GeoProperty'
 
@@ -11,20 +11,8 @@ class FilledPropertyService implements IFilledPropertyService {
             const card: any = await Card.findByPk(cardId)
             const properties = await card.getProperties()
 
-            // find and populate geoProperties
-            // FIXME: добавить работу с массивом, чтобы в нем было больше одного элемента.
-            for (const el of properties) {
-                if (el.property?.dataType?.name === "GEO_POINT") {
-                    const geoProperty: GeoProperty | null = await GeoProperty
-                        .findOne({ where: { filledPropertyId:  el.id} });
-                    el.data = [{ 
-                        location: geoProperty?.location,
-                        name: geoProperty?.name
-                    }]
-                    delete el.data[0]?.location?.crs
-                    el.data = JSON.stringify(el.data);
-                }
-            }
+            // fill with geoProperty data
+            retreiveRelatedData(properties)
             
             return {
                 detail: properties.map((property: FilledProperty) => property.toJSON()),
