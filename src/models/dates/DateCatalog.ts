@@ -6,7 +6,9 @@ import FilledProperty from '../cards/FilledProperty'
         attributes: ['filledPropertyId']
     }
 }))
-@Table
+@Table({
+    paranoid: true
+})
 class DateCatalog extends Model {
     @AllowNull(false)
     @Column(DT.FLOAT)

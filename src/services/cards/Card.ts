@@ -1,8 +1,10 @@
 import { ICardService } from "../../interfaces"
-import Card from "../../models/cards/Card"
+import Card, { FilledPropertyCard } from "../../models/cards/Card"
+import FilledProperty from "../../models/cards/FilledProperty"
 import UserRole from "../../models/users/UserRole"
 import paginate from "../../utils/paginate"
-import { retreiveRelatedData } from "../../utils/fillRelatedData"
+import GeoProperty from '../../models/cards/GeoProperty'
+import { fillRelatedData, deleteRelatedData, retreiveRelatedData } from '../../utils/fillRelatedData'
 
 class CardService implements ICardService {
     async getAll (user: any, limit?: number, offset?: number): Promise<any> {
@@ -32,6 +34,7 @@ class CardService implements ICardService {
                 createdAt: card.createdAt,
                 updatedAt: card.updatedAt,
                 propertiesList: [],
+                cover: card.cover,
                 isFilled: null
             }
 
@@ -83,7 +86,8 @@ class CardService implements ICardService {
                 createdAt: card.createdAt,
                 updatedAt: card.updatedAt,
                 propertiesList: [],
-                isFilled: null
+                isFilled: null,
+                cover: card.cover,
             }
 
             let props = card.properties
@@ -162,6 +166,35 @@ class CardService implements ICardService {
             await updatedCard.save()
 
             return { detail: updatedCard, status: 200 }
+        } catch (e) {
+            return { detail: e, status: 400 }
+        }
+    }
+
+    async delete (user: any, cardId: number): Promise<any> {
+        if (cardId > 0 && !cardId) {
+            return { detail: 'Card id is required param', status: 400 }
+        }
+
+        try {
+            const card: any = await Card.findByPk(cardId)
+            const properties = await card.getProperties()
+
+            if (user.organization !== card.organizationId && user.userRole !== 1) {
+                return { detail: 'You don\'t have such rights to delete that card', status: 400 }
+            }
+
+
+            for (const oneFilledProp of properties) {
+                await FilledPropertyCard.destroy({ where: { cardId, filledPropertyId: oneFilledProp.id } })
+                deleteRelatedData(oneFilledProp.id)
+                const filledProperty = await FilledProperty.findByPk(oneFilledProp.id);
+                filledProperty?.destroy();
+            }
+
+            await card.destroy();
+
+            return { status: 204 }
         } catch (e) {
             return { detail: e, status: 400 }
         }

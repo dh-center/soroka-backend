@@ -187,6 +187,14 @@ module.exports = {
     },
     {
         id: 24,
+        dataTypeId: 5,
+        name: 'place',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isLink: false
+    },
+    {
+        id: 25,
         dataTypeId: 6,
         name: 'size',
         createdAt: new Date(),

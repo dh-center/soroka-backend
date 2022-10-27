@@ -57,6 +57,14 @@ class CardController implements ICardController {
 
         return response.status(updatedCardResponse.status).send(updatedCardResponse.detail)
     }
+
+    delete = async (request: Request, response: Response) => {
+        const cardId = Number(request.params.cardId)
+
+        const deletedCardResponse = await this.cardService.delete(request.user, cardId)
+
+        return response.status(deletedCardResponse.status).send(deletedCardResponse.detail)
+    }
 }
 
 export default CardController

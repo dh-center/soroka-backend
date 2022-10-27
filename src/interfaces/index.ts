@@ -31,6 +31,7 @@ interface ICardController {
     getAll: any
     getAllByFirstOrganization: any
     getAllByOrgId: any
+    delete: any
 }
 
 interface ICardService {
@@ -39,6 +40,7 @@ interface ICardService {
     update: any
     getAll: any
     getAllById: any
+    delete: any
 }
 
 interface ICardTemplateController {

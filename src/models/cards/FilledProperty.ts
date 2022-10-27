@@ -26,7 +26,9 @@ import GeoProperty from './GeoProperty'
         include: [Property.scope('dataType'), {model: GeoProperty, attributes: ['name', 'location']}],
     }
 }))
-@Table
+@Table({
+    paranoid: true
+})
 class FilledProperty extends Model {
     @AllowNull(false)
     @ForeignKey(() => Property)

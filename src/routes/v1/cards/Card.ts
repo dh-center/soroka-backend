@@ -17,7 +17,7 @@ function getRouter(
 
     router.route('/')
         .get(passport.authenticate('jwt', { session: false }), controller.getAll)
-        .post(passport.authenticate('jwt', { session: false }), controller.create)
+        .post(passport.authenticate('jwt', { session: false }), controller.create)     
     
     router.route('/by-first-organization/')
         .get(controller.getAllByFirstOrganization)
@@ -28,6 +28,7 @@ function getRouter(
     router.route('/by-id/:cardId')
         .get(controller.getByPk)
         .patch(controller.update)
+        .delete(passport.authenticate('jwt', { session: false }), controller.delete)
     
     return router
 }

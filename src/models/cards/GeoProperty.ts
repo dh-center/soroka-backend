@@ -9,7 +9,9 @@ import {
 } from 'sequelize-typescript'
 import FilledProperty from './FilledProperty'
 
-@Table
+@Table({
+    paranoid: true
+})
 class GeoProperty extends Model {
     @AllowNull(false)
     @Column(DT.GEOMETRY('POINT'))
