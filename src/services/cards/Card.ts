@@ -4,7 +4,7 @@ import FilledProperty from "../../models/cards/FilledProperty"
 import UserRole from "../../models/users/UserRole"
 import paginate from "../../utils/paginate"
 import GeoProperty from '../../models/cards/GeoProperty'
-import { fillRelatedData, deleteRelatedData, retreiveRelatedData } from '../../utils/fillRelatedData'
+import { deleteRelatedData, retreiveRelatedData } from '../../utils/relatedData'
 
 class CardService implements ICardService {
     async getAll (user: any, limit?: number, offset?: number): Promise<any> {
@@ -108,7 +108,6 @@ class CardService implements ICardService {
             )
 
             cardsList.push(cardObj)
-            // console.log("CARD: ", card)
         }
 
         return {
