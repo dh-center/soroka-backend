@@ -12,7 +12,7 @@ import User from '../users/User'
 
 @Table
 class File extends Model {
-  @AllowNull(false)
+  @AllowNull(true)
   @Column
   path: string
 

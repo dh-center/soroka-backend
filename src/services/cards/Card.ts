@@ -2,7 +2,7 @@ import { ICardService } from "../../interfaces"
 import Card from "../../models/cards/Card"
 import UserRole from "../../models/users/UserRole"
 import paginate from "../../utils/paginate"
-import { retreiveRelatedData } from "../../utils/fillRelatedData"
+import { retreiveRelatedData } from "../../utils/relatedData"
 
 class CardService implements ICardService {
     async getAll (user: any, limit?: number, offset?: number): Promise<any> {
@@ -104,7 +104,6 @@ class CardService implements ICardService {
             )
 
             cardsList.push(cardObj)
-            // console.log("CARD: ", card)
         }
 
         return {
