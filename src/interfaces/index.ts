@@ -1,11 +1,9 @@
 interface IFileController {
-    upload: any,
-    delete: any
+    upload: any
 }
 
 interface IFileService {
-    upload: any,
-    delete: any
+    upload: any
 }
 
 interface IUserController {

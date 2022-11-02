@@ -13,14 +13,6 @@ class FileController implements IFileController {
             .status(fileResponse.status)
             .send(fileResponse.detail)
     }
-
-    delete = async (request: Request, response: Response) => {
-        const fileResponse = await this.fileService.delete(request.params.fileId)
-        
-        return response
-            .status(204)
-            .send()
-    }
 }
 
 export default FileController

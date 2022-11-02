@@ -10,7 +10,7 @@ class FilledPropertyService implements IFilledPropertyService {
             const card: any = await Card.findByPk(cardId)
             const properties = await card.getProperties()
 
-            // fill with geoProperty data
+            // fill with geoProperty and file data
             retreiveRelatedData(properties)
             
             return {
@@ -31,7 +31,6 @@ class FilledPropertyService implements IFilledPropertyService {
 
             const createdProperty = await FilledProperty.create(filledPropertyData)
 
-            console.log('card id from filprop create: ', cardId)
             if (isDataObject) fillRelatedData(createdProperty, Number(cardId))
             
             await FilledPropertyCard.create({ filledPropertyId: createdProperty.id, cardId: Number(cardId) })

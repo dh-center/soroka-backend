@@ -12,9 +12,6 @@ function getRouter(
     router.route('/')
         .post(upload.array('image'), controller.upload)
 
-    router.route('/by-id/:fileId')
-        .delete(controller.delete)
-
     return router
 }
 
