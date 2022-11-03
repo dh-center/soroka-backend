@@ -52,7 +52,7 @@ class FilledProperty extends Model {
     geoProperty: GeoProperty
 
     @HasMany(() => File)
-    file: GeoProperty
+    file: File
 
     @BelongsTo(() => Property)
     property: Property

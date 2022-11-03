@@ -144,6 +144,7 @@ class CardService implements ICardService {
 
             return { detail: card, status: 200 }
         } catch (e) {
+            console.log("card getByPk error: ", e)
             return { detail: 'not found', status: 404 }
         }
     }
