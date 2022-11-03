@@ -40,7 +40,6 @@ class CardService implements ICardService {
 
             let props = card.properties
 
-            // fill with geoProperty data
             retreiveRelatedData(props)
 
             props = props.map((prop: any) => {
@@ -92,7 +91,6 @@ class CardService implements ICardService {
 
             let props = card.properties
             
-            // fill with geoProperty data
             retreiveRelatedData(props)
 
             props = props.map((prop: any) => {

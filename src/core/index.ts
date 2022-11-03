@@ -34,6 +34,7 @@ import DateCatalogService from "../services/dates/DateCatalog"
 import OrganizationService from "../services/organizations/Organization"
 import FileService from "../services/file/File"
 import { API_PREFIX } from "../configs/constants"
+import autoDeleteOldFiles from '../utils/audoDelete'
 
 class App {
     public port: string
@@ -51,6 +52,8 @@ class App {
         this.app = this.createApp()
         this.server = createServer(this.app)
         this.sequelize = sequelize
+
+        setInterval(autoDeleteOldFiles, 300000)
     }
     
     private createApp = (): express.Application => {
