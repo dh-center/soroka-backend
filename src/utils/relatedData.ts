@@ -6,7 +6,7 @@ import Property from '../models/cards/Property'
 import File from '../models/files/File'
 import minioClient from '../providers/minio'
 import CardService from "../services/cards/Card"
-import Card from "../models/cards/Card"
+import Card, { FilledPropertyCard } from "../models/cards/Card"
 
 async function deleteRelatedData(filledPropertyId: number) {
     try {
@@ -64,7 +64,9 @@ async function fillRelatedData(instance: FilledProperty, cardId?: number) {
 
         if (dataType?.name === 'FILE') {
             for (const el of data.files) {
-                await File.destroy({where: {id: el.id}})
+                // TODO реализовать удаление так, чтобы id не терялся, но и не повторялся (это PK)
+                const file = await File.findByPk(el.id, { paranoid: false });
+                await file?.destroy({force: true})
 
                 // Передаем файлы в minio
                 await minioClient.fPutObject('soroka',
@@ -76,9 +78,17 @@ async function fillRelatedData(instance: FilledProperty, cardId?: number) {
                 });
 
                 // Узнаем owner по номеру карты
-                const card = await Card.findByPk(cardId)
-                const owner_id = card?.userId
-
+                let owner_id: number, card: any;
+        
+                if (!cardId) {
+                    // В этом случае не получили cardId, найдем его сами. Маршруты: update, bulkUpdate
+                    const filledPropertyCard: any = await FilledPropertyCard.findByPk(filledPropertyId) 
+                    cardId = await filledPropertyCard?.cardId
+                }
+                
+                card = await Card.findByPk(cardId)
+                owner_id = card?.userId
+                
                 // Добавляем файлы в таблицу Files. 
                 await File.create({ 
                     name: el.name, 

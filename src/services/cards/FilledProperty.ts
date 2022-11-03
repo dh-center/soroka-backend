@@ -107,6 +107,7 @@ class FilledPropertyService implements IFilledPropertyService {
                 await FilledPropertyCard.destroy({ where: { cardId, filledPropertyId } })
                 const filledProperty = await FilledProperty.findByPk(filledPropertyId);
                 filledProperty?.destroy();
+                deleteRelatedData(filledPropertyId)
             }
 
             return { status: 204 }
