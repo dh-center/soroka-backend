@@ -5,7 +5,6 @@ import DataType from '../models/cards/DataType'
 import Property from '../models/cards/Property'
 import File from '../models/files/File'
 import minioClient from '../providers/minio'
-import CardService from "../services/cards/Card"
 import Card, { FilledPropertyCard } from "../models/cards/Card"
 
 async function deleteRelatedData(filledPropertyId: number) {
@@ -138,8 +137,22 @@ async function retreiveRelatedData(instances: FilledProperty[]) {
     }
 }
 
+async function fillCardCoverData(instance: Card) {
+    // make it an array of instance and append to mass retrieval of cards
+    for (const el of instance.toJSON().properties) {
+        if (el.file.length) {
+            for (const file of el.file) {
+                if (file.id === instance.cover) {
+                    instance.cover = JSON.stringify(file)
+                }
+            }
+        }
+    }
+}
+
 export {
     fillRelatedData,
     deleteRelatedData,
-    retreiveRelatedData
+    retreiveRelatedData,
+    fillCardCoverData
 }
