@@ -53,7 +53,7 @@ class App {
         this.server = createServer(this.app)
         this.sequelize = sequelize
 
-        setInterval(autoDeleteOldFiles, 300000)
+        setInterval(autoDeleteOldFiles, Number(process.env.AUTOREMOVE_CHECK_INTERVAL_MS))
     }
     
     private createApp = (): express.Application => {
