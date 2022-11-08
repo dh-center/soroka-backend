@@ -44,6 +44,14 @@ class File extends Model {
   @Column
   dimensions: string
 
+  @AllowNull(true)
+  @Column
+  duration: number
+
+  @AllowNull(true)
+  @Column
+  type: string
+
   @ForeignKey(() => FilledProperty)
   @Column
   field_id: number

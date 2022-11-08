@@ -192,7 +192,7 @@ class CardService implements ICardService {
             let propsIdsArray = [];
             for (const oneFilledProp of properties) {
                 propsIdsArray.push(oneFilledProp.id)
-                deleteRelatedData(oneFilledProp.id)
+                deleteRelatedData(oneFilledProp)
             }
 
             await FilledProperty.destroy({where: {id: {[Op.in]: propsIdsArray}}})

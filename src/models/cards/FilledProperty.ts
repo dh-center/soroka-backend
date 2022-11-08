@@ -20,7 +20,7 @@ import File from '../files/File'
 @DefaultScope(() => ({
     include: [Property.scope('dataType'), 
     {model: GeoProperty, attributes: ['name', 'location']},
-    {model: File, attributes: ['id', 'name', 'size', 'owner_id']}
+    {model: File, attributes: ['id', 'name', 'size', 'owner_id', 'type']}
     ],
     attributes: { exclude: ['FilledPropertyCard', 'createdAt', 'updatedAt']}
 }))
@@ -29,7 +29,7 @@ import File from '../files/File'
         attributes: { exclude: ['createdAt', 'updatedAt'] },
         include: [Property.scope('dataType'), 
         {model: GeoProperty, attributes: ['name', 'location']},
-        {model: File, attributes: ['id', 'name', 'size', 'owner_id']}],
+        {model: File, attributes: ['id', 'name', 'size', 'owner_id', 'type']}],
     }
 }))
 @Table({
