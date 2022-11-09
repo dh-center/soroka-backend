@@ -200,6 +200,14 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
         isLink: false
+    },
+    {
+        id: 26,
+        dataTypeId: 4,
+        name: 'sourceFiles',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isLink: false
     }]);
   },
 
