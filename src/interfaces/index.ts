@@ -1,9 +1,11 @@
 interface IFileController {
     upload: any
+    get: any
 }
 
 interface IFileService {
     upload: any
+    get: any
 }
 
 interface IUserController {
