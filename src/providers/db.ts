@@ -49,6 +49,7 @@ sequelize
     .sync()
     .then(() => {
         console.log('synced models')
+        testConnection()
     })
     .catch((e) => console.log(e));
 
@@ -61,6 +62,6 @@ async function testConnection() {
     }
 }
 
-testConnection()
+
 
 export default sequelize
