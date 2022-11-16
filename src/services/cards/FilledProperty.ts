@@ -32,7 +32,7 @@ class FilledPropertyService implements IFilledPropertyService {
 
             const createdProperty = await FilledProperty.create(filledPropertyData)
 
-            if (isDataObject) fillRelatedData(createdProperty, Number(cardId))
+            if (isDataObject) await fillRelatedData(createdProperty, Number(cardId))
             
             await FilledPropertyCard.create({ filledPropertyId: createdProperty.id, cardId: Number(cardId) })
 
@@ -72,7 +72,7 @@ class FilledPropertyService implements IFilledPropertyService {
 
             await updatedProperty.save()
 
-            fillRelatedData(updatedProperty)
+            await fillRelatedData(updatedProperty)
 
             return { detail: updatedProperty, status: 200 }
         } catch (e) {
@@ -92,7 +92,7 @@ class FilledPropertyService implements IFilledPropertyService {
             )
 
             for (const el of updatedProperties) {
-                fillRelatedData(el)
+                await fillRelatedData(el)
             }
 
             return { detail: updatedProperties, status: 200 }
