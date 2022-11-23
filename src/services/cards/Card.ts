@@ -4,6 +4,7 @@ import UserRole from "../../models/users/UserRole"
 import FilledProperty from "../../models/cards/FilledProperty"
 import { FilledPropertyCard } from "../../models/cards/Card"
 import paginate from "../../utils/paginate"
+import { deleteRelatedData, retreiveRelatedData } from '../../utils/relatedData'
 import { deleteRelatedData, retreiveRelatedData, fillCardCoverData } from '../../utils/relatedData'
 import { Op } from 'sequelize'
 
