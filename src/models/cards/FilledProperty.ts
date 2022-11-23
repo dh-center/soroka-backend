@@ -15,15 +15,21 @@ import {
 import Card, { FilledPropertyCard } from './Card'
 import Property from './Property'
 import GeoProperty from './GeoProperty'
+import File from '../files/File'
 
 @DefaultScope(() => ({
-    include: [Property.scope('dataType'), {model: GeoProperty, attributes: ['name', 'location']}],
+    include: [Property.scope('dataType'), 
+    {model: GeoProperty, attributes: ['name', 'location']},
+    {model: File, attributes: ['id', 'name', 'size', 'owner_id']}
+    ],
     attributes: { exclude: ['FilledPropertyCard', 'createdAt', 'updatedAt']}
 }))
 @Scopes(() => ({
     short: {
         attributes: { exclude: ['createdAt', 'updatedAt'] },
-        include: [Property.scope('dataType'), {model: GeoProperty, attributes: ['name', 'location']}],
+        include: [Property.scope('dataType'), 
+        {model: GeoProperty, attributes: ['name', 'location']},
+        {model: File, attributes: ['id', 'name', 'size', 'owner_id']}],
     }
 }))
 @Table({
@@ -44,6 +50,9 @@ class FilledProperty extends Model {
 
     @HasMany(() => GeoProperty)
     geoProperty: GeoProperty
+
+    @HasMany(() => File)
+    file: File
 
     @BelongsTo(() => Property)
     property: Property

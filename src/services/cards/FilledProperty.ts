@@ -1,9 +1,8 @@
 import { IFilledPropertyService } from '../../interfaces'
 import Card, { FilledPropertyCard } from '../../models/cards/Card'
 import FilledProperty from '../../models/cards/FilledProperty'
-import { fillRelatedData, deleteRelatedData, retreiveRelatedData } from '../../utils/fillRelatedData'
+import { fillRelatedData, deleteRelatedData, retreiveRelatedData } from '../../utils/relatedData'
 import isObject from '../../utils/isObject'
-import GeoProperty from '../../models/cards/GeoProperty'
 
 class FilledPropertyService implements IFilledPropertyService {
     async getAll(cardId: number): Promise<any> {
@@ -11,11 +10,11 @@ class FilledPropertyService implements IFilledPropertyService {
             const card: any = await Card.findByPk(cardId)
             const properties = await card.getProperties()
 
-            // fill with geoProperty data
+            // fill with geoProperty and file data
             retreiveRelatedData(properties)
             
             return {
-                detail: properties.map((property: FilledProperty) => property.toJSON()),
+                detail: properties,
                 status: 200
             }
         } catch (e) {
@@ -27,12 +26,12 @@ class FilledPropertyService implements IFilledPropertyService {
         try {
             // Если свойство имеет тип объекта, конвертируем объекты в строку, чтобы база данных приняла их.
             const isDataObject = isObject(filledPropertyData.data);
-
+            
             if (isDataObject) filledPropertyData.data = JSON.stringify(filledPropertyData.data);
 
             const createdProperty = await FilledProperty.create(filledPropertyData)
 
-            if (isDataObject) fillRelatedData(createdProperty)
+            if (isDataObject) fillRelatedData(createdProperty, Number(cardId))
             
             await FilledPropertyCard.create({ filledPropertyId: createdProperty.id, cardId: Number(cardId) })
 
@@ -62,8 +61,6 @@ class FilledPropertyService implements IFilledPropertyService {
         try {
             const updatedProperty: any = await FilledProperty.findByPk(propertyId)
 
-            fillRelatedData(updatedProperty)
-
             for (const key in propertyData) {
                 // Конвертируем объекты в строку, чтобы база данных приняла их.
                 if (isObject(propertyData[key])) {
@@ -74,6 +71,8 @@ class FilledPropertyService implements IFilledPropertyService {
             }
 
             await updatedProperty.save()
+
+            fillRelatedData(updatedProperty)
 
             return { detail: updatedProperty, status: 200 }
         } catch (e) {
@@ -108,6 +107,7 @@ class FilledPropertyService implements IFilledPropertyService {
                 await FilledPropertyCard.destroy({ where: { cardId, filledPropertyId } })
                 const filledProperty = await FilledProperty.findByPk(filledPropertyId);
                 filledProperty?.destroy();
+                deleteRelatedData(filledPropertyId)
             }
 
             return { status: 204 }
@@ -119,24 +119,15 @@ class FilledPropertyService implements IFilledPropertyService {
     async getByPk(propertyId: number): Promise<any> {
         try {
             const filledProperty: any = await FilledProperty.findByPk(propertyId)
-            // find and populate geoProperties
-            // FIXME: добавить работу с массивом, чтобы в нем было больше одного элемента.
-            const property: any = filledProperty.property?.dataValues;
-   
-            if (property?.dataType?.name === "GEO_POINT") {
-                const geoProperty: GeoProperty | null = await GeoProperty
-                    .findOne({ where: { filledPropertyId:  filledProperty.id} });
-
-                property.data = [{ 
-                    location: geoProperty?.location,
-                    name: geoProperty?.name
-                }]
-                delete property.data[0]?.location?.crs
-                property.data = JSON.stringify(property.data);
+            const dataType: any = filledProperty.property.dataType.name;
+            
+            if (dataType === "GEO_POINT" || dataType === "FILE") {
+                retreiveRelatedData([filledProperty])
             }
 
-            return { detail: property, status: 200 }
+            return { detail: filledProperty, status: 200 }
         } catch (e) {
+            console.log("getByPK error: ", e)
             return { detail: { detail: e }, status: 400 }
         }
     }

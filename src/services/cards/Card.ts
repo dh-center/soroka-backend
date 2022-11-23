@@ -1,10 +1,11 @@
 import { ICardService } from "../../interfaces"
-import Card, { FilledPropertyCard } from "../../models/cards/Card"
-import FilledProperty from "../../models/cards/FilledProperty"
+import Card from "../../models/cards/Card"
 import UserRole from "../../models/users/UserRole"
+import FilledProperty from "../../models/cards/FilledProperty"
+import { FilledPropertyCard } from "../../models/cards/Card"
 import paginate from "../../utils/paginate"
-import GeoProperty from '../../models/cards/GeoProperty'
-import { fillRelatedData, deleteRelatedData, retreiveRelatedData } from '../../utils/fillRelatedData'
+import { deleteRelatedData, retreiveRelatedData, fillCardCoverData } from '../../utils/relatedData'
+import { Op } from 'sequelize'
 
 class CardService implements ICardService {
     async getAll (user: any, limit?: number, offset?: number): Promise<any> {
@@ -25,6 +26,8 @@ class CardService implements ICardService {
         const cardsList = [] 
         
         for (const card of cards.results) {
+            fillCardCoverData(card)
+
             const cardObj = {
                 id: card.id,
                 name: card.name,
@@ -40,7 +43,6 @@ class CardService implements ICardService {
 
             let props = card.properties
 
-            // fill with geoProperty data
             retreiveRelatedData(props)
 
             props = props.map((prop: any) => {
@@ -77,6 +79,8 @@ class CardService implements ICardService {
         const cardsList = [] 
         
         for (const card of cards.results) {
+            fillCardCoverData(card)
+            
             const cardObj = {
                 id: card.id,
                 name: card.name,
@@ -92,7 +96,6 @@ class CardService implements ICardService {
 
             let props = card.properties
             
-            // fill with geoProperty data
             retreiveRelatedData(props)
 
             props = props.map((prop: any) => {
@@ -108,7 +111,6 @@ class CardService implements ICardService {
             )
 
             cardsList.push(cardObj)
-            // console.log("CARD: ", card)
         }
 
         return {
@@ -145,8 +147,11 @@ class CardService implements ICardService {
                 throw new Error('not found')
             }
 
+            fillCardCoverData(card)
+
             return { detail: card, status: 200 }
         } catch (e) {
+            console.log("card getByPk error: ", e)
             return { detail: 'not found', status: 404 }
         }
     }
@@ -184,18 +189,19 @@ class CardService implements ICardService {
                 return { detail: 'You don\'t have such rights to delete that card', status: 400 }
             }
 
-
+            let propsIdsArray = [];
             for (const oneFilledProp of properties) {
-                await FilledPropertyCard.destroy({ where: { cardId, filledPropertyId: oneFilledProp.id } })
+                propsIdsArray.push(oneFilledProp.id)
                 deleteRelatedData(oneFilledProp.id)
-                const filledProperty = await FilledProperty.findByPk(oneFilledProp.id);
-                filledProperty?.destroy();
             }
 
+            await FilledProperty.destroy({where: {id: {[Op.in]: propsIdsArray}}})
+            await FilledPropertyCard.destroy({ where: { cardId } })
             await card.destroy();
 
             return { status: 204 }
         } catch (e) {
+            console.log("Error while trying to delete a card: ", e)
             return { detail: e, status: 400 }
         }
     }
