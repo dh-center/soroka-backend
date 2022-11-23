@@ -1,4 +1,4 @@
-import e, { Request, Response } from "express"
+import { Request, Response } from "express"
 import { IOrganizationController, IOrganizationService } from "../../interfaces"
 
 class OrganizationController implements IOrganizationController {
