@@ -67,6 +67,45 @@ class CardService implements ICardService {
         }
     }
 
+    async getAllShort (limit?: number, offset?: number): Promise<any> {
+        const filters = {}
+        const cards: any = await paginate(Card.scope('short'), filters, limit, offset)
+
+        const cardsList = [] 
+        
+        for (const card of cards.results) {
+            fillCardCoverData(card)
+
+            const cardObj = {
+                id: card.id,
+                name: card.name,
+                userId: card.userId,
+                propertiesList: [],
+                cover: card.cover
+            }
+
+            let props = card.properties
+
+            retreiveRelatedData(props)
+
+            props = props.map((prop: any) => {
+                const { propertyId, data } = prop
+
+                return { propertyId, data }
+            })
+
+            cardObj.propertiesList = props
+
+            cardsList.push(cardObj)
+        }
+
+        return {
+            total: cards.total,
+            results: cardsList,
+            hasNextPage: cards.hasNextPage
+        }
+    }
+
     async getAllById (orgId: number, limit?: number, offset?: number): Promise<any> {
         if (!Number.isInteger(orgId) || orgId < 0) {
             return { detail: 'Invalid organization id', status: 400 }
@@ -109,6 +148,50 @@ class CardService implements ICardService {
             cardObj.isFilled = props.every(
                 (prop: any) => prop.data && prop.data.length > 0
             )
+
+            cardsList.push(cardObj)
+        }
+
+        return {
+            total: cards.total,
+            results: cardsList,
+            hasNextPage: cards.hasNextPage
+        }
+    }
+
+    async getAllByIdShort (orgId: number, limit?: number, offset?: number): Promise<any> {
+        if (!Number.isInteger(orgId) || orgId < 0) {
+            return { detail: 'Invalid organization id', status: 400 }
+        }
+
+        const filters = { organizationId: orgId }
+
+        const cards: any = await paginate(Card.scope('short'), filters, limit, offset)
+
+        const cardsList = [] 
+        
+        for (const card of cards.results) {
+            fillCardCoverData(card)
+            
+            const cardObj = {
+                id: card.id,
+                name: card.name,
+                userId: card.userId,
+                propertiesList: [],
+                cover: card.cover
+            }
+
+            let props = card.properties
+            
+            retreiveRelatedData(props)
+
+            props = props.map((prop: any) => {
+                const { propertyId, data } = prop
+
+                return { propertyId, data }
+            })
+
+            cardObj.propertiesList = props
 
             cardsList.push(cardObj)
         }

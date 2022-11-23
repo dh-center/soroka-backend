@@ -13,6 +13,10 @@ import FilledProperty from './FilledProperty'
             ['id', 'propertyId'],
             'name', 'isLink'
         ]
+    },
+    short: {
+        include: [DataType.scope('short')],
+        attributes: { exclude: ['createdAt', 'updatedAt', 'id', 'isLink']}
     }
 }))
 @Table

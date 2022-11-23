@@ -1,5 +1,6 @@
 import express from "express"
 import { IDataTypeController } from "../../../interfaces"
+import passport from "../../../middlewares/passport"
 
 function getRouter(
     controller: IDataTypeController
@@ -7,7 +8,7 @@ function getRouter(
     const router: express.Router = express.Router()
 
     router.route('/')
-        .get(controller.getAll)
+        .get(passport.authenticate('authAndNoAuth', { session: false }), controller.getAll)
 
     return router
 }

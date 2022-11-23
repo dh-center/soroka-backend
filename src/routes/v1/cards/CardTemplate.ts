@@ -1,5 +1,6 @@
 import express from "express"
 import { ICardTemplateController } from "../../../interfaces"
+import passport from "../../../middlewares/passport"
 
 function getRouter(
     controller: ICardTemplateController
@@ -7,10 +8,10 @@ function getRouter(
     const router: express.Router = express.Router()
 
     router.route('/')
-        .get(controller.getAll)
+        .get(passport.authenticate('authAndNoAuth', { session: false }), controller.getAll)
 
     router.route('/:id')
-        .get(controller.getByPk)
+        .get(passport.authenticate('authAndNoAuth', { session: false }), controller.getByPk)
 
     return router
 }

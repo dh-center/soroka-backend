@@ -2,7 +2,6 @@ import { IAuthorizationLinkService } from "../../interfaces"
 import AuthorizationLink from "../../models/auth/AuthorizationLink"
 import User from "../../models/users/User"
 
-
 class AuthorizationLinkService implements IAuthorizationLinkService {
     getUser = async (token: string) : Promise<any> => {
         const user = await this.getUserInstance(token)

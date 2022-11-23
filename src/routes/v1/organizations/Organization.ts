@@ -1,5 +1,6 @@
 import express from "express"
 import { IOrganizationController } from "../../../interfaces"
+import passport from "../../../middlewares/passport"
 
 function getRouter(
     controller: IOrganizationController
@@ -7,10 +8,10 @@ function getRouter(
     const router: express.Router = express.Router()
 
     router.route('/')
-        .get(controller.getAll)
+        .get(passport.authenticate('authAndNoAuth', { session: false }), controller.getAll)
 
     router.route('/owners/:organizationId')
-        .get(controller.getOwnersByOrganizationId)
+        .get(passport.authenticate('authAndNoAuth', { session: false }), controller.getOwnersByOrganizationId)
     
     return router
 }

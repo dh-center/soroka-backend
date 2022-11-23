@@ -8,8 +8,17 @@ class OrganizationService implements IOrganizationService {
 
         return {
             detail: organizations.map(
-                (organization: Organization) => organization.toJSON()
-            ),
+                (organization: any) => organization = organization.toJSON()),
+            status: 200
+        }
+    }
+
+    async getAllWhitelisted(): Promise<any> {
+        const organizations = await Organization.scope('short').findAll()
+
+        return {
+            detail: organizations.map(
+                (organization: any) => organization = organization.toJSON()),
             status: 200
         }
     }

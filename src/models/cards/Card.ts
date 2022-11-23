@@ -7,7 +7,8 @@ import {
     BelongsToMany,
     Scopes,
     DefaultScope,
-    HasMany
+    HasMany,
+    CreatedAt
 } from 'sequelize-typescript'
 import Organization from '../organizations/Organization'
 import User from '../users/User'
@@ -19,6 +20,10 @@ import FilledProperty from './FilledProperty'
 @Scopes(() => ({
     detail: {
         include: [FilledProperty.scope('short')]
+    },
+    short: {
+        include: [FilledProperty.scope('short')],
+        attributes: { exclude: ['createdAt', 'updatedAt', 'userId', 'organizationId', 'preventDelete', 'isFilled'] }
     }
 }))
 @Table({

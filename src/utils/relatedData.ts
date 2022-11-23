@@ -93,36 +93,40 @@ async function fillRelatedData(instance: FilledProperty, cardId?: number) {
             // Добавим в хранилище пришедшие файлы
             for (const el of data.files) {
                  // Передаем файлы в minio
-                await minioClient.fPutObject(bucketName,
-                el.id,
-                "uploads/" + el.id,
-                function(err: any, etag: any) {
-                    if (err) return console.log(err)
-                    console.log('File uploaded successfully.')
-                });
-
-                // Узнаем owner по номеру карты
-                let owner_id: number, card: any;
-        
-                if (!cardId) {
-                    // В этом случае не получили cardId, найдем его сами. Маршруты: update, bulkUpdate
-                    const filledPropertyCard: any = await FilledPropertyCard.findByPk(filledPropertyId) 
-                    cardId = await filledPropertyCard?.cardId
+                try {
+                    await minioClient.fPutObject(bucketName,
+                        el.id,
+                        "uploads/" + el.id,
+                        function(err: any, etag: any) {
+                            if (err) return console.log(err)
+                            console.log('File uploaded successfully.')
+                    });
+                
+                    // Узнаем owner по номеру карты
+                    let owner_id: number, card: any;
+            
+                    if (!cardId) {
+                        // В этом случае не получили cardId, найдем его сами. Маршруты: update, bulkUpdate
+                        const filledPropertyCard: any = await FilledPropertyCard.findByPk(filledPropertyId) 
+                        cardId = await filledPropertyCard?.cardId
+                    }
+                    
+                    card = await Card.findByPk(cardId)
+                    owner_id = card?.userId
+                    
+                    // Добавляем файлы в таблицу Files. 
+                    await File.create({ 
+                        name: el.name, 
+                        id: el.id,
+                        field_id: filledPropertyId,
+                        isPublic: true,
+                        size: el.size,
+                        owner_id: owner_id,
+                        type: el.type
+                    })
+                } catch(e) {
+                    console.log("error while uploading (minio): ", e)
                 }
-                
-                card = await Card.findByPk(cardId)
-                owner_id = card?.userId
-                
-                // Добавляем файлы в таблицу Files. 
-                await File.create({ 
-                    name: el.name, 
-                    id: el.id,
-                    field_id: filledPropertyId,
-                    isPublic: true,
-                    size: el.size,
-                    owner_id: owner_id,
-                    type: el.type
-                })
             }
 
             // Поле "дата" содержит только номер главного файла, если он есть.
