@@ -4,15 +4,23 @@ import {
   Model,
   AllowNull,
   BelongsTo,
-  ForeignKey
+  ForeignKey,
+  PrimaryKey
 } from 'sequelize-typescript'
 
 import FilledProperty from '../cards/FilledProperty'
 import User from '../users/User'
 
-@Table
+@Table({
+  paranoid: true
+})
 class File extends Model {
+  @PrimaryKey
   @AllowNull(false)
+  @Column
+  id: string
+
+  @AllowNull(true)
   @Column
   path: string
 
@@ -36,8 +44,8 @@ class File extends Model {
   @Column
   dimensions: string
 
-  @Column
   @ForeignKey(() => FilledProperty)
+  @Column
   field_id: number
 
   @AllowNull(false)
