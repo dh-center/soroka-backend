@@ -3,7 +3,7 @@ const { Op } = require("sequelize");
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    queryInterface.bulkInsert('DataTypes', [{
+    await queryInterface.bulkInsert('DataTypes', [{
         id: 1,
         name: 'JULIAN_DATE',
         createdAt: new Date(),

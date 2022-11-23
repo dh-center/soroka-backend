@@ -2,7 +2,7 @@
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    queryInterface.bulkInsert('Properties', [{
+    await queryInterface.bulkInsert('Properties', [{
         id: 1,
         dataTypeId: 1,
         name: 'julianDate',
@@ -197,6 +197,14 @@ module.exports = {
         id: 25,
         dataTypeId: 6,
         name: 'size',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isLink: false
+    },
+    {
+        id: 26,
+        dataTypeId: 4,
+        name: 'sourceFiles',
         createdAt: new Date(),
         updatedAt: new Date(),
         isLink: false

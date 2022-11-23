@@ -6,12 +6,26 @@ import Property from '../models/cards/Property'
 import File from '../models/files/File'
 import minioClient from '../providers/minio'
 import Card, { FilledPropertyCard } from "../models/cards/Card"
+import process from 'process'
 
-async function deleteRelatedData(filledPropertyId: number) {
+const bucketName = process.env.MINIO_BUCKET || 'soroka'
+
+async function deleteRelatedData(filledProperty: FilledProperty) {
     try {
-        await DateCatalog.destroy({ where: { filledPropertyId }});
-        await File.destroy({ where: { field_id: filledPropertyId }});
-        await GeoProperty.destroy({ where: { filledPropertyId }})
+        DateCatalog.destroy({ where: { filledPropertyId: filledProperty.id }})
+
+        File.destroy({ where: { field_id: filledProperty.id }, force: true})
+            .then(res => {
+                if (res) {
+                    // Если были удаленные файлы, то удалим их и из Минио
+                    const files: File[] = filledProperty.toJSON().file
+                    const fileIds: string[] = files.map(el => el.id)
+
+                    minioClient.removeObjects(bucketName, fileIds) 
+                }
+            })
+        
+        GeoProperty.destroy({ where: { filledPropertyId: filledProperty.id }})
     } catch (e) {
         console.log("deleteRelatedDataError: ", e)
     }
@@ -62,13 +76,24 @@ async function fillRelatedData(instance: FilledProperty, cardId?: number) {
         }
 
         if (dataType?.name === 'FILE') {
-            for (const el of data.files) {
-                // TODO реализовать удаление так, чтобы id не терялся, но и не повторялся (это PK)
-                const file = await File.findByPk(el.id, { paranoid: false });
-                await file?.destroy({force: true})
+            // @@@ Удаление файлов
+            // Построим массив id существовавших до обновления файлов
+            const otherFiles: File[] = await File.findAll({where: {field_id: filledPropertyId}, paranoid: false})
+            let previousIds: string[] = otherFiles.map((el: File) => el.id)
+            // Построим массив id файлов, которые нужно загрузить
+            let actualIds: string[] = data.files.map((el: File) => el.id)
+            // Если в старом массиве был id файла, а в новом массиве его нет, то оставляем, чтобы потом удалить по id
+            previousIds = previousIds.filter((item) => !actualIds.includes(item))
+            // Удалим файлы с оставшимися ID, так как они не были сохранены, значит, юзер их удалил
+            await minioClient.removeObjects(bucketName, previousIds) // Удалим из файлового хранилища
 
-                // Передаем файлы в minio
-                await minioClient.fPutObject('soroka',
+            // Удалим из таблицы файлов все прежние записи перед добавлением новых во избежание конфликтов
+            await File.destroy({where: {field_id: filledPropertyId}, force: true})
+
+            // Добавим в хранилище пришедшие файлы
+            for (const el of data.files) {
+                 // Передаем файлы в minio
+                await minioClient.fPutObject(bucketName,
                 el.id,
                 "uploads/" + el.id,
                 function(err: any, etag: any) {
@@ -95,7 +120,8 @@ async function fillRelatedData(instance: FilledProperty, cardId?: number) {
                     field_id: filledPropertyId,
                     isPublic: true,
                     size: el.size,
-                    owner_id: owner_id
+                    owner_id: owner_id,
+                    type: el.type
                 })
             }
 
@@ -138,7 +164,6 @@ async function retreiveRelatedData(instances: FilledProperty[]) {
 }
 
 async function fillCardCoverData(instance: Card) {
-    // make it an array of instance and append to mass retrieval of cards
     for (const el of instance.toJSON().properties) {
         if (el.file.length) {
             for (const file of el.file) {
