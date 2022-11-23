@@ -6,12 +6,16 @@ import {
     ForeignKey,
     BelongsToMany,
     Scopes,
-    DeletedAt
+    DefaultScope,
+    HasMany
 } from 'sequelize-typescript'
 import Organization from '../organizations/Organization'
 import User from '../users/User'
 import FilledProperty from './FilledProperty'
 
+@DefaultScope(() => ({
+    include: [FilledProperty.scope('short')]
+}))
 @Scopes(() => ({
     detail: {
         include: [FilledProperty.scope('short')]

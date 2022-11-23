@@ -5,6 +5,7 @@ import FilledProperty from "../../models/cards/FilledProperty"
 import { FilledPropertyCard } from "../../models/cards/Card"
 import paginate from "../../utils/paginate"
 import { deleteRelatedData, retreiveRelatedData } from '../../utils/relatedData'
+import { deleteRelatedData, retreiveRelatedData, fillCardCoverData } from '../../utils/relatedData'
 import { Op } from 'sequelize'
 
 class CardService implements ICardService {
@@ -26,6 +27,8 @@ class CardService implements ICardService {
         const cardsList = [] 
         
         for (const card of cards.results) {
+            fillCardCoverData(card)
+
             const cardObj = {
                 id: card.id,
                 name: card.name,
@@ -41,7 +44,6 @@ class CardService implements ICardService {
 
             let props = card.properties
 
-            // fill with geoProperty data
             retreiveRelatedData(props)
 
             props = props.map((prop: any) => {
@@ -78,6 +80,8 @@ class CardService implements ICardService {
         const cardsList = [] 
         
         for (const card of cards.results) {
+            fillCardCoverData(card)
+            
             const cardObj = {
                 id: card.id,
                 name: card.name,
@@ -93,7 +97,6 @@ class CardService implements ICardService {
 
             let props = card.properties
             
-            // fill with geoProperty data
             retreiveRelatedData(props)
 
             props = props.map((prop: any) => {
@@ -144,6 +147,8 @@ class CardService implements ICardService {
             if (!card) {
                 throw new Error('not found')
             }
+
+            fillCardCoverData(card)
 
             return { detail: card, status: 200 }
         } catch (e) {
