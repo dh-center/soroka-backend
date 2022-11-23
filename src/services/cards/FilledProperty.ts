@@ -3,6 +3,7 @@ import Card, { FilledPropertyCard } from '../../models/cards/Card'
 import FilledProperty from '../../models/cards/FilledProperty'
 import { fillRelatedData, deleteRelatedData, retreiveRelatedData } from '../../utils/relatedData'
 import isObject from '../../utils/isObject'
+import { Op } from 'sequelize'
 
 class FilledPropertyService implements IFilledPropertyService {
     async getAll(cardId: number): Promise<any> {
@@ -31,7 +32,7 @@ class FilledPropertyService implements IFilledPropertyService {
 
             const createdProperty = await FilledProperty.create(filledPropertyData)
 
-            if (isDataObject) fillRelatedData(createdProperty, Number(cardId))
+            if (isDataObject) await fillRelatedData(createdProperty, Number(cardId))
             
             await FilledPropertyCard.create({ filledPropertyId: createdProperty.id, cardId: Number(cardId) })
 
@@ -71,7 +72,7 @@ class FilledPropertyService implements IFilledPropertyService {
 
             await updatedProperty.save()
 
-            fillRelatedData(updatedProperty)
+            await fillRelatedData(updatedProperty)
 
             return { detail: updatedProperty, status: 200 }
         } catch (e) {
@@ -91,7 +92,7 @@ class FilledPropertyService implements IFilledPropertyService {
             )
 
             for (const el of updatedProperties) {
-                fillRelatedData(el)
+                await fillRelatedData(el)
             }
 
             return { detail: updatedProperties, status: 200 }
@@ -102,15 +103,16 @@ class FilledPropertyService implements IFilledPropertyService {
 
     async bulkDelete(cardId: number, filledProperties: any) {
         try {
-            for (const filledPropertyId of filledProperties) {
-                await FilledPropertyCard.destroy({ where: { cardId, filledPropertyId } })
-                const filledProperty = await FilledProperty.findByPk(filledPropertyId);
-                filledProperty?.destroy();
-                deleteRelatedData(filledPropertyId)
-            }
+            const filledPropertiesArr = await FilledProperty.findAll({where: {id: {[Op.or]: filledProperties}}})
+
+            for (let oneProperty of filledPropertiesArr) deleteRelatedData(oneProperty)
+
+            await FilledPropertyCard.destroy({where: {cardId, filledPropertyId: {[Op.in]: filledProperties}}})
+            await FilledProperty.destroy({where: {id: {[Op.or]: filledProperties}}})
 
             return { status: 204 }
         } catch (error) {
+            console.log("bulk delete error: ", error)
             return { detail: error, status: 400 }
         }
     }
