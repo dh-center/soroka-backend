@@ -1,6 +1,7 @@
 import express from "express"
 import { IFileController } from "../../../interfaces"
 import multer from "multer"
+import passport from "../../../middlewares/passport"
 
 function getRouter(
     controller: IFileController
@@ -11,6 +12,12 @@ function getRouter(
 
     router.route('/')
         .post(upload.array('image'), controller.upload)
+
+    router.route('/by-id/:fileId/:fileName')
+        .get(controller.get)
+
+    router.route('/auth/by-id/:fileId/:fileName')
+        .get(passport.authenticate('jwt', { session: false }), controller.get)
 
     return router
 }
