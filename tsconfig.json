@@ -10,7 +10,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "jsx": "react",
-    "allowJs": true,
     "skipLibCheck": true
   },
   "exclude": [
