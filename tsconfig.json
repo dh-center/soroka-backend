@@ -7,11 +7,13 @@
     "strict": true,
     "esModuleInterop": true,
     "strictPropertyInitialization": false,
-      "experimentalDecorators": true,
-      "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "jsx": "react",
     "allowJs": true,
     "skipLibCheck": true
-    
-  }
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }
