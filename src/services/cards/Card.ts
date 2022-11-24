@@ -4,8 +4,8 @@ import UserRole from "../../models/users/UserRole"
 import FilledProperty from "../../models/cards/FilledProperty"
 import { FilledPropertyCard } from "../../models/cards/Card"
 import paginate from "../../utils/paginate"
-import { deleteRelatedData, retreiveRelatedData, fillCardCoverData } from "../../utils/relatedData"
-import { Op } from "sequelize"
+import { deleteRelatedData, retreiveRelatedData, fillCardCoverData } from '../../utils/relatedData'
+import { Op } from 'sequelize'
 
 class CardService implements ICardService {
     async getAll (user: any, limit?: number, offset?: number): Promise<any> {
