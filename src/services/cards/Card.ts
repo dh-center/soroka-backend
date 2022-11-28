@@ -4,7 +4,6 @@ import UserRole from "../../models/users/UserRole"
 import FilledProperty from "../../models/cards/FilledProperty"
 import { FilledPropertyCard } from "../../models/cards/Card"
 import paginate from "../../utils/paginate"
-import { deleteRelatedData, retreiveRelatedData } from '../../utils/relatedData'
 import { deleteRelatedData, retreiveRelatedData, fillCardCoverData } from '../../utils/relatedData'
 import { Op } from 'sequelize'
 
@@ -68,7 +67,7 @@ class CardService implements ICardService {
         }
     }
 
-    async getAllById (orgId: number, limit?: number, offset?: number): Promise<any> {
+    async getAllById (orgId: number, hostname: string, limit?: number, offset?: number): Promise<any> {
         if (!Number.isInteger(orgId) || orgId < 0) {
             return { detail: 'Invalid organization id', status: 400 }
         }
