@@ -163,12 +163,14 @@ async function retreiveRelatedData(instances: FilledProperty[]) {
     }
 }
 
-async function fillCardCoverData(instance: Card) {
+async function fillCardCoverData(instance: Card, hostname: string) {
     for (const el of instance.toJSON().properties) {
         if (el.file.length) {
             for (const file of el.file) {
                 if (file.id === instance.cover) {
-                    instance.cover = JSON.stringify(file)
+                    instance.cover = JSON.stringify({
+                        ...file,
+                        url: "https://" + hostname + process.env.API_PREFIX  + "/" + file.id + "/" + file.name});
                 }
             }
         }
