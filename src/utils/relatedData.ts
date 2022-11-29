@@ -171,7 +171,7 @@ async function fillCardCoverData(instance: Card) {
                 if (file.id === instance.cover) {
                     instance.cover = JSON.stringify({
                         ...file,
-                        url: "" + MINIO_HOSTNAME + process.env.API_PREFIX  + "/" + file.id + "/" + file.name
+                        url: "" + MINIO_HOSTNAME + process.env.API_PREFIX  + "/files/by-id/" + file.id + "/" + file.name
                     })
                 }
             }
