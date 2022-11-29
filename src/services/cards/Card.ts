@@ -141,8 +141,6 @@ class CardService implements ICardService {
         }
 
         try {
-            console.log("hostname: ", hostname)
-
             const card = await Card.findByPk(cardId)
 
             if (!card) {
