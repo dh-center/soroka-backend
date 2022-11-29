@@ -8,7 +8,7 @@ import { deleteRelatedData, retreiveRelatedData, fillCardCoverData } from '../..
 import { Op } from 'sequelize'
 
 class CardService implements ICardService {
-    async getAll (user: any, limit?: number, offset?: number): Promise<any> {
+    async getAll (user: any, hostname: string, limit?: number, offset?: number): Promise<any> {
         const ALLOWED_ROLES = ['ADMIN', 'EDITOR']
 
         let hasPermission = null;
@@ -26,7 +26,7 @@ class CardService implements ICardService {
         const cardsList = [] 
         
         for (const card of cards.results) {
-            fillCardCoverData(card)
+            fillCardCoverData(card, hostname)
 
             const cardObj = {
                 id: card.id,
@@ -67,7 +67,7 @@ class CardService implements ICardService {
         }
     }
 
-    async getAllById (orgId: number, limit?: number, offset?: number): Promise<any> {
+    async getAllById (orgId: number, hostname: string, limit?: number, offset?: number): Promise<any> {
         if (!Number.isInteger(orgId) || orgId < 0) {
             return { detail: 'Invalid organization id', status: 400 }
         }
@@ -79,7 +79,7 @@ class CardService implements ICardService {
         const cardsList = [] 
         
         for (const card of cards.results) {
-            fillCardCoverData(card)
+            fillCardCoverData(card, hostname)
             
             const cardObj = {
                 id: card.id,
@@ -135,7 +135,7 @@ class CardService implements ICardService {
         }
     }
 
-    async getByPk (cardId: number): Promise<any> {
+    async getByPk (cardId: number, hostname: string): Promise<any> {
         if (cardId > 0 && !cardId) {
             return { detail: 'Card id is required param', status: 400 }
         }
@@ -147,7 +147,7 @@ class CardService implements ICardService {
                 throw new Error('not found')
             }
 
-            fillCardCoverData(card)
+            fillCardCoverData(card, hostname)
 
             return { detail: card, status: 200 }
         } catch (e) {
