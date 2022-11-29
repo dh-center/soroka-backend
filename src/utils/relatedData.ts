@@ -7,6 +7,7 @@ import File from '../models/files/File'
 import minioClient from '../providers/minio'
 import Card, { FilledPropertyCard } from "../models/cards/Card"
 import process from 'process'
+import { HOSTNAME } from '../configs/constants'
 
 const bucketName = process.env.MINIO_BUCKET || 'soroka'
 
@@ -168,7 +169,10 @@ async function fillCardCoverData(instance: Card) {
         if (el.file.length) {
             for (const file of el.file) {
                 if (file.id === instance.cover) {
-                    instance.cover = JSON.stringify(file)
+                    instance.cover = JSON.stringify({
+                        ...file,
+                        url: "" + HOSTNAME + process.env.API_PREFIX  + "/" + file.id + "/" + file.name
+                    })
                 }
             }
         }
