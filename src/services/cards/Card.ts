@@ -26,7 +26,7 @@ class CardService implements ICardService {
         const cardsList = [] 
         
         for (const card of cards.results) {
-            fillCardCoverData(card, hostname)
+            fillCardCoverData(card)
 
             const cardObj = {
                 id: card.id,
@@ -79,7 +79,7 @@ class CardService implements ICardService {
         const cardsList = [] 
         
         for (const card of cards.results) {
-            fillCardCoverData(card, hostname)
+            fillCardCoverData(card)
             
             const cardObj = {
                 id: card.id,
@@ -141,15 +141,13 @@ class CardService implements ICardService {
         }
 
         try {
-            console.log("hostname: ", hostname)
-
             const card = await Card.findByPk(cardId)
 
             if (!card) {
                 throw new Error('not found')
             }
 
-            fillCardCoverData(card, hostname)
+            fillCardCoverData(card)
 
             return { detail: card, status: 200 }
         } catch (e) {

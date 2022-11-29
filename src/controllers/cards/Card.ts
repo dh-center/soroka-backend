@@ -9,7 +9,6 @@ class CardController implements ICardController {
     getAll = async (request: Request, response: Response) => {
         const cardsResponse = await this.cardService.getAll(
             request.user,
-            request.hostname,
             Number(request.query.limit) || null,
             Number(request.query.offset) || null
         )
@@ -20,7 +19,6 @@ class CardController implements ICardController {
     getAllByFirstOrganization = async (request: Request, response: Response) => {
         const cardsResponse = await this.cardService.getAllById(
             1,
-            request.hostname,
             Number(request.query.limit) || null,
             Number(request.query.offset) || null
         )
@@ -31,7 +29,6 @@ class CardController implements ICardController {
     getAllByOrgId = async (request: Request, response: Response) => {
         const cardsResponse = await this.cardService.getAllById(
             Number(request.params.orgId),
-            request.hostname,
             Number(request.query.limit) || null,
             Number(request.query.offset) || null
         )
@@ -48,7 +45,7 @@ class CardController implements ICardController {
     getByPk = async (request: Request, response: Response) => {
         const cardId = Number(request.params.cardId)
 
-        const cardResponse = await this.cardService.getByPk(cardId, request.hostname)
+        const cardResponse = await this.cardService.getByPk(cardId)
 
         return response.status(cardResponse.status).send(cardResponse.detail)
     }
