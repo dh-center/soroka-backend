@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "CommonJS",
+    "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "./dist",
     "strict": true,
@@ -10,10 +10,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "jsx": "react",
+    "allowJs": true,
     "skipLibCheck": true
-  },
-  "exclude": [
-    "node_modules",
-    "./dist"
-  ]
+  }
 }
