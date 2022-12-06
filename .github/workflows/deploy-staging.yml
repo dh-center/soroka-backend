@@ -51,7 +51,6 @@ jobs:
               -e API_PREFIX=${{ env.API_PREFIX }} \
               -e SERVER_PORT=${{ env.SERVER_PORT }} \
               -e ACCESS_TOKEN_LIFETIME=${{ env.ACCESS_TOKEN_LIFETIME }} \
-              -e ADMIN_JS_SKIP_BUNDLE="true" \
               -e REFRESH_TOKEN_LIFETIME=${{ env.REFRESH_TOKEN_LIFETIME }} \
               ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}
             docker logout
