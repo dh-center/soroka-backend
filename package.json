@@ -13,13 +13,13 @@
     "author": "David Dobryakov <kantegory@kantegory.me>",
     "license": "ISC",
     "devDependencies": {
-        "@types/node": "^17.0.8",
         "eslint": "^8.6.0",
         "nodemon": "^2.0.15",
         "ts-node": "^10.4.0",
         "tslint": "^6.1.3"
     },
     "dependencies": {
+        "@types/node": "^17.0.8",
         "@adminjs/express": "^5.0.1",
         "@adminjs/sequelize": "^3.0.0",
         "@types/bcryptjs": "^2.4.2",
