@@ -29,7 +29,6 @@ interface ICardController {
     create: any
     update: any
     getAll: any
-    getAllByFirstOrganization: any
     getAllByOrgId: any
     delete: any
 }
@@ -39,7 +38,9 @@ interface ICardService {
     create: any
     update: any
     getAll: any
+    getAllShort: any
     getAllById: any
+    getAllByIdShort: any
     delete: any
 }
 
@@ -67,6 +68,7 @@ interface IPropertyController {
 
 interface IPropertyService {
     getAll: any
+    getAllWhitelisted: any
 }
 
 interface IFilledPropertyController {
@@ -106,6 +108,7 @@ interface IOrganizationController {
 
 interface IOrganizationService {
     getAll: any
+    getAllWhitelisted: any
     getOwnersByOrganizationId: any
 }
 

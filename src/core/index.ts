@@ -34,7 +34,7 @@ import DateCatalogService from "../services/dates/DateCatalog"
 import OrganizationService from "../services/organizations/Organization"
 import FileService from "../services/file/File"
 import { API_PREFIX } from "../configs/constants"
-import autoDeleteOldFiles from '../utils/audoDelete'
+import autoDeleteOldFiles from '../utils/autoDelete'
 
 class App {
     public port: string

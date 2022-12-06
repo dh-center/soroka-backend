@@ -1,4 +1,3 @@
-const { Op } = require("sequelize");
 'use strict';
 
 module.exports = {

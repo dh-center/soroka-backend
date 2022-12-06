@@ -7,7 +7,16 @@ class PropertyController implements IPropertyController {
     }
 
     getAll = async (request: Request, response: Response) => {
-        const propertiesResponse = await this.propertyService.getAll()
+        let propertiesResponse;
+
+        const authInfo: any = request.authInfo
+        
+        // edit the response for non-user whitelisted auth
+        if (authInfo?.domain) {
+            propertiesResponse = await this.propertyService.getAllWhitelisted()
+        } else {
+            propertiesResponse = await this.propertyService.getAll()
+        }
 
         return response
             .status(propertiesResponse.status)

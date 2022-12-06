@@ -21,6 +21,9 @@ const DateCatalog = sequelize.model('DateCatalog')
 const Calendar = sequelize.model('Calendar')
 const GeoProperty = sequelize.model('GeoProperty')
 const File = sequelize.model('File')
+const Domain = sequelize.model('Domain')
+
+
 const componentLoader = new ComponentLoader()
 
 const Components = {
@@ -33,7 +36,8 @@ const adminJs = new AdminJS({
     AuthorizationLink, RefreshToken,
     DataType, Property, FilledProperty,
     CardTemplate, FilledPropertyCard,
-    DateCatalog, Calendar, GeoProperty, File,
+    DateCatalog, Calendar, GeoProperty,
+    File, Domain,
     {
         resource: Card,
         options: {

@@ -1,5 +1,6 @@
 import express from "express"
 import { IDateCatalogController } from '../../../interfaces'
+import passport from "../../../middlewares/passport"
 
 function getRouter(
     controller: IDateCatalogController
@@ -7,7 +8,7 @@ function getRouter(
     const router: express.Router = express.Router()
 
     router.route('/')
-        .get(controller.list)
+        .get(passport.authenticate('authAndNoAuth', { session: false }), controller.list)
     
     return router
 }

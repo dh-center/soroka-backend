@@ -11,13 +11,13 @@ function getRouter(
     const upload = multer({ dest: 'uploads/' })
 
     router.route('/')
-        .post(upload.array('image'), controller.upload)
+        .post(passport.authenticate('authAndNoAuth', { session: false }), upload.array('image'), controller.upload)
 
     router.route('/by-id/:fileId/:fileName')
-        .get(controller.get)
+        .get(passport.authenticate('authAndNoAuth', { session: false }), controller.get)
 
     router.route('/auth/by-id/:fileId/:fileName')
-        .get(passport.authenticate('jwt', { session: false }), controller.get)
+        .get(passport.authenticate('authAndNoAuth', { session: false }), controller.get)
 
     return router
 }

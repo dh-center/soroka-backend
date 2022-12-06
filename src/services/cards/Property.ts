@@ -10,6 +10,15 @@ class PropertyService implements IPropertyService {
             status: 200
         }
     }
+
+    async getAllWhitelisted(): Promise<any> {
+        const properties = await Property.scope('short').findAll()
+
+        return {
+            detail: properties,
+            status: 200
+        }
+    }
 }
 
 export default PropertyService

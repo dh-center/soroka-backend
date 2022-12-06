@@ -21,12 +21,11 @@ import File from '../files/File'
     include: [Property.scope('dataType'), 
     {model: GeoProperty, attributes: ['name', 'location']},
     {model: File, attributes: ['id', 'name', 'size', 'owner_id', 'type']}
-    ],
-    attributes: { exclude: ['FilledPropertyCard', 'createdAt', 'updatedAt']}
+    ]
 }))
 @Scopes(() => ({
     short: {
-        attributes: { exclude: ['createdAt', 'updatedAt'] },
+        attributes: { exclude: ['FilledPropertyCard', 'createdAt', 'updatedAt', 'deletedAt'] },
         include: [Property.scope('dataType'), 
         {model: GeoProperty, attributes: ['name', 'location']},
         {model: File, attributes: ['id', 'name', 'size', 'owner_id', 'type']}],

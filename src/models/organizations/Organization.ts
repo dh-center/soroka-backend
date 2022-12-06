@@ -1,4 +1,13 @@
-import { Table, Column, Model, AllowNull } from 'sequelize-typescript'
+import { Table, Column, Model, AllowNull, Scopes, DefaultScope } from 'sequelize-typescript'
+
+@DefaultScope(() => ({
+    
+}))
+@Scopes(() => ({
+    short: {
+        attributes: { exclude: ['createdAt', 'updatedAt', 'id'] }
+    }
+}))
 
 @Table
 class Organization extends Model {

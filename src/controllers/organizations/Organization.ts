@@ -7,7 +7,15 @@ class OrganizationController implements IOrganizationController {
     }
 
     getAll = async (request: Request, response: Response) => {
-        const organizationsResponse = await this.organizationService.getAll()
+        let organizationsResponse: any;
+        const authInfo: any = request.authInfo
+        
+        // edit the response for non-user whitelisted auth
+        if (authInfo?.domain) {
+            organizationsResponse = await this.organizationService.getAllWhitelisted()
+        } else {
+            organizationsResponse = await this.organizationService.getAll()
+        }
 
         return response
             .status(organizationsResponse.status)
