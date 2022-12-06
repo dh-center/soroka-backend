@@ -11,9 +11,6 @@ function getRouter(
         .get(passport.authenticate('authAndNoAuth', { session: false }), controller.getAll)
         .post(passport.authenticate('authAndNoAuth', { session: false }), controller.create)     
     
-    router.route('/by-first-organization/')
-        .get(passport.authenticate('authAndNoAuth', { session: false }), controller.getAllByFirstOrganization)
-
     router.route('/by-org/:orgId')
         .get(passport.authenticate('authAndNoAuth', { session: false }), controller.getAllByOrgId)
 

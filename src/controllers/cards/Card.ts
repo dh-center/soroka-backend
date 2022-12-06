@@ -27,28 +27,6 @@ class CardController implements ICardController {
         return response.send(cardsResponse)
     }
 
-    getAllByFirstOrganization = async (request: Request, response: Response) => {
-        let cardsResponse: any;
-        const authInfo: any = request.authInfo
-        
-        // use different services for different purposes:
-        if (request.user) {
-            cardsResponse = await this.cardService.getAllById(
-                1,
-                Number(request.query.limit) || null,
-                Number(request.query.offset) || null
-            )
-        } else if (authInfo?.domain) {
-            cardsResponse = await this.cardService.getAllByIdShort(
-                1,
-                Number(request.query.limit) || null,
-                Number(request.query.offset) || null
-            )
-        }
-
-        return response.send(cardsResponse)
-    }
-
     getAllByOrgId = async (request: Request, response: Response) => {
         let cardsResponse: any;
         const authInfo: any = request.authInfo

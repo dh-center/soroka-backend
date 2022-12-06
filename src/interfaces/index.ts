@@ -29,7 +29,6 @@ interface ICardController {
     create: any
     update: any
     getAll: any
-    getAllByFirstOrganization: any
     getAllByOrgId: any
     delete: any
 }
