@@ -14,10 +14,8 @@ function getRouter(
         .post(passport.authenticate('authAndNoAuth', { session: false }), upload.array('image'), controller.upload)
 
     router.route('/by-id/:fileId/:fileName')
-        .get(passport.authenticate('authAndNoAuth', { session: false }), controller.get)
+        .get(controller.get)
 
-    router.route('/auth/by-id/:fileId/:fileName')
-        .get(passport.authenticate('authAndNoAuth', { session: false }), controller.get)
 
     return router
 }

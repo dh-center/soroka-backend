@@ -57,6 +57,7 @@ class CustomStrategy extends Strategy {
                 // check if origin === domain in the model
                 const domain = await Domain.findOne({where: {token: req.headers['domain-token']}})
                 if (req.hostname != domain?.domain) return this.fail()
+                
                 this.success(null, { domain: req.hostname})
             } else {
                 this.fail()
