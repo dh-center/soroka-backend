@@ -1,12 +1,12 @@
 import React from 'react'
-import { API_PREFIX } from "../../configs/constants"
 
 const ImportAction = () => {
     async function submitForm(form: HTMLFormElement) {
         const formData = new FormData(form)
 
         const response = await fetch(
-            `${API_PREFIX}/admin/import-csv`,
+            // @ts-ignore
+            `${AdminJS.env.API_PREFIX}/admin/import-csv`,
             {
                 method: 'POST',
                 body: formData
@@ -27,7 +27,7 @@ const ImportAction = () => {
                 event.preventDefault()
                 submitForm(event.currentTarget)
             }}
-        >
+        > 
             <label style={{fontSize: "1.5rem"}} htmlFor="csvFile">
                 Choose CSV:
             </label>

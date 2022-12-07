@@ -68,7 +68,6 @@ class App {
             app.use('/swagger', docsRoutes)
         }
         
-    
         return app
     }
 
