@@ -29,3 +29,4 @@ pnpm-debug.log*
 # build directories
 dist/
 dbs
+.adminjs/bundle.js
