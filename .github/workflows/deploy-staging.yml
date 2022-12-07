@@ -54,4 +54,3 @@ jobs:
               -e REFRESH_TOKEN_LIFETIME=${{ env.REFRESH_TOKEN_LIFETIME }} \
               ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}
             docker logout
-
